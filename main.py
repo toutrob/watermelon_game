@@ -1,10 +1,12 @@
 import pygame
+import pymunk
+import numpy
 
 pygame.init()
 
 window_size = (1200, 700)
 window = pygame.display.set_mode(window_size)
-pygame.display.set_caption("My Pygame Window")
+pygame.display.set_caption("Watermelon Game")
 
 running = True
 while running:
