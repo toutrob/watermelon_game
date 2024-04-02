@@ -13,6 +13,11 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+    window.fill((249, 228, 183))
+    pygame.draw.line(window, (88, 41, 0), (400, 100), (400, 600), 7)
+    pygame.draw.line(window, (88, 41, 0), (800, 100), (800, 600), 7)
+    pygame.draw.line(window, (88, 41, 0), (400, 600), (800, 600), 7)
+
     # Draw shapes
     ##window.fill((255, 255, 255))
     ##pygame.draw.circle(window, (255, 255, 0), (150, 200), 50)
