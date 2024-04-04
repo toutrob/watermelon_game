@@ -1,44 +1,24 @@
 import pygame
-
-
-class boules:
-    def __init__(self, screen, centre):
-        #self.poids = poids
-        #self.type = type
-        #self.sprite = sprite
-        self.centre = list(centre)
-        self.screen = screen
-
-    ##def gravity(self):
-        ##self.centre[1] += 0.02
-
-    def dessin(self):
-        pygame.draw.circle(self.screen, (255,0,0), self.centre, 4 )
-
+import pymunk
+import numpy
 
 pygame.init()
 
 window_size = (1200, 700)
 window = pygame.display.set_mode(window_size)
-pygame.display.set_caption("My Pygame Window")
-boule = boules(window, (500,500))
-window.fill((255, 255, 255))
+pygame.display.set_caption("Watermelon Game")
 
 running = True
 while running:
-
     # Handle events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-
-    window.fill((255, 255, 255))
-
-
-    ##boule.gravity()
-    boule.dessin()
-
+    window.fill((249, 228, 183))
+    pygame.draw.line(window, (88, 41, 0), (400, 100), (400, 600), 7)
+    pygame.draw.line(window, (88, 41, 0), (800, 100), (800, 600), 7)
+    pygame.draw.line(window, (88, 41, 0), (400, 600), (800, 600), 7)
 
     # Draw shapes
     ##window.fill((255, 255, 255))
@@ -48,4 +28,3 @@ while running:
 
     pygame.display.flip()
 pygame.quit()
-

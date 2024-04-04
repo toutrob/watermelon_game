@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="51ef0a3a-6d64-41a4-a95f-085dcad59a0a" name="Changes" comment="Ajout de la fenêtre d'affichage graphique">
-      <change beforePath="$PROJECT_DIR$/.idea/Watermelon Game.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Watermelon Game.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="51ef0a3a-6d64-41a4-a95f-085dcad59a0a" name="Changes" comment="creation fenetre + font">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -18,31 +16,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "history": [
-    {
-      "searchQuery": "pygame",
-      "state": "OPEN",
-      "assignee": "a-mth"
-    }
-  ],
-  "lastFilter": {
-    "searchQuery": "pygame",
-    "state": "OPEN",
-    "assignee": "a-mth"
-  }
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 4
 }]]></component>
-  <component name="GithubPullRequestsUISettings">
-    <option name="selectedUrlAndAccountId">
-      <UrlAndAccount>
-        <option name="accountId" value="27704272-4885-4b95-a982-9bb068eaf0ef" />
-        <option name="url" value="https://github.com/toutrob/watermelon_game.git" />
-      </UrlAndAccount>
-    </option>
-  </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 4
-}</component>
   <component name="ProjectId" id="2eXzM6zKSrEmV7w5iuBiAFADSZz" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -54,7 +30,8 @@
     "Python.main.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master"
+    "git-widget-placeholder": "master",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
   <component name="RunManager">
@@ -97,19 +74,28 @@
       <option name="presentableId" value="Default" />
       <updated>1712065659427</updated>
     </task>
-    <task id="LOCAL-00001" summary="Ajout de la fenêtre d'affichage graphique">
+    <task id="LOCAL-00001" summary="Creation projet">
       <option name="closed" value="true" />
-      <created>1712067818732</created>
+      <created>1712065799895</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1712067818732</updated>
+      <updated>1712065799895</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="creation fenetre + font">
+      <option name="closed" value="true" />
+      <created>1712068640519</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1712068640519</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Ajout de la fenêtre d'affichage graphique" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajout de la fenêtre d'affichage graphique" />
+    <MESSAGE value="Creation projet" />
+    <MESSAGE value="creation fenetre + font" />
+    <option name="LAST_COMMIT_MESSAGE" value="creation fenetre + font" />
   </component>
 </project>
