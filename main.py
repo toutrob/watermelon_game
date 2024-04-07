@@ -1,3 +1,5 @@
+import random
+
 import pygame
 import pymunk
 import numpy
@@ -6,7 +8,7 @@ window_size = (1200, 700)
 window = pygame.display.set_mode(window_size)
 pygame.display.set_caption("Watermelon Game")
 
-'''class boules :
+class boules :
     def __init__(self,fenetre, centre, rayon, masse, type, sprite):
         self.fenetre = fenetre
         self.rayon = rayon
@@ -17,7 +19,7 @@ pygame.display.set_caption("Watermelon Game")
         self.centremasque = pymunk.Body(1, 100)
 
     def gravite(self):
-        ''''''centremasque = pymunk.Body(self.masse, 100)''''''
+        '''centremasque = pymunk.Body(self.masse, 100)'''
         self.centremasque.position = self.centre
 
         ball_shape = pymunk.Circle(self.centremasque, self.rayon)
@@ -33,7 +35,15 @@ class boule1(boules):
     def __init__(self, centre):
         super().__init__(window, centre, 10, 10, 1 , "https" )
 
-'''
+class boule2(boules):
+    def __init__(self, centre):
+        super().__init__(window, centre, 20, 10, 2 , "https" )
+
+class boule3(boules):
+    def __init__(self, centre):
+        super().__init__(window, centre, 35, 10, 2, "https")
+
+
 
 
 
@@ -50,18 +60,18 @@ pygame.display.set_caption("Watermelon Game")'''
 space = pymunk.Space()
 space.gravity = (0, -500)
 
-ball_body = pymunk.Body(1, 100)
+'''ball_body = pymunk.Body(1, 100)
 ball_body.position = (500, 700)
 
 ball_shape = pymunk.Circle(ball_body, 20)
-space.add(ball_body, ball_shape)
+space.add(ball_body, ball_shape)'''
 
 
-def create_ball(position):
+'''def create_ball(position):
     ball_body = pymunk.Body(1, 100)
     ball_body.position = position
     ball_shape = pymunk.Circle(ball_body, 20)
-    space.add(ball_body, ball_shape)
+    space.add(ball_body, ball_shape)'''
 
 shape1 = pymunk.Segment(
     space.static_body, (400, 600), (400, 100), 0.0
@@ -78,8 +88,10 @@ shape3 = pymunk.Segment(
     )
 space.add(shape3)
 
-'''terre = boule1((500,500))
-terre.gravite()'''
+terre = boule1((500,500))
+mars = boule2((700,500))
+terre.gravite()
+mars.gravite()
 
 running = True
 clock = pygame.time.Clock()
@@ -88,17 +100,28 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+            '''elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                mouse_position = pygame.mouse.get_pos()
+                create_ball(mouse_position)'''
+
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             mouse_position = pygame.mouse.get_pos()
-            create_ball(mouse_position)
-        '''elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            mouse_position = pygame.mouse.get_pos()
-            planete = boule1(mouse_position)'''
-
+            typeboule = random.randint(1,3)
+            match typeboule:
+                case 1:
+                    planete = boule1(mouse_position)
+                    planete.gravite()
+                case 2:
+                    planete = boule2(mouse_position)
+                    planete.gravite()
+                case 3:
+                    planete = boule3(mouse_position)
+                    planete.gravite()
 
     space.step(1/60)
-    ball_pos = int(ball_body.position.x), window_size[1] - int(ball_body.position.y)
-    pygame.draw.circle(window, BLUE, ball_pos, 20)
+    '''ball_pos = int(ball_body.position.x), window_size[1] - int(ball_body.position.y)
+    pygame.draw.circle(window, BLUE, ball_pos, 20)'''
 
     '''pygame.display.flip()'''
     clock.tick(60)
