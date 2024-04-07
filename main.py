@@ -6,7 +6,7 @@ window_size = (1200, 700)
 window = pygame.display.set_mode(window_size)
 pygame.display.set_caption("Watermelon Game")
 
-class boules :
+'''class boules :
     def __init__(self,fenetre, centre, rayon, masse, type, sprite):
         self.fenetre = fenetre
         self.rayon = rayon
@@ -17,11 +17,11 @@ class boules :
         self.centremasque = pymunk.Body(1, 100)
 
     def gravite(self):
-        centremasque = pymunk.Body(self.masse, 100)
-        centremasque.position = self.centre
+        ''''''centremasque = pymunk.Body(self.masse, 100)''''''
+        self.centremasque.position = self.centre
 
-        ball_shape = pymunk.Circle(ball_body, self.rayon)
-        space.add(centremasque, ball_shape)
+        ball_shape = pymunk.Circle(self.centremasque, self.rayon)
+        space.add(self.centremasque, ball_shape)
 
 
 
@@ -33,7 +33,7 @@ class boule1(boules):
     def __init__(self, centre):
         super().__init__(window, centre, 10, 10, 1 , "https" )
 
-
+'''
 
 
 
@@ -43,9 +43,9 @@ pygame.init()
 BLUE = (0, 0, 255)
 static_lines = []
 
-window_size = (1200, 700)
+'''window_size = (1200, 700)
 window = pygame.display.set_mode(window_size)
-pygame.display.set_caption("Watermelon Game")
+pygame.display.set_caption("Watermelon Game")'''
 
 space = pymunk.Space()
 space.gravity = (0, -500)
@@ -78,7 +78,8 @@ shape3 = pymunk.Segment(
     )
 space.add(shape3)
 
-
+'''terre = boule1((500,500))
+terre.gravite()'''
 
 running = True
 clock = pygame.time.Clock()
@@ -90,14 +91,16 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             mouse_position = pygame.mouse.get_pos()
             create_ball(mouse_position)
+        '''elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            mouse_position = pygame.mouse.get_pos()
+            planete = boule1(mouse_position)'''
 
 
     space.step(1/60)
-    terre.gravite()
     ball_pos = int(ball_body.position.x), window_size[1] - int(ball_body.position.y)
     pygame.draw.circle(window, BLUE, ball_pos, 20)
 
-    pygame.display.flip()
+    '''pygame.display.flip()'''
     clock.tick(60)
 
     window.fill((249, 228, 183))
@@ -112,8 +115,7 @@ while running:
     pygame.draw.line(window, (88, 41, 0), (400, 100), (400, 600), 7)
     pygame.draw.line(window, (88, 41, 0), (800, 100), (800, 600), 7)
     pygame.draw.line(window, (88, 41, 0), (400, 600), (800, 600), 7)
-    terre.dessin()
-    ##mars.dessin()
+    '''terre.dessin()'''
 
     pygame.display.flip()
 
