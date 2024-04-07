@@ -2,14 +2,48 @@ import pygame
 import pymunk
 import numpy
 
+window_size = (1200, 700)
+window = pygame.display.set_mode(window_size)
+pygame.display.set_caption("Watermelon Game")
+
+class boules :
+    def __init__(self,fenetre, centre, rayon, masse, type, sprite):
+        self.fenetre = fenetre
+        self.rayon = rayon
+        self.masse = masse
+        self.type = type
+        self.sprite = sprite
+        self.centre = centre
+        self.centremasque = pymunk.Body(1, 100)
+
+    def gravite(self):
+        centremasque = pymunk.Body(self.masse, 100)
+        centremasque.position = self.centre
+
+        ball_shape = pymunk.Circle(ball_body, self.rayon)
+        space.add(centremasque, ball_shape)
+
+
+
+    def dessin(self):
+        ball_pos = int(self.centremasque.position.x), window_size[1] - int(self.centremasque.position.y)
+        pygame.draw.circle(self.fenetre, (255,0,0), ball_pos, self.rayon)
+
+class boule1(boules):
+    def __init__(self, centre):
+        super().__init__(window, centre, 10, 10, 1 , "https" )
+
+
+
+
+
+
 pygame.init()
 
 BLUE = (0, 0, 255)
 static_lines = []
 
-window_size = (1200, 700)
-window = pygame.display.set_mode(window_size)
-pygame.display.set_caption("Watermelon Game")
+
 
 space = pymunk.Space()
 space.gravity = (0, -500)
@@ -19,6 +53,11 @@ ball_body.position = (500, 500)
 
 ball_shape = pymunk.Circle(ball_body, 20)
 space.add(ball_body, ball_shape)
+
+terre = boule1((500,500))
+
+mars = boule1( (600,600))
+
 
 shape1 = pymunk.Segment(
     space.static_body, (400, 600), (400, 100), 0.0
@@ -46,8 +85,10 @@ while running:
             running = False
 
     space.step(1/60)
+    terre.gravite()
     ball_pos = int(ball_body.position.x), window_size[1] - int(ball_body.position.y)
     pygame.draw.circle(window, BLUE, ball_pos, 20)
+
     pygame.display.flip()
     clock.tick(60)
 
@@ -55,6 +96,8 @@ while running:
     pygame.draw.line(window, (88, 41, 0), (400, 100), (400, 600), 7)
     pygame.draw.line(window, (88, 41, 0), (800, 100), (800, 600), 7)
     pygame.draw.line(window, (88, 41, 0), (400, 600), (800, 600), 7)
+    terre.dessin()
+    ##mars.dessin()
 
     # Draw shapes
     ##window.fill((255, 255, 255))
@@ -62,5 +105,4 @@ while running:
     ##pygame.draw.rect(window, (0, 200, 0), (100, 300, 300, 200))
     ##pygame.draw.line(window, (0, 0, 100), (100, 100), (700, 500), 5)
 
-    pygame.display.flip()
 pygame.quit()
