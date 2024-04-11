@@ -33,15 +33,15 @@ class boules :
 
 class boule1(boules):
     def __init__(self, centre):
-        super().__init__(window, centre, 10, 10, 1 , "https" )
+        super().__init__(window, centre, 10, 100, 1 , "https" )
 
 class boule2(boules):
     def __init__(self, centre):
-        super().__init__(window, centre, 20, 10, 2 , "https" )
+        super().__init__(window, centre, 20, 200, 2 , "https" )
 
 class boule3(boules):
     def __init__(self, centre):
-        super().__init__(window, centre, 35, 10, 2, "https")
+        super().__init__(window, centre, 35, 350, 2, "https")
 
 
 
@@ -58,7 +58,7 @@ window = pygame.display.set_mode(window_size)
 pygame.display.set_caption("Watermelon Game")'''
 
 space = pymunk.Space()
-space.gravity = (0, -500)
+space.gravity = (0, -600)
 
 '''ball_body = pymunk.Body(1, 100)
 ball_body.position = (500, 700)
@@ -74,12 +74,12 @@ space.add(ball_body, ball_shape)'''
     space.add(ball_body, ball_shape)'''
 
 shape1 = pymunk.Segment(
-    space.static_body, (400, 600), (400, 100), 0.0
+    space.static_body, (400, 700), (400, 100), 0.0
     )
 space.add(shape1)
 
 shape2 = pymunk.Segment(
-    space.static_body, (800, 600), (800, 100), 0.0
+    space.static_body, (800, 700), (800, 100), 0.0
     )
 space.add(shape2)
 
@@ -106,18 +106,19 @@ while running:
                 create_ball(mouse_position)'''
 
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            mouse_position = pygame.mouse.get_pos()
-            typeboule = random.randint(1,3)
-            match typeboule:
-                case 1:
-                    planete = boule1(mouse_position)
-                    planete.gravite()
-                case 2:
-                    planete = boule2(mouse_position)
-                    planete.gravite()
-                case 3:
-                    planete = boule3(mouse_position)
-                    planete.gravite()
+            mouse_position_x = pygame.mouse.get_pos()[0]
+            if 420 <= mouse_position_x <= 780:
+                typeboule = random.randint(1,3)
+                match typeboule:
+                    case 1:
+                        planete = boule1((mouse_position_x, 650))
+                        planete.gravite()
+                    case 2:
+                        planete = boule2((mouse_position_x, 650))
+                        planete.gravite()
+                    case 3:
+                        planete = boule3((mouse_position_x, 650))
+                        planete.gravite()
 
     space.step(1/60)
     '''ball_pos = int(ball_body.position.x), window_size[1] - int(ball_body.position.y)
@@ -135,12 +136,11 @@ while running:
                 pygame.draw.circle(window, BLUE, (pos_x, pos_y), int(shape.radius))
 
 
-    pygame.draw.line(window, (88, 41, 0), (400, 100), (400, 600), 7)
-    pygame.draw.line(window, (88, 41, 0), (800, 100), (800, 600), 7)
-    pygame.draw.line(window, (88, 41, 0), (400, 600), (800, 600), 7)
+    pygame.draw.line(window, (88, 41, 0), (400, 100), (400, 600), 7) #ligne du bas
+    pygame.draw.line(window, (88, 41, 0), (800, 100), (800, 600), 7) #droite
+    pygame.draw.line(window, (88, 41, 0), (400, 600), (800, 600), 7) #gauche
     '''terre.dessin()'''
 
-    pygame.display.flip()
 
     clock.tick(60)
 
