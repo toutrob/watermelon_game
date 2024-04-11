@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="51ef0a3a-6d64-41a4-a95f-085dcad59a0a" name="Changes" comment="mise en commun des deux codes et mise en commentaire de ma partie afin de pouvoir différencier les deux parties">
-      <change beforePath="$PROJECT_DIR$/.idea/Watermelon Game.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Watermelon Game.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="51ef0a3a-6d64-41a4-a95f-085dcad59a0a" name="Changes" comment="Rallongement des murs verticaux, coordonné y fixe pour le placement des boules et placement seulement possible dans la boite">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -121,7 +119,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712490362738</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Rallongement des murs verticaux, coordonné y fixe pour le placement des boules et placement seulement possible dans la boite">
+      <option name="closed" value="true" />
+      <created>1712846110552</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1712846110552</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -130,6 +136,7 @@
     <MESSAGE value="modifications mineures" />
     <MESSAGE value="ajout d'une boule avec physique et creation de la physique des mur" />
     <MESSAGE value="mise en commun des deux codes et mise en commentaire de ma partie afin de pouvoir différencier les deux parties" />
-    <option name="LAST_COMMIT_MESSAGE" value="mise en commun des deux codes et mise en commentaire de ma partie afin de pouvoir différencier les deux parties" />
+    <MESSAGE value="Rallongement des murs verticaux, coordonné y fixe pour le placement des boules et placement seulement possible dans la boite" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rallongement des murs verticaux, coordonné y fixe pour le placement des boules et placement seulement possible dans la boite" />
   </component>
 </project>

@@ -23,25 +23,26 @@ class boules :
         self.centremasque.position = self.centre
 
         ball_shape = pymunk.Circle(self.centremasque, self.rayon)
+        ball_shape.ball = self
         space.add(self.centremasque, ball_shape)
 
 
 
     def dessin(self):
         ball_pos = int(self.centremasque.position.x), window_size[1] - int(self.centremasque.position.y)
-        pygame.draw.circle(self.fenetre, (255,0,0), ball_pos, self.rayon)
+        pygame.draw.circle(self.fenetre, self.sprite, ball_pos, self.rayon)
 
 class boule1(boules):
     def __init__(self, centre):
-        super().__init__(window, centre, 10, 100, 1 , "https" )
+        super().__init__(window, centre, 10, 100, 1 , (0,255,0) )
 
 class boule2(boules):
     def __init__(self, centre):
-        super().__init__(window, centre, 20, 200, 2 , "https" )
+        super().__init__(window, centre, 20, 200, 2 , (255,0,0) )
 
 class boule3(boules):
     def __init__(self, centre):
-        super().__init__(window, centre, 35, 350, 2, "https")
+        super().__init__(window, centre, 35, 350, 2, (0,0,255))
 
 
 
@@ -88,10 +89,6 @@ shape3 = pymunk.Segment(
     )
 space.add(shape3)
 
-terre = boule1((500,500))
-mars = boule2((700,500))
-terre.gravite()
-mars.gravite()
 
 running = True
 clock = pygame.time.Clock()
@@ -132,8 +129,9 @@ while running:
     for body in space.bodies:
         for shape in body.shapes:
             if isinstance(shape, pymunk.Circle):
-                pos_x, pos_y = int(body.position.x), window_size[1] - int(body.position.y)
-                pygame.draw.circle(window, BLUE, (pos_x, pos_y), int(shape.radius))
+                shape.ball.dessin()
+                #pos_x, pos_y = int(body.position.x), window_size[1] - int(body.position.y)
+                #pygame.draw.circle(window, BLUE, (pos_x, pos_y), int(shape.radius))
 
 
     pygame.draw.line(window, (88, 41, 0), (400, 100), (400, 600), 7) #ligne du bas
