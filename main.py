@@ -17,7 +17,7 @@ class boules :
         self.sprite = sprite
         self.centre = centre
         self.centremasque = pymunk.Body(1, 100)
-        self.collision_type = 5
+        '''self.collision_type = 5'''
 
     def gravite(self):
         '''centremasque = pymunk.Body(self.masse, 100)'''
@@ -25,7 +25,7 @@ class boules :
 
         ball_shape = pymunk.Circle(self.centremasque, self.rayon)
         ball_shape.ball = self
-        ball_shape.collision_type = self.collision_type
+        ball_shape.collision_type = self.type
         space.add(self.centremasque, ball_shape)
 
 
@@ -36,15 +36,15 @@ class boules :
 
 class boule1(boules):
     def __init__(self, centre):
-        super().__init__(window, centre, 10, 100, 1 , (0,255,0) )
+        super().__init__(window, centre, 10, 100, 5 , (0,255,0) )
 
 class boule2(boules):
     def __init__(self, centre):
-        super().__init__(window, centre, 20, 200, 2 , (255,0,0) )
+        super().__init__(window, centre, 20, 200, 6 , (255,0,0) )
 
 class boule3(boules):
     def __init__(self, centre):
-        super().__init__(window, centre, 35, 350, 2, (0,0,255))
+        super().__init__(window, centre, 35, 350, 7, (0,0,255))
 
 
 
@@ -70,7 +70,13 @@ def collision_callback(arbiter, space, data):
 
 # Ajout du gestionnaire de collision
 handler = space.add_collision_handler(5, 5)  # Collision entre les objets de type 5
+handler2 = space.add_collision_handler(6,6)
+handler3 = space.add_collision_handler(7,7)
+'''handler = space.add_collision_handler(6, 6)  # Collision entre les objets de type 5
+handler = space.add_collision_handler(7, 7)  # Collision entre les objets de type 5'''
 handler.begin = collision_callback
+handler2.begin = collision_callback
+handler3.begin = collision_callback
 
 '''ball_body = pymunk.Body(1, 100)
 ball_body.position = (500, 700)
