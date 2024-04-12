@@ -39,6 +39,9 @@ class boules :
                 return instance
         return None
 
+    def dessin_preview(self):
+        pygame.draw.circle(self.fenetre, self.sprite, self.centre, self.rayon)
+
 
 class boule1(boules):
     def __init__(self, centre):
@@ -164,7 +167,7 @@ shape3 = pymunk.Segment(
     )
 space.add(shape3)
 
-
+selected_ball_type = None
 
 running = True
 clock = pygame.time.Clock()
@@ -175,12 +178,18 @@ while running:
             running = False
 
 
+        elif event.type == pygame.MOUSEMOTION:
+
+            if selected_ball_type is None:  # Si la boule n'a pas encore été choisie
+
+                selected_ball_type = random.randint(1, 3)  # Choix aléatoire d'un type de boule
+
 
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             mouse_position_x = pygame.mouse.get_pos()[0]
             if 420 <= mouse_position_x <= 780:
-                typeboule = random.randint(1,3)
-                match typeboule:
+                #typeboule = random.randint(1,3)
+                match selected_ball_type:
                     case 1:
                         planete = boule1((mouse_position_x, 650))
                         planete.gravite()
@@ -190,6 +199,7 @@ while running:
                     case 3:
                         planete = boule3((mouse_position_x, 650))
                         planete.gravite()
+                selected_ball_type = random.randint(1, 3)
 
 
 
@@ -204,6 +214,16 @@ while running:
         for shape in body.shapes:
             if isinstance(shape, pymunk.Circle):
                 shape.ball.dessin()
+
+    if selected_ball_type is not None:
+        mouse_pos = pygame.mouse.get_pos()
+        if selected_ball_type == 1:
+            preview_ball = boule1((mouse_pos[0], 50))
+        elif selected_ball_type == 2:
+            preview_ball = boule2((mouse_pos[0], 50))
+        elif selected_ball_type == 3:
+            preview_ball = boule3((mouse_pos[0], 50))
+        preview_ball.dessin_preview()
 
 
     pygame.draw.line(window, (88, 41, 0), (400, 100), (400, 600), 7) #ligne du bas
