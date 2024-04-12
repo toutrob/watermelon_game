@@ -17,12 +17,14 @@ class boules :
         self.sprite = sprite
         self.centre = centre
         self.centremasque = pymunk.Body(1, 100)
+        self.collision_type = 5
 
     def gravite(self):
         '''centremasque = pymunk.Body(self.masse, 100)'''
         self.centremasque.position = self.centre
 
         ball_shape = pymunk.Circle(self.centremasque, self.rayon)
+        ball_shape.collision_type = self.collision_type
         space.add(self.centremasque, ball_shape)
 
 
@@ -41,7 +43,7 @@ class boule2(boules):
 
 class boule3(boules):
     def __init__(self, centre):
-        super().__init__(window, centre, 35, 10, 2, "https")
+        super().__init__(window, centre, 35, 10, 3, "https")
 
 
 
@@ -59,6 +61,15 @@ pygame.display.set_caption("Watermelon Game")'''
 
 space = pymunk.Space()
 space.gravity = (0, -500)
+
+
+def collision_callback(arbiter, space, data):
+    print("Collision détectée !")
+    return True  # Retourne True pour permettre à la collision de se produire
+
+# Ajout du gestionnaire de collision
+handler = space.add_collision_handler(5, 5)  # Collision entre les objets de type 5
+handler.begin = collision_callback
 
 '''ball_body = pymunk.Body(1, 100)
 ball_body.position = (500, 700)
@@ -88,10 +99,11 @@ shape3 = pymunk.Segment(
     )
 space.add(shape3)
 
-terre = boule1((500,500))
+'''terre = boule1((500,500))
 mars = boule2((700,500))
 terre.gravite()
-mars.gravite()
+mars.gravite()'''
+
 
 running = True
 clock = pygame.time.Clock()
@@ -119,7 +131,10 @@ while running:
                     planete = boule3(mouse_position)
                     planete.gravite()
 
+
+
     space.step(1/60)
+
     '''ball_pos = int(ball_body.position.x), window_size[1] - int(ball_body.position.y)
     pygame.draw.circle(window, BLUE, ball_pos, 20)'''
 
@@ -127,6 +142,18 @@ while running:
     clock.tick(60)
 
     window.fill((249, 228, 183))
+
+    boules_en_collision = []
+
+    '''for body in space.bodies:
+        for shape in body.shapes:
+            if isinstance(shape, pymunk.Circle):
+                for other_body in space.bodies:
+                    for other_shape in other_body.shapes:
+                        if isinstance(other_shape, pymunk.Circle) and shape != other_shape and shape.shapes_collide(other_shape):
+                            # Stocker les boules en collision dans la liste
+                            boules_en_collision.append((body, other_body))
+                            print("colide")'''
 
     for body in space.bodies:
         for shape in body.shapes:
@@ -139,8 +166,6 @@ while running:
     pygame.draw.line(window, (88, 41, 0), (800, 100), (800, 600), 7)
     pygame.draw.line(window, (88, 41, 0), (400, 600), (800, 600), 7)
     '''terre.dessin()'''
-
-    pygame.display.flip()
 
     clock.tick(60)
 
