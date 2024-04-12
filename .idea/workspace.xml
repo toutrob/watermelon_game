@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="51ef0a3a-6d64-41a4-a95f-085dcad59a0a" name="Changes" comment="détection du contact entre les boules uniquement lorsqu'elles sont du même type">
+    <list default="true" id="51ef0a3a-6d64-41a4-a95f-085dcad59a0a" name="Changes" comment="fusion des boules en contact">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -135,7 +135,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712907710584</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="fusion des boules en contact">
+      <option name="closed" value="true" />
+      <created>1712914504928</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1712914504928</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -146,6 +154,7 @@
     <MESSAGE value="mise en commun des deux codes et mise en commentaire de ma partie afin de pouvoir différencier les deux parties" />
     <MESSAGE value="Rallongement des murs verticaux, coordonné y fixe pour le placement des boules et placement seulement possible dans la boite" />
     <MESSAGE value="détection du contact entre les boules uniquement lorsqu'elles sont du même type" />
-    <option name="LAST_COMMIT_MESSAGE" value="détection du contact entre les boules uniquement lorsqu'elles sont du même type" />
+    <MESSAGE value="fusion des boules en contact" />
+    <option name="LAST_COMMIT_MESSAGE" value="fusion des boules en contact" />
   </component>
 </project>

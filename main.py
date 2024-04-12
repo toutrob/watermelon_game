@@ -17,7 +17,6 @@ class boules :
         self.sprite = sprite
         self.centre = centre
         self.centremasque = pymunk.Body(1, 100)
-        '''self.collision_type = 5'''
 
     def gravite(self):
         '''centremasque = pymunk.Body(self.masse, 100)'''
@@ -53,6 +52,26 @@ class boule3(boules):
     def __init__(self, centre):
         super().__init__(window, centre, 35, 350, 7, (0,0,255))
 
+class boule4(boules):
+    def __init__(self, centre):
+        super().__init__(window, centre, 45, 400, 8, (255,255,0))
+
+class boule5(boules):
+    def __init__(self, centre):
+        super().__init__(window, centre, 55, 450, 9, (0,255,255))
+
+class boule6(boules):
+    def __init__(self, centre):
+        super().__init__(window, centre, 65, 500, 10, (255,0,255))
+
+class boule7(boules):
+    def __init__(self, centre):
+        super().__init__(window, centre, 75, 550, 11, (130,255,130))
+
+class boule8(boules):
+    def __init__(self, centre):
+        super().__init__(window, centre, 85, 600, 12, (130,130,255))
+
 
 
 
@@ -63,9 +82,6 @@ pygame.init()
 BLUE = (0, 0, 255)
 static_lines = []
 
-'''window_size = (1200, 700)
-window = pygame.display.set_mode(window_size)
-pygame.display.set_caption("Watermelon Game")'''
 
 space = pymunk.Space()
 space.gravity = (0, -600)
@@ -86,12 +102,6 @@ def collision_callback(arbiter, space, data):
     space.remove(shape2, shape2.body)
 
 
-    '''for body in space.bodies:
-        for shape in body.shapes:
-            if isinstance(shape, pymunk.Circle):
-                if (body.position.x, window_size[1] - body.position.y) == (contact_x, contact_y):
-                    print("oui")'''
-
     if(newshapetype == 6):
         planete = boule2((contact_x, contact_y))
         planete.gravite()
@@ -100,30 +110,44 @@ def collision_callback(arbiter, space, data):
         planete = boule3((contact_x, contact_y))
         planete.gravite()
 
+    if (newshapetype == 8):
+        planete = boule4((contact_x, contact_y))
+        planete.gravite()
+
+    if (newshapetype == 9):
+        planete = boule5((contact_x, contact_y))
+        planete.gravite()
+
+    if (newshapetype == 10):
+        planete = boule6((contact_x, contact_y))
+        planete.gravite()
+
+    if (newshapetype == 11):
+        planete = boule7((contact_x, contact_y))
+        planete.gravite()
+
+
+
+
     return True  # Retourne True pour permettre à la collision de se produire
 
 # Ajout du gestionnaire de collision
 handler = space.add_collision_handler(5, 5)  # Collision entre les objets de type 5
 handler2 = space.add_collision_handler(6,6)
 handler3 = space.add_collision_handler(7,7)
-'''handler = space.add_collision_handler(6, 6)  # Collision entre les objets de type 5
-handler = space.add_collision_handler(7, 7)  # Collision entre les objets de type 5'''
+handler4 = space.add_collision_handler(8,8)
+handler5 = space.add_collision_handler(9,9)
+handler6 = space.add_collision_handler(10,10)
+handler7 = space.add_collision_handler(11,11)
 handler.begin = collision_callback
 handler2.begin = collision_callback
 handler3.begin = collision_callback
-
-'''ball_body = pymunk.Body(1, 100)
-ball_body.position = (500, 700)
-
-ball_shape = pymunk.Circle(ball_body, 20)
-space.add(ball_body, ball_shape)'''
+handler4.begin = collision_callback
+handler5.begin = collision_callback
+handler6.begin = collision_callback
+handler7.begin = collision_callback
 
 
-'''def create_ball(position):
-    ball_body = pymunk.Body(1, 100)
-    ball_body.position = position
-    ball_shape = pymunk.Circle(ball_body, 20)
-    space.add(ball_body, ball_shape)'''
 
 shape1 = pymunk.Segment(
     space.static_body, (400, 700), (400, 100), 0.0
@@ -140,10 +164,6 @@ shape3 = pymunk.Segment(
     )
 space.add(shape3)
 
-'''terre = boule1((500,500))
-mars = boule2((700,500))
-terre.gravite()
-mars.gravite()'''
 
 
 running = True
@@ -154,9 +174,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-            '''elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                mouse_position = pygame.mouse.get_pos()
-                create_ball(mouse_position)'''
+
 
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             mouse_position_x = pygame.mouse.get_pos()[0]
@@ -177,10 +195,7 @@ while running:
 
     space.step(1/60)
 
-    '''ball_pos = int(ball_body.position.x), window_size[1] - int(ball_body.position.y)
-    pygame.draw.circle(window, BLUE, ball_pos, 20)'''
 
-    '''pygame.display.flip()'''
     clock.tick(60)
 
     window.fill((249, 228, 183))
@@ -189,14 +204,11 @@ while running:
         for shape in body.shapes:
             if isinstance(shape, pymunk.Circle):
                 shape.ball.dessin()
-                #pos_x, pos_y = int(body.position.x), window_size[1] - int(body.position.y)
-                #pygame.draw.circle(window, BLUE, (pos_x, pos_y), int(shape.radius))
 
 
     pygame.draw.line(window, (88, 41, 0), (400, 100), (400, 600), 7) #ligne du bas
     pygame.draw.line(window, (88, 41, 0), (800, 100), (800, 600), 7) #droite
     pygame.draw.line(window, (88, 41, 0), (400, 600), (800, 600), 7) #gauche
-    '''terre.dessin()'''
 
     clock.tick(60)
 
