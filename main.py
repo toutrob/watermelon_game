@@ -34,6 +34,13 @@ class boules :
         ball_pos = int(self.centremasque.position.x), window_size[1] - int(self.centremasque.position.y)
         pygame.draw.circle(self.fenetre, self.sprite, ball_pos, self.rayon)
 
+    def trouver_par_position(cls, x, y):
+        for instance in cls.instances:
+            if instance.x == x and instance.y == y:
+                return instance
+        return None
+
+
 class boule1(boules):
     def __init__(self, centre):
         super().__init__(window, centre, 10, 100, 5 , (0,255,0) )
@@ -65,7 +72,34 @@ space.gravity = (0, -600)
 
 
 def collision_callback(arbiter, space, data):
-    print("Collision détectée !")
+    # Récupère les informations sur les objets en collision
+    shape1, shape2 = arbiter.shapes
+    newshapetype = shape1.collision_type + 1
+
+    points = arbiter.contact_point_set.points
+    for point in points:
+        # Accède aux coordonnées du point de contact
+        contact_x, contact_y = point.point_a
+        print("Point de contact : ({}, {})".format(contact_x, contact_y))
+
+    space.remove(shape1, shape1.body)
+    space.remove(shape2, shape2.body)
+
+
+    '''for body in space.bodies:
+        for shape in body.shapes:
+            if isinstance(shape, pymunk.Circle):
+                if (body.position.x, window_size[1] - body.position.y) == (contact_x, contact_y):
+                    print("oui")'''
+
+    if(newshapetype == 6):
+        planete = boule2((contact_x, contact_y))
+        planete.gravite()
+
+    if (newshapetype == 7):
+        planete = boule3((contact_x, contact_y))
+        planete.gravite()
+
     return True  # Retourne True pour permettre à la collision de se produire
 
 # Ajout du gestionnaire de collision
