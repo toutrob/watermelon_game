@@ -2,13 +2,16 @@ import random
 
 import pygame
 import pymunk
+from boules import boules, boule1, boule2, boule3, boule4, boule5, boule6, boule7, boule8
+
+
 import numpy
 
 window_size = (1200, 700)
 window = pygame.display.set_mode(window_size)
 pygame.display.set_caption("Watermelon Game")
 
-class boules :
+'''class boules :
     def __init__(self,fenetre, centre, rayon, masse, type, sprite):
         self.fenetre = fenetre
         self.rayon = rayon
@@ -19,7 +22,7 @@ class boules :
         self.centremasque = pymunk.Body(1, 100)
 
     def gravite(self):
-        '''centremasque = pymunk.Body(self.masse, 100)'''
+        ''''''centremasque = pymunk.Body(self.masse, 100)'''''''
         self.centremasque.position = self.centre
 
         ball_shape = pymunk.Circle(self.centremasque, self.rayon)
@@ -73,7 +76,7 @@ class boule7(boules):
 
 class boule8(boules):
     def __init__(self, centre):
-        super().__init__(window, centre, 85, 600, 12, (130,130,255))
+        super().__init__(window, centre, 85, 600, 12, (130,130,255))'''
 
 
 
@@ -106,27 +109,27 @@ def collision_callback(arbiter, space, data):
 
 
     if(newshapetype == 6):
-        planete = boule2((contact_x, contact_y))
+        planete = boule2(window, (contact_x, contact_y), space)
         planete.gravite()
 
     if (newshapetype == 7):
-        planete = boule3((contact_x, contact_y))
+        planete = boule3(window, (contact_x, contact_y), space)
         planete.gravite()
 
     if (newshapetype == 8):
-        planete = boule4((contact_x, contact_y))
+        planete = boule4(window, (contact_x, contact_y), space)
         planete.gravite()
 
     if (newshapetype == 9):
-        planete = boule5((contact_x, contact_y))
+        planete = boule5(window, (contact_x, contact_y), space)
         planete.gravite()
 
     if (newshapetype == 10):
-        planete = boule6((contact_x, contact_y))
+        planete = boule6(window, (contact_x, contact_y), space)
         planete.gravite()
 
     if (newshapetype == 11):
-        planete = boule7((contact_x, contact_y))
+        planete = boule7(window, (contact_x, contact_y), space)
         planete.gravite()
 
 
@@ -152,22 +155,20 @@ handler7.begin = collision_callback
 
 
 
-shape1 = pymunk.Segment(
-    space.static_body, (400, 700), (400, 100), 0.0
-    )
+shape1 = pymunk.Segment(space.static_body, (400, 700), (400, 100), 0)
 space.add(shape1)
 
-shape2 = pymunk.Segment(
-    space.static_body, (800, 700), (800, 100), 0.0
-    )
+shape2 = pymunk.Segment(space.static_body, (800, 700), (800, 100), 0)
 space.add(shape2)
 
-shape3 = pymunk.Segment(
-    space.static_body, (400, 100), (800, 100), 0.0
-    )
+shape3 = pymunk.Segment(space.static_body, (400, 100), (800, 100), 0)
 space.add(shape3)
 
 selected_ball_type = None
+
+police = pygame.font.Font(None, 36)
+texte = "Salut Pygame !"
+
 
 running = True
 clock = pygame.time.Clock()
@@ -191,13 +192,13 @@ while running:
                 #typeboule = random.randint(1,3)
                 match selected_ball_type:
                     case 1:
-                        planete = boule1((mouse_position_x, 650))
+                        planete = boule1(window, (mouse_position_x, 650), space)
                         planete.gravite()
                     case 2:
-                        planete = boule2((mouse_position_x, 650))
+                        planete = boule2(window, (mouse_position_x, 650), space)
                         planete.gravite()
                     case 3:
-                        planete = boule3((mouse_position_x, 650))
+                        planete = boule3(window, (mouse_position_x, 650), space)
                         planete.gravite()
                 selected_ball_type = random.randint(1, 3)
 
@@ -218,17 +219,23 @@ while running:
     if selected_ball_type is not None:
         mouse_pos = pygame.mouse.get_pos()
         if selected_ball_type == 1:
-            preview_ball = boule1((mouse_pos[0], 50))
+            preview_ball = boule1(window, (mouse_pos[0], 50), space)
         elif selected_ball_type == 2:
-            preview_ball = boule2((mouse_pos[0], 50))
+            preview_ball = boule2(window, (mouse_pos[0], 50), space)
         elif selected_ball_type == 3:
-            preview_ball = boule3((mouse_pos[0], 50))
+            preview_ball = boule3(window, (mouse_pos[0], 50), space)
         preview_ball.dessin_preview()
 
 
     pygame.draw.line(window, (88, 41, 0), (400, 100), (400, 600), 7) #ligne du bas
     pygame.draw.line(window, (88, 41, 0), (800, 100), (800, 600), 7) #droite
     pygame.draw.line(window, (88, 41, 0), (400, 600), (800, 600), 7) #gauche
+
+    texte_surface = police.render(texte, True, (0,0,0))
+    # Obtenir le rectangle englobant le texte pour le centrer
+    texte_rect = texte_surface.get_rect(center=(100, 100))
+    # Dessiner le texte sur la fenêtre à la position texte_rect
+    window.blit(texte_surface, texte_rect)
 
     clock.tick(60)
 
