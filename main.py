@@ -1,14 +1,11 @@
 import random
-
 import pygame
 import pymunk
-from boules import boules, boule1, boule2, boule3, boule4, boule5, boule6, boule7, boule8
-
-
+from boules import Boules, Boule1, Boule2, Boule3, Boule4, Boule5, Boule6, Boule7, Boule8
 import numpy
 
-window_size = (1200, 700)
-window = pygame.display.set_mode(window_size)
+WINDOWSIZE = (1200, 700)
+window = pygame.display.set_mode(WINDOWSIZE)
 pygame.display.set_caption("Watermelon Game")
 
 '''class boules :
@@ -85,7 +82,6 @@ class boule8(boules):
 
 pygame.init()
 
-BLUE = (0, 0, 255)
 static_lines = []
 
 
@@ -96,7 +92,7 @@ space.gravity = (0, -600)
 def collision_callback(arbiter, space, data):
     # Récupère les informations sur les objets en collision
     shape1, shape2 = arbiter.shapes
-    newshapetype = shape1.collision_type + 1
+    new_shape_type = shape1.collision_type + 1
 
     points = arbiter.contact_point_set.points
     for point in points:
@@ -108,28 +104,28 @@ def collision_callback(arbiter, space, data):
     space.remove(shape2, shape2.body)
 
 
-    if(newshapetype == 6):
-        planete = boule2(window, (contact_x, contact_y), space)
+    if(new_shape_type == 6):
+        planete = Boule2(window, (contact_x, contact_y), space)
         planete.gravite()
 
-    if (newshapetype == 7):
-        planete = boule3(window, (contact_x, contact_y), space)
+    if (new_shape_type == 7):
+        planete = Boule3(window, (contact_x, contact_y), space)
         planete.gravite()
 
-    if (newshapetype == 8):
-        planete = boule4(window, (contact_x, contact_y), space)
+    if (new_shape_type == 8):
+        planete = Boule4(window, (contact_x, contact_y), space)
         planete.gravite()
 
-    if (newshapetype == 9):
-        planete = boule5(window, (contact_x, contact_y), space)
+    if (new_shape_type == 9):
+        planete = Boule5(window, (contact_x, contact_y), space)
         planete.gravite()
 
-    if (newshapetype == 10):
-        planete = boule6(window, (contact_x, contact_y), space)
+    if (new_shape_type == 10):
+        planete = Boule6(window, (contact_x, contact_y), space)
         planete.gravite()
 
-    if (newshapetype == 11):
-        planete = boule7(window, (contact_x, contact_y), space)
+    if (new_shape_type == 11):
+        planete = Boule7(window, (contact_x, contact_y), space)
         planete.gravite()
 
 
@@ -192,13 +188,13 @@ while running:
                 #typeboule = random.randint(1,3)
                 match selected_ball_type:
                     case 1:
-                        planete = boule1(window, (mouse_position_x, 650), space)
+                        planete = Boule1(window, (mouse_position_x, 650), space)
                         planete.gravite()
                     case 2:
-                        planete = boule2(window, (mouse_position_x, 650), space)
+                        planete = Boule2(window, (mouse_position_x, 650), space)
                         planete.gravite()
                     case 3:
-                        planete = boule3(window, (mouse_position_x, 650), space)
+                        planete = Boule3(window, (mouse_position_x, 650), space)
                         planete.gravite()
                 selected_ball_type = random.randint(1, 3)
 
@@ -219,11 +215,11 @@ while running:
     if selected_ball_type is not None:
         mouse_pos = pygame.mouse.get_pos()
         if selected_ball_type == 1:
-            preview_ball = boule1(window, (mouse_pos[0], 50), space)
+            preview_ball = Boule1(window, (mouse_pos[0], 50), space)
         elif selected_ball_type == 2:
-            preview_ball = boule2(window, (mouse_pos[0], 50), space)
+            preview_ball = Boule2(window, (mouse_pos[0], 50), space)
         elif selected_ball_type == 3:
-            preview_ball = boule3(window, (mouse_pos[0], 50), space)
+            preview_ball = Boule3(window, (mouse_pos[0], 50), space)
         preview_ball.dessin_preview()
 
 

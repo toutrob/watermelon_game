@@ -1,15 +1,14 @@
 import random
-
 import pygame
 import pymunk
 
 
-class boules :
-    def __init__(self,fenetre, centre, rayon, masse, type, sprite, espace):
+class Boules :
+    def __init__(self,fenetre, centre, rayon, masse, type_, sprite, espace):
         self.fenetre = fenetre
         self.rayon = rayon
         self.masse = masse
-        self.type = type
+        self.type = type_
         self.sprite = sprite
         self.espace = espace
         self.centre = centre
@@ -41,34 +40,34 @@ class boules :
         pygame.draw.circle(self.fenetre, self.sprite, self.centre, self.rayon)
 
 
-class boule1(boules):
+class Boule1(Boules):
     def __init__(self, fenetre, centre, space):
         super().__init__(fenetre, centre, 10, 100, 5 , (0,255,0) , space)
 
-class boule2(boules):
+class Boule2(Boules):
     def __init__(self,fenetre, centre, space):
         super().__init__(fenetre, centre, 20, 200, 6 , (255,0,0), space )
 
-class boule3(boules):
+class Boule3(Boules):
     def __init__(self,fenetre, centre, space):
         super().__init__(fenetre, centre, 35, 350, 7, (0,0,255), space)
 
-class boule4(boules):
+class Boule4(Boules):
     def __init__(self,fenetre, centre, space):
         super().__init__(fenetre, centre, 45, 400, 8, (255,255,0), space)
 
-class boule5(boules):
+class Boule5(Boules):
     def __init__(self,fenetre, centre, space):
         super().__init__(fenetre, centre, 55, 450, 9, (0,255,255) ,space)
 
-class boule6(boules):
+class Boule6(Boules):
     def __init__(self, fenetre, centre, space):
         super().__init__(fenetre, centre, 65, 500, 10, (255,0,255), space)
 
-class boule7(boules):
+class Boule7(Boules):
     def __init__(self,fenetre, centre, space):
         super().__init__(fenetre, centre, 75, 550, 11, (130,255,130), space)
 
-class boule8(boules):
+class Boule8(Boules):
     def __init__(self,fenetre, centre, space):
         super().__init__(fenetre, centre, 85, 600, 12, (130,130,255), space)
