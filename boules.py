@@ -13,7 +13,8 @@ class Boules :
         self.espace = espace
         self.centre = centre
         self.window_size = (1200, 700)
-        self.centremasque = pymunk.Body(1, 100)
+        self.centremasque = pymunk.Body(self.masse, 100)
+        self.centremasque.friction = 0.2
 
     def gravite(self):
         '''centremasque = pymunk.Body(self.masse, 100)'''
@@ -42,32 +43,32 @@ class Boules :
 
 class Boule1(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 10, 100, 5 , (0,255,0) , space)
+        super().__init__(fenetre, centre, 10, 10, 5 , (0,255,0) , space)
 
 class Boule2(Boules):
     def __init__(self,fenetre, centre, space):
-        super().__init__(fenetre, centre, 20, 200, 6 , (255,0,0), space )
+        super().__init__(fenetre, centre, 20, 20, 6 , (255,0,0), space )
 
 class Boule3(Boules):
     def __init__(self,fenetre, centre, space):
-        super().__init__(fenetre, centre, 35, 350, 7, (0,0,255), space)
+        super().__init__(fenetre, centre, 35, 35, 7, (0,0,255), space)
 
 class Boule4(Boules):
     def __init__(self,fenetre, centre, space):
-        super().__init__(fenetre, centre, 45, 400, 8, (255,255,0), space)
+        super().__init__(fenetre, centre, 45, 45, 8, (255,255,0), space)
 
 class Boule5(Boules):
     def __init__(self,fenetre, centre, space):
-        super().__init__(fenetre, centre, 55, 450, 9, (0,255,255) ,space)
+        super().__init__(fenetre, centre, 55, 55, 9, (0,255,255) ,space)
 
 class Boule6(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 65, 500, 10, (255,0,255), space)
+        super().__init__(fenetre, centre, 65, 65, 10, (255,0,255), space)
 
 class Boule7(Boules):
     def __init__(self,fenetre, centre, space):
-        super().__init__(fenetre, centre, 75, 550, 11, (130,255,130), space)
+        super().__init__(fenetre, centre, 75, 75, 11, (130,255,130), space)
 
 class Boule8(Boules):
     def __init__(self,fenetre, centre, space):
-        super().__init__(fenetre, centre, 85, 600, 12, (130,130,255), space)
+        super().__init__(fenetre, centre, 85, 85, 12, (130,130,255), space)

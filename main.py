@@ -86,7 +86,8 @@ static_lines = []
 
 
 space = pymunk.Space()
-space.gravity = (0, -600)
+space.gravity = (0, -1000)
+space.damping = 0.8
 
 
 def collision_callback(arbiter, space, data):
@@ -202,8 +203,6 @@ while running:
 
     space.step(1/60)
 
-
-    clock.tick(60)
 
     window.fill((249, 228, 183))
 
