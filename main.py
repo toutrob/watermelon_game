@@ -90,7 +90,15 @@ space.gravity = (0, -1000)
 space.damping = 0.8
 
 
+score = 0
+texte = f"Score : {score}"
+
+
 def collision_callback(arbiter, space, data):
+    global score  # Utilisation de la variable score globale
+    global texte
+
+
     # Récupère les informations sur les objets en collision
     shape1, shape2 = arbiter.shapes
     new_shape_type = shape1.collision_type + 1
@@ -108,27 +116,35 @@ def collision_callback(arbiter, space, data):
     if(new_shape_type == 6):
         planete = Boule2(window, (contact_x, contact_y), space)
         planete.gravite()
+        score = score + shape1.collision_type ^ 2
 
     if (new_shape_type == 7):
         planete = Boule3(window, (contact_x, contact_y), space)
         planete.gravite()
+        score = score + shape1.collision_type ^ 2
 
     if (new_shape_type == 8):
         planete = Boule4(window, (contact_x, contact_y), space)
         planete.gravite()
+        score = score + shape1.collision_type ^ 2
 
     if (new_shape_type == 9):
         planete = Boule5(window, (contact_x, contact_y), space)
         planete.gravite()
+        score = score + shape1.collision_type ^ 2
 
     if (new_shape_type == 10):
         planete = Boule6(window, (contact_x, contact_y), space)
         planete.gravite()
+        score = score + shape1.collision_type ^ 2
 
     if (new_shape_type == 11):
         planete = Boule7(window, (contact_x, contact_y), space)
         planete.gravite()
+        score = score + shape1.collision_type ^ 2
 
+
+    texte = f"Score : {score}"
 
 
 
@@ -163,8 +179,9 @@ space.add(shape3)
 
 selected_ball_type = None
 
+
 police = pygame.font.Font(None, 36)
-texte = "Salut Pygame !"
+
 
 
 running = True
