@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="51ef0a3a-6d64-41a4-a95f-085dcad59a0a" name="Changes" comment="utilisation de la convetion de nommage.">
-      <change beforePath="$PROJECT_DIR$/.idea/Watermelon Game.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Watermelon Game.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="51ef0a3a-6d64-41a4-a95f-085dcad59a0a" name="Changes" comment="changement du nom d'une variable">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/boules.py" beforeDir="false" afterPath="$PROJECT_DIR$/boules.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -205,6 +204,7 @@
     <MESSAGE value="addition de plus de boules de plus grande taille et gestion de leur affichage et de leur fusion" />
     <MESSAGE value="ajout d'une preview de la prochaine boule" />
     <MESSAGE value="utilisation de la convetion de nommage." />
-    <option name="LAST_COMMIT_MESSAGE" value="utilisation de la convetion de nommage." />
+    <MESSAGE value="changement du nom d'une variable" />
+    <option name="LAST_COMMIT_MESSAGE" value="changement du nom d'une variable" />
   </component>
 </project>

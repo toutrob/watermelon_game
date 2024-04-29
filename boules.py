@@ -43,11 +43,11 @@ class Boules :
 
 class Boule1(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 10, 10, 5 , (0,255,0) , space)
+        super().__init__(fenetre, centre, 15, 15, 5 , (0,255,0) , space)
 
 class Boule2(Boules):
     def __init__(self,fenetre, centre, space):
-        super().__init__(fenetre, centre, 20, 20, 6 , (255,0,0), space )
+        super().__init__(fenetre, centre, 25, 25, 6 , (255,0,0), space )
 
 class Boule3(Boules):
     def __init__(self,fenetre, centre, space):
