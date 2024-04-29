@@ -13,22 +13,22 @@ class Boules :
         self.espace = espace
         self.centre = centre
         self.window_size = (1200, 700)
-        self.centremasque = pymunk.Body(self.masse, 100)
-        self.centremasque.friction = 0.2
+        self.centre_masque = pymunk.Body(self.masse, 100)
+        self.centre_masque.friction = 0.2
 
     def gravite(self):
         '''centremasque = pymunk.Body(self.masse, 100)'''
-        self.centremasque.position = self.centre
+        self.centre_masque.position = self.centre
 
-        ball_shape = pymunk.Circle(self.centremasque, self.rayon)
+        ball_shape = pymunk.Circle(self.centre_masque, self.rayon)
         ball_shape.ball = self
         ball_shape.collision_type = self.type
-        self.espace.add(self.centremasque, ball_shape)
+        self.espace.add(self.centre_masque, ball_shape)
 
 
 
     def dessin(self):
-        ball_pos = int(self.centremasque.position.x), self.window_size[1] - int(self.centremasque.position.y)
+        ball_pos = int(self.centre_masque.position.x), self.window_size[1] - int(self.centre_masque.position.y)
         pygame.draw.circle(self.fenetre, self.sprite, ball_pos, self.rayon)
 
     def trouver_par_position(cls, x, y):
@@ -43,11 +43,11 @@ class Boules :
 
 class Boule1(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 10, 10, 5 , (0,255,0) , space)
+        super().__init__(fenetre, centre, 15, 15, 5 , (0,255,0) , space)
 
 class Boule2(Boules):
     def __init__(self,fenetre, centre, space):
-        super().__init__(fenetre, centre, 20, 20, 6 , (255,0,0), space )
+        super().__init__(fenetre, centre, 25, 25, 6 , (255,0,0), space )
 
 class Boule3(Boules):
     def __init__(self,fenetre, centre, space):

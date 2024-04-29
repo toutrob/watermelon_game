@@ -93,6 +93,23 @@ space.damping = 0.8
 score = 0
 texte = f"Score : {score}"
 
+def create_planete(window, space, position_x, ball_type):
+    if ball_type == 1:
+        planete = Boule1(window, (position_x, 650), space)
+    elif ball_type == 2:
+        planete = Boule2(window, (position_x, 650), space)
+    elif ball_type == 3:
+        planete = Boule3(window, (position_x, 650), space)
+    planete.gravite()
+
+def create_preview_ball(window, space, mouse_pos, ball_type):
+    if ball_type == 1:
+        preview_ball = Boule1(window, (mouse_pos, 50), space)
+    elif ball_type == 2:
+        preview_ball = Boule2(window, (mouse_pos, 50), space)
+    elif ball_type == 3:
+        preview_ball = Boule3(window, (mouse_pos, 50), space)
+    preview_ball.dessin_preview()
 
 def collision_callback(arbiter, space, data):
     global score  # Utilisation de la variable score globale
@@ -198,13 +215,13 @@ handler11.begin = collision_callback
 
 
 
-shape1 = pymunk.Segment(space.static_body, (400, 700), (400, 100), 0)
+shape1 = pymunk.Segment(space.static_body, (400, 650), (400, 50), 0)
 space.add(shape1)
 
-shape2 = pymunk.Segment(space.static_body, (800, 700), (800, 100), 0)
+shape2 = pymunk.Segment(space.static_body, (800, 650), (800, 50), 0)
 space.add(shape2)
 
-shape3 = pymunk.Segment(space.static_body, (400, 100), (800, 100), 0)
+shape3 = pymunk.Segment(space.static_body, (400, 53), (800, 53), 0)
 space.add(shape3)
 
 selected_ball_type = None
@@ -215,6 +232,7 @@ police = pygame.font.Font(None, 36)
 game_over = False
 
 running = True
+can_create_planete = True
 clock = pygame.time.Clock()
 while running:
     # Handle events
@@ -231,44 +249,48 @@ while running:
                     selected_ball_type = random.randint(1, 3)  # Choix aléatoire d'un type de boule
 
 
-            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if can_create_planete == True:
                 mouse_position_x = pygame.mouse.get_pos()[0]
                 if 420 <= mouse_position_x <= 780:
-                    #typeboule = random.randint(1,3)
-                    match selected_ball_type:
-                        case 1:
-                            planete = Boule1(window, (mouse_position_x, 650), space)
-                            planete.gravite()
-                        case 2:
-                            planete = Boule2(window, (mouse_position_x, 650), space)
-                            planete.gravite()
-                        case 3:
-                            planete = Boule3(window, (mouse_position_x, 650), space)
-                            planete.gravite()
+                    create_planete(window, space, mouse_position_x, selected_ball_type)
+                    selected_ball_type = random.randint(1, 3)
+                if 320 < mouse_position_x < 420:
+                    create_planete(window, space, 420, selected_ball_type)
+                    selected_ball_type = random.randint(1, 3)
+                if 880 > mouse_position_x > 780:
+                    create_planete(window, space, 780, selected_ball_type)
                     selected_ball_type = random.randint(1, 3)
 
+                can_create_planete = False
+                pygame.time.set_timer(pygame.USEREVENT, 200)
+
+        if event.type == pygame.USEREVENT:
+            can_create_planete = True
 
 
-        space.step(1/60)
-        window.fill((249, 228, 183))
 
 
 
 
-        for body in space.bodies:
-            for shape in body.shapes:
-                if isinstance(shape, pymunk.Circle):
-                    shape.ball.dessin()
+    space.step(1/60)
 
-        if selected_ball_type is not None:
-            mouse_pos = pygame.mouse.get_pos()
-            if selected_ball_type == 1:
-                preview_ball = Boule1(window, (mouse_pos[0], 50), space)
-            elif selected_ball_type == 2:
-                preview_ball = Boule2(window, (mouse_pos[0], 50), space)
-            elif selected_ball_type == 3:
-                preview_ball = Boule3(window, (mouse_pos[0], 50), space)
-            preview_ball.dessin_preview()
+
+    window.fill((249, 228, 183))
+
+    for body in space.bodies:
+        for shape in body.shapes:
+            if isinstance(shape, pymunk.Circle):
+                shape.ball.dessin()
+
+    if selected_ball_type is not None:
+        mouse_pos = pygame.mouse.get_pos()[0]
+        if 420 <= mouse_pos <= 780:
+            create_preview_ball(window, space, mouse_pos, selected_ball_type)
+        elif mouse_pos < 420:
+            create_preview_ball(window, space, 420, selected_ball_type)
+        elif mouse_pos > 780:
+            create_preview_ball(window, space, 780, selected_ball_type)
 
         for body in space.bodies:
             for shape in body.shapes:
@@ -284,9 +306,10 @@ while running:
 
 
 
-        pygame.draw.line(window, (88, 41, 0), (400, 100), (400, 600), 7)  # ligne du bas
-        pygame.draw.line(window, (88, 41, 0), (800, 100), (800, 600), 7)  # droite
-        pygame.draw.line(window, (88, 41, 0), (400, 600), (800, 600), 7)  # gauche
+
+    pygame.draw.line(window, (88, 41, 0), (400, 150), (400, 650), 7) #ligne du bas
+    pygame.draw.line(window, (88, 41, 0), (800, 150), (800, 650), 7) #droite
+    pygame.draw.line(window, (88, 41, 0), (400, 650), (800, 650), 7) #gauche
 
         texte_surface = police.render(texte, True, (0, 0, 0))
         # Obtenir le rectangle englobant le texte pour le centrer
