@@ -1,7 +1,7 @@
 import random
 import pygame
 import pymunk
-from boules import Boules, Boule1, Boule2, Boule3, Boule4, Boule5, Boule6, Boule7, Boule8
+from boules import Boules, Boule1, Boule2, Boule3, Boule4, Boule5, Boule6, Boule7, Boule8, Boule9, Boule10, Boule11
 import numpy
 
 WINDOWSIZE = (1200, 700)
@@ -143,6 +143,28 @@ def collision_callback(arbiter, space, data):
         planete.gravite()
         score = score + shape1.collision_type ^ 2
 
+    if(new_shape_type == 12):
+        planete = Boule8(window, (contact_x, contact_y), space)
+        planete.gravite()
+        score = score + shape1.collision_type ^ 2
+
+    if (new_shape_type == 13):
+        planete = Boule9(window, (contact_x, contact_y), space)
+        planete.gravite()
+        score = score + shape1.collision_type ^ 2
+
+    if (new_shape_type == 14):
+        planete = Boule10(window, (contact_x, contact_y), space)
+        planete.gravite()
+        score = score + shape1.collision_type ^ 2
+
+    if (new_shape_type == 15):
+        planete = Boule11(window, (contact_x, contact_y), space)
+        planete.gravite()
+        score = score + shape1.collision_type ^ 2
+
+
+
 
     texte = f"Score : {score}"
 
@@ -158,6 +180,10 @@ handler4 = space.add_collision_handler(8,8)
 handler5 = space.add_collision_handler(9,9)
 handler6 = space.add_collision_handler(10,10)
 handler7 = space.add_collision_handler(11,11)
+handler8 = space.add_collision_handler(12,12)
+handler9 = space.add_collision_handler(13,13)
+handler10 = space.add_collision_handler(14,14)
+handler11 = space.add_collision_handler(15,15)
 handler.begin = collision_callback
 handler2.begin = collision_callback
 handler3.begin = collision_callback
@@ -165,6 +191,10 @@ handler4.begin = collision_callback
 handler5.begin = collision_callback
 handler6.begin = collision_callback
 handler7.begin = collision_callback
+handler8.begin = collision_callback
+handler9.begin = collision_callback
+handler10.begin = collision_callback
+handler11.begin = collision_callback
 
 
 
