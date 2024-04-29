@@ -72,3 +72,15 @@ class Boule7(Boules):
 class Boule8(Boules):
     def __init__(self,fenetre, centre, space):
         super().__init__(fenetre, centre, 85, 85, 12, (130,130,255), space)
+
+class Boule9(Boules):
+    def __init__(self,fenetre, centre, space):
+        super().__init__(fenetre, centre, 95, 95, 13, (130,130,130), space)
+
+class Boule10(Boules):
+    def __init__(self,fenetre, centre, space):
+        super().__init__(fenetre, centre, 105, 105, 14, (156,130,20), space)
+
+class Boule11(Boules):
+    def __init__(self,fenetre, centre, space):
+        super().__init__(fenetre, centre, 115, 115, 15, (12,200,111), space)
