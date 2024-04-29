@@ -212,81 +212,114 @@ selected_ball_type = None
 
 police = pygame.font.Font(None, 36)
 
-
+game_over = False
 
 running = True
 clock = pygame.time.Clock()
 while running:
     # Handle events
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+    if not game_over:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
 
 
-        elif event.type == pygame.MOUSEMOTION:
+            elif event.type == pygame.MOUSEMOTION:
 
-            if selected_ball_type is None:  # Si la boule n'a pas encore été choisie
+                if selected_ball_type is None:  # Si la boule n'a pas encore été choisie
 
-                selected_ball_type = random.randint(1, 3)  # Choix aléatoire d'un type de boule
-
-
-        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            mouse_position_x = pygame.mouse.get_pos()[0]
-            if 420 <= mouse_position_x <= 780:
-                #typeboule = random.randint(1,3)
-                match selected_ball_type:
-                    case 1:
-                        planete = Boule1(window, (mouse_position_x, 650), space)
-                        planete.gravite()
-                    case 2:
-                        planete = Boule2(window, (mouse_position_x, 650), space)
-                        planete.gravite()
-                    case 3:
-                        planete = Boule3(window, (mouse_position_x, 650), space)
-                        planete.gravite()
-                selected_ball_type = random.randint(1, 3)
+                    selected_ball_type = random.randint(1, 3)  # Choix aléatoire d'un type de boule
 
 
-
-    space.step(1/60)
-
-
-    window.fill((249, 228, 183))
-
-    for body in space.bodies:
-        for shape in body.shapes:
-            if isinstance(shape, pymunk.Circle):
-                shape.ball.dessin()
-
-    if selected_ball_type is not None:
-        mouse_pos = pygame.mouse.get_pos()
-        if selected_ball_type == 1:
-            preview_ball = Boule1(window, (mouse_pos[0], 50), space)
-        elif selected_ball_type == 2:
-            preview_ball = Boule2(window, (mouse_pos[0], 50), space)
-        elif selected_ball_type == 3:
-            preview_ball = Boule3(window, (mouse_pos[0], 50), space)
-        preview_ball.dessin_preview()
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                mouse_position_x = pygame.mouse.get_pos()[0]
+                if 420 <= mouse_position_x <= 780:
+                    #typeboule = random.randint(1,3)
+                    match selected_ball_type:
+                        case 1:
+                            planete = Boule1(window, (mouse_position_x, 650), space)
+                            planete.gravite()
+                        case 2:
+                            planete = Boule2(window, (mouse_position_x, 650), space)
+                            planete.gravite()
+                        case 3:
+                            planete = Boule3(window, (mouse_position_x, 650), space)
+                            planete.gravite()
+                    selected_ball_type = random.randint(1, 3)
 
 
-    pygame.draw.line(window, (88, 41, 0), (400, 100), (400, 600), 7) #ligne du bas
-    pygame.draw.line(window, (88, 41, 0), (800, 100), (800, 600), 7) #droite
-    pygame.draw.line(window, (88, 41, 0), (400, 600), (800, 600), 7) #gauche
 
-    texte_surface = police.render(texte, True, (0,0,0))
-    # Obtenir le rectangle englobant le texte pour le centrer
-    texte_rect = texte_surface.get_rect(center=(100, 100))
-    # Dessiner le texte sur la fenêtre à la position texte_rect
-    window.blit(texte_surface, texte_rect)
+        space.step(1/60)
+        window.fill((249, 228, 183))
+
+
+
+
+        for body in space.bodies:
+            for shape in body.shapes:
+                if isinstance(shape, pymunk.Circle):
+                    shape.ball.dessin()
+
+        if selected_ball_type is not None:
+            mouse_pos = pygame.mouse.get_pos()
+            if selected_ball_type == 1:
+                preview_ball = Boule1(window, (mouse_pos[0], 50), space)
+            elif selected_ball_type == 2:
+                preview_ball = Boule2(window, (mouse_pos[0], 50), space)
+            elif selected_ball_type == 3:
+                preview_ball = Boule3(window, (mouse_pos[0], 50), space)
+            preview_ball.dessin_preview()
+
+        for body in space.bodies:
+            for shape in body.shapes:
+                if isinstance(shape, pymunk.Circle):
+                    if shape.body.position.y > 650:  # Si la boule dépasse une certaine hauteur (par exemple 600 pixels)
+
+
+                        '''message_surface = police.render("Game Over", True, (0, 0, 0))  # Texte en blanc
+                        text_rect = message_surface.get_rect(
+                            center=(WINDOWSIZE[0] // 2, WINDOWSIZE[1] // 2))  # Centrer le texte
+                        window.blit(message_surface, text_rect)'''
+                        game_over = True
+
+
+
+        pygame.draw.line(window, (88, 41, 0), (400, 100), (400, 600), 7)  # ligne du bas
+        pygame.draw.line(window, (88, 41, 0), (800, 100), (800, 600), 7)  # droite
+        pygame.draw.line(window, (88, 41, 0), (400, 600), (800, 600), 7)  # gauche
+
+        texte_surface = police.render(texte, True, (0, 0, 0))
+        # Obtenir le rectangle englobant le texte pour le centrer
+        texte_rect = texte_surface.get_rect(center=(100, 100))
+        # Dessiner le texte sur la fenêtre à la position texte_rect
+        window.blit(texte_surface, texte_rect)
+
+    else:
+        window.fill((0, 0, 0))  # Fond noir
+        # Afficher le message
+        message_surface = police.render("Game Over", True, (255, 255, 255))  # Texte en blanc
+        text_rect = message_surface.get_rect(center=(WINDOWSIZE[0] // 2, WINDOWSIZE[1] // 2))  # Centrer le texte
+        window.blit(message_surface, text_rect)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+
+
+
+
+
+
 
     clock.tick(60)
 
 
-    # Draw shapes
-    ##window.fill((255, 255, 255))
-    ##pygame.draw.circle(window, (255, 255, 0), (150, 200), 50)
-    ##pygame.draw.rect(window, (0, 200, 0), (100, 300, 300, 200))
-    ##pygame.draw.line(window, (0, 0, 100), (100, 100), (700, 500), 5)
+        # Draw shapes
+        ##window.fill((255, 255, 255))
+        ##pygame.draw.circle(window, (255, 255, 0), (150, 200), 50)
+        ##pygame.draw.rect(window, (0, 200, 0), (100, 300, 300, 200))
+        ##pygame.draw.line(window, (0, 0, 100), (100, 100), (700, 500), 5)
 
     pygame.display.flip()
 pygame.quit()

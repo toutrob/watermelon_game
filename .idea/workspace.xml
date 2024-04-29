@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="51ef0a3a-6d64-41a4-a95f-085dcad59a0a" name="Changes" comment="implémentation du score">
+    <list default="true" id="51ef0a3a-6d64-41a4-a95f-085dcad59a0a" name="Changes" comment="rajout des dernières boules nécessaire">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boules.py" beforeDir="false" afterPath="$PROJECT_DIR$/boules.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -186,7 +185,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714161687205</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="rajout des dernières boules nécessaire">
+      <option name="closed" value="true" />
+      <created>1714373538977</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1714373538977</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -213,6 +220,7 @@
     <MESSAGE value="ajout d'une preview de la prochaine boule" />
     <MESSAGE value="utilisation de la convetion de nommage." />
     <MESSAGE value="implémentation du score" />
-    <option name="LAST_COMMIT_MESSAGE" value="implémentation du score" />
+    <MESSAGE value="rajout des dernières boules nécessaire" />
+    <option name="LAST_COMMIT_MESSAGE" value="rajout des dernières boules nécessaire" />
   </component>
 </project>
