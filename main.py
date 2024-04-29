@@ -249,67 +249,67 @@ while running:
                     selected_ball_type = random.randint(1, 3)  # Choix aléatoire d'un type de boule
 
 
-        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            if can_create_planete == True:
-                mouse_position_x = pygame.mouse.get_pos()[0]
-                if 420 <= mouse_position_x <= 780:
-                    create_planete(window, space, mouse_position_x, selected_ball_type)
-                    selected_ball_type = random.randint(1, 3)
-                if 320 < mouse_position_x < 420:
-                    create_planete(window, space, 420, selected_ball_type)
-                    selected_ball_type = random.randint(1, 3)
-                if 880 > mouse_position_x > 780:
-                    create_planete(window, space, 780, selected_ball_type)
-                    selected_ball_type = random.randint(1, 3)
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if can_create_planete == True:
+                    mouse_position_x = pygame.mouse.get_pos()[0]
+                    if 420 <= mouse_position_x <= 780:
+                        create_planete(window, space, mouse_position_x, selected_ball_type)
+                        selected_ball_type = random.randint(1, 3)
+                    if 320 < mouse_position_x < 420:
+                        create_planete(window, space, 420, selected_ball_type)
+                        selected_ball_type = random.randint(1, 3)
+                    if 880 > mouse_position_x > 780:
+                        create_planete(window, space, 780, selected_ball_type)
+                        selected_ball_type = random.randint(1, 3)
 
-                can_create_planete = False
-                pygame.time.set_timer(pygame.USEREVENT, 200)
+                    can_create_planete = False
+                    pygame.time.set_timer(pygame.USEREVENT, 600)
 
-        if event.type == pygame.USEREVENT:
-            can_create_planete = True
-
-
+            if event.type == pygame.USEREVENT:
+                can_create_planete = True
 
 
 
 
-    space.step(1/60)
 
 
-    window.fill((249, 228, 183))
+        space.step(1/60)
 
-    for body in space.bodies:
-        for shape in body.shapes:
-            if isinstance(shape, pymunk.Circle):
-                shape.ball.dessin()
 
-    if selected_ball_type is not None:
-        mouse_pos = pygame.mouse.get_pos()[0]
-        if 420 <= mouse_pos <= 780:
-            create_preview_ball(window, space, mouse_pos, selected_ball_type)
-        elif mouse_pos < 420:
-            create_preview_ball(window, space, 420, selected_ball_type)
-        elif mouse_pos > 780:
-            create_preview_ball(window, space, 780, selected_ball_type)
+        window.fill((249, 228, 183))
 
         for body in space.bodies:
             for shape in body.shapes:
                 if isinstance(shape, pymunk.Circle):
-                    if shape.body.position.y > 650:  # Si la boule dépasse une certaine hauteur (par exemple 600 pixels)
+                    shape.ball.dessin()
+
+        if selected_ball_type is not None:
+            mouse_pos = pygame.mouse.get_pos()[0]
+            if 420 <= mouse_pos <= 780:
+                create_preview_ball(window, space, mouse_pos, selected_ball_type)
+            elif mouse_pos < 420:
+                create_preview_ball(window, space, 420, selected_ball_type)
+            elif mouse_pos > 780:
+                create_preview_ball(window, space, 780, selected_ball_type)
+
+            for body in space.bodies:
+                for shape in body.shapes:
+                    if isinstance(shape, pymunk.Circle):
+                        if shape.body.position.y > 650:  # Si la boule dépasse une certaine hauteur (par exemple 600 pixels)
 
 
-                        '''message_surface = police.render("Game Over", True, (0, 0, 0))  # Texte en blanc
-                        text_rect = message_surface.get_rect(
-                            center=(WINDOWSIZE[0] // 2, WINDOWSIZE[1] // 2))  # Centrer le texte
-                        window.blit(message_surface, text_rect)'''
-                        game_over = True
+                            '''message_surface = police.render("Game Over", True, (0, 0, 0))  # Texte en blanc
+                            text_rect = message_surface.get_rect(
+                                center=(WINDOWSIZE[0] // 2, WINDOWSIZE[1] // 2))  # Centrer le texte
+                            window.blit(message_surface, text_rect)'''
+                            game_over = True
 
 
 
 
-    pygame.draw.line(window, (88, 41, 0), (400, 150), (400, 650), 7) #ligne du bas
-    pygame.draw.line(window, (88, 41, 0), (800, 150), (800, 650), 7) #droite
-    pygame.draw.line(window, (88, 41, 0), (400, 650), (800, 650), 7) #gauche
+        pygame.draw.line(window, (88, 41, 0), (400, 150), (400, 650), 7) #ligne du bas
+        pygame.draw.line(window, (88, 41, 0), (800, 150), (800, 650), 7) #droite
+        pygame.draw.line(window, (88, 41, 0), (400, 650), (800, 650), 7) #gauche
 
         texte_surface = police.render(texte, True, (0, 0, 0))
         # Obtenir le rectangle englobant le texte pour le centrer
