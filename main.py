@@ -232,10 +232,12 @@ police = pygame.font.Font(None, 36)
 
 
 running = True
+can_create_planete = True
 clock = pygame.time.Clock()
 while running:
     # Handle events
     for event in pygame.event.get():
+
         if event.type == pygame.QUIT:
             running = False
 
@@ -248,16 +250,24 @@ while running:
 
 
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            mouse_position_x = pygame.mouse.get_pos()[0]
-            if 420 <= mouse_position_x <= 780:
-                create_planete(window, space, mouse_position_x, selected_ball_type)
-                selected_ball_type = random.randint(1, 3)
-            elif 320 < mouse_position_x < 420:
-                create_planete(window, space, 420, selected_ball_type)
-                selected_ball_type = random.randint(1, 3)
-            elif 880 > mouse_position_x > 780:
-                create_planete(window, space, 780, selected_ball_type)
-                selected_ball_type = random.randint(1, 3)
+            if can_create_planete == True:
+                mouse_position_x = pygame.mouse.get_pos()[0]
+                if 420 <= mouse_position_x <= 780:
+                    create_planete(window, space, mouse_position_x, selected_ball_type)
+                    selected_ball_type = random.randint(1, 3)
+                if 320 < mouse_position_x < 420:
+                    create_planete(window, space, 420, selected_ball_type)
+                    selected_ball_type = random.randint(1, 3)
+                if 880 > mouse_position_x > 780:
+                    create_planete(window, space, 780, selected_ball_type)
+                    selected_ball_type = random.randint(1, 3)
+
+                can_create_planete = False
+                pygame.time.set_timer(pygame.USEREVENT, 200)
+
+        if event.type == pygame.USEREVENT:
+            can_create_planete = True
+
 
 
 

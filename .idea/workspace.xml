@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="51ef0a3a-6d64-41a4-a95f-085dcad59a0a" name="Changes" comment="changement du nom d'une variable">
+    <list default="true" id="51ef0a3a-6d64-41a4-a95f-085dcad59a0a" name="Changes" comment="petite balle plus grande et gestion du clic le long des murs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boules.py" beforeDir="false" afterPath="$PROJECT_DIR$/boules.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -178,7 +177,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714146894948</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="petite balle plus grande et gestion du clic le long des murs">
+      <option name="closed" value="true" />
+      <created>1714376541938</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1714376541938</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -205,6 +212,7 @@
     <MESSAGE value="ajout d'une preview de la prochaine boule" />
     <MESSAGE value="utilisation de la convetion de nommage." />
     <MESSAGE value="changement du nom d'une variable" />
-    <option name="LAST_COMMIT_MESSAGE" value="changement du nom d'une variable" />
+    <MESSAGE value="petite balle plus grande et gestion du clic le long des murs" />
+    <option name="LAST_COMMIT_MESSAGE" value="petite balle plus grande et gestion du clic le long des murs" />
   </component>
 </project>
