@@ -227,7 +227,7 @@ space.add(shape3)
 selected_ball_type = None
 
 
-police = pygame.font.Font(None, 36)
+police = pygame.font.SysFont('nirmala ui', 36)
 
 game_over = False
 
@@ -263,7 +263,7 @@ while running:
                         selected_ball_type = random.randint(1, 3)
 
                     can_create_planete = False
-                    pygame.time.set_timer(pygame.USEREVENT, 600)
+                    pygame.time.set_timer(pygame.USEREVENT, 500)
 
             if event.type == pygame.USEREVENT:
                 can_create_planete = True
