@@ -1,6 +1,7 @@
 import random
 import pygame
 import pymunk
+import time
 from boules import Boules, Boule1, Boule2, Boule3, Boule4, Boule5, Boule6, Boule7, Boule8, Boule9, Boule10, Boule11
 import numpy
 
@@ -231,6 +232,8 @@ police = pygame.font.SysFont('nirmala ui', 36)
 
 game_over = False
 
+time_elapsed = {}
+
 running = True
 can_create_planete = True
 clock = pygame.time.Clock()
@@ -295,14 +298,29 @@ while running:
             for body in space.bodies:
                 for shape in body.shapes:
                     if isinstance(shape, pymunk.Circle):
-                        if shape.body.position.y > 650:  # Si la boule dépasse une certaine hauteur (par exemple 600 pixels)
+                        bottom_y = shape.body.position.y - shape.radius  # Position en y du bas de la boule
+                        if bottom_y > 550:  # Si la boule dépasse une certaine hauteur (par exemple 600 pixels)
+                            if body in time_elapsed:
+                                if time.time() - time_elapsed[body] > 5:
+                                    game_over = True
+
+                            else:
+                                # Si c'est la première fois que le corps dépasse la limite, enregistrer le temps actuel
+                                time_elapsed[body] = time.time()
+
+                                # Vous pouvez également ajouter du code pour avertir le joueur ici
+                                print(
+                                    "Attention! Le corps dépasse la limite. Vous avez 5 secondes pour le remettre en dessous.")
+
+            for body in list(time_elapsed.keys()):
+                # Convertir body.shapes en liste avant d'accéder à son premier élément
+                shapes_list = list(body.shapes)
+                if shapes_list and shapes_list[0].body.position.y <= 500:
+                    del time_elapsed[body]
 
 
-                            '''message_surface = police.render("Game Over", True, (0, 0, 0))  # Texte en blanc
-                            text_rect = message_surface.get_rect(
-                                center=(WINDOWSIZE[0] // 2, WINDOWSIZE[1] // 2))  # Centrer le texte
-                            window.blit(message_surface, text_rect)'''
-                            game_over = True
+
+
 
 
 
