@@ -41,6 +41,16 @@ def create_preview_ball(window, space, mouse_pos, ball_type):
         preview_ball = Boule3(window, (mouse_pos, 50), space)
     preview_ball.dessin_preview()
 
+def next_ball(window, space, next_ball_type):
+    if next_ball_type == 1:
+        next_ball = Boule1(window, (1000, 150), space)
+    elif next_ball_type == 2:
+        next_ball = Boule2(window, (1000, 150), space)
+    elif next_ball_type == 3:
+        next_ball = Boule3(window, (1000, 150), space)
+    next_ball.dessin_preview()
+
+
 def restart_game():
     global game_over, score, texte
     game_over = False
@@ -61,6 +71,7 @@ def draw_restart_button(window):
     text = font.render("Recommencer", True, (0, 0, 0))  # Texte en noir
     text_rect = text.get_rect(center=restart_button.center)  # Utilisation de restart_button au lieu de button
     window.blit(text, text_rect)
+
     return restart_button  # Retourner le bouton pour qu'il puisse être utilisé dans la boucle principale
 
 def draw_restart_button_menu(window):
@@ -187,8 +198,8 @@ space.add(shape2)
 shape3 = pymunk.Segment(space.static_body, (400, 53), (800, 53), 0)
 space.add(shape3)
 
-selected_ball_type = None
-
+next_selected_ball_type = None
+selected_ball_type = random.randint(1, 3)  # Choix aléatoire d'un type de boule
 
 police_score = pygame.font.SysFont('nirmala ui', 36)
 police_end = pygame.font.SysFont('adlam display', 70)
@@ -214,8 +225,9 @@ while running:
 
             elif event.type == pygame.MOUSEMOTION:
 
-                if selected_ball_type is None:  # Si la boule n'a pas encore été choisie
-                    selected_ball_type = random.randint(1, 3)  # Choix aléatoire d'un type de boule
+                if next_selected_ball_type is None:  # Si la boule n'a pas encore été choisie
+
+                    next_selected_ball_type = random.randint(1, 3)  # Choix aléatoire d'un type de boule
 
 
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -223,13 +235,16 @@ while running:
                     mouse_position_x = pygame.mouse.get_pos()[0]
                     if 420 <= mouse_position_x <= 780:
                         create_planete(window, space, mouse_position_x, selected_ball_type)
-                        selected_ball_type = random.randint(1, 3)
+                        selected_ball_type = next_selected_ball_type
+                        next_selected_ball_type = random.randint(1, 3)
                     if 320 < mouse_position_x < 420:
                         create_planete(window, space, 420, selected_ball_type)
-                        selected_ball_type = random.randint(1, 3)
+                        selected_ball_type = next_selected_ball_type
+                        next_selected_ball_type = random.randint(1, 3)
                     if 880 > mouse_position_x > 780:
                         create_planete(window, space, 780, selected_ball_type)
-                        selected_ball_type = random.randint(1, 3)
+                        selected_ball_type = next_selected_ball_type
+                        next_selected_ball_type = random.randint(1, 3)
 
                     can_create_planete = False
                     pygame.time.set_timer(pygame.USEREVENT, 500)
@@ -287,6 +302,8 @@ while running:
                 if shapes_list and shapes_list[0].body.position.y <= 500:
                     del time_elapsed[body]
 
+        if next_selected_ball_type is not None:
+            next_ball(window, space, next_selected_ball_type)
         draw_restart_button_menu(window)
         restart_button = draw_restart_button_menu(window)
 
