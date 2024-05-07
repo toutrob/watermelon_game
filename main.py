@@ -53,9 +53,10 @@ def next_ball(window, space, next_ball_type):
 
 
 def restart_game():
-    global game_over, score
+    global game_over, score, texte
     game_over = False
     score = 0
+    texte = f"Score : {score}"
     # Supprimer toutes les balles de Pymunk
     for body in space.bodies:
         for shape in body.shapes:
@@ -73,6 +74,18 @@ def draw_restart_button(window):
     window.blit(text, text_rect)
 
     return restart_button  # Retourner le bouton pour qu'il puisse être utilisé dans la boucle principale
+
+def draw_restart_button_menu(window):
+    restart_button = pygame.Rect(20, 20, 40, 40)  # Position et taille du bouton (en haut à gauche)
+    pygame.draw.rect(window, (0, 255, 0), restart_button)  # Couleur verte pour le bouton
+    # Dessinez le texte sur le bouton
+    font = pygame.font.Font(None, 20)
+    text = font.render("restart", True, (0, 0, 0))  # Texte en noir
+    text_rect = text.get_rect(center=restart_button.center)  # Centre du texte sur le bouton
+    window.blit(text, text_rect)
+    return restart_button
+
+
 
 
 def collision_callback(arbiter, space, data):
@@ -199,6 +212,10 @@ time_elapsed = {}
 running = True
 can_create_planete = True
 clock = pygame.time.Clock()
+
+
+
+
 while running:
     # Handle events
     if not game_over:
@@ -237,7 +254,10 @@ while running:
                 can_create_planete = True
 
 
-
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                if draw_restart_button_menu(window).collidepoint(mouse_pos):
+                    restart_game()  # Redémarrer le jeu si le bouton est cliqué
 
 
 
@@ -286,6 +306,8 @@ while running:
         if next_selected_ball_type is not None:
             next_ball(window, space, next_selected_ball_type)
 
+        draw_restart_button_menu(window)
+
 
 
 
@@ -311,15 +333,14 @@ while running:
         texte_rect2 = texte_surface.get_rect(center=(WINDOWSIZE[0] // 2, 300))
         window.blit(texte_surface, texte_rect2)
 
-        restart_button = draw_restart_button(window)
-
+        draw_restart_button(window)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
-                if restart_button.collidepoint(mouse_pos):
+                if draw_restart_button(window).collidepoint(mouse_pos):
                     restart_game()  # Redémarrer le jeu si le bouton est cliqué
 
 
