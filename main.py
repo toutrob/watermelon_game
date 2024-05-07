@@ -42,9 +42,10 @@ def create_preview_ball(window, space, mouse_pos, ball_type):
     preview_ball.dessin_preview()
 
 def restart_game():
-    global game_over, score
+    global game_over, score, texte
     game_over = False
     score = 0
+    texte = f"Score : {score}"
     # Supprimer toutes les balles de Pymunk
     for body in space.bodies:
         for shape in body.shapes:
@@ -60,8 +61,19 @@ def draw_restart_button(window):
     text = font.render("Recommencer", True, (0, 0, 0))  # Texte en noir
     text_rect = text.get_rect(center=restart_button.center)  # Utilisation de restart_button au lieu de button
     window.blit(text, text_rect)
-
     return restart_button  # Retourner le bouton pour qu'il puisse être utilisé dans la boucle principale
+
+def draw_restart_button_menu(window):
+    restart_button = pygame.Rect(20, 20, 40, 40)  # Position et taille du bouton (en haut à gauche)
+    pygame.draw.rect(window, (0, 255, 0), restart_button)  # Couleur verte pour le bouton
+    # Dessinez le texte sur le bouton
+    font = pygame.font.Font(None, 20)
+    text = font.render("restart", True, (0, 0, 0))  # Texte en noir
+    text_rect = text.get_rect(center=restart_button.center)  # Centre du texte sur le bouton
+    window.blit(text, text_rect)
+    return restart_button
+
+
 
 
 def collision_callback(arbiter, space, data):
@@ -188,6 +200,10 @@ time_elapsed = {}
 running = True
 can_create_planete = True
 clock = pygame.time.Clock()
+
+
+
+
 while running:
     # Handle events
     if not game_over:
@@ -199,7 +215,6 @@ while running:
             elif event.type == pygame.MOUSEMOTION:
 
                 if selected_ball_type is None:  # Si la boule n'a pas encore été choisie
-
                     selected_ball_type = random.randint(1, 3)  # Choix aléatoire d'un type de boule
 
 
@@ -223,7 +238,10 @@ while running:
                 can_create_planete = True
 
 
-
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                if restart_button.collidepoint(mouse_pos):
+                    restart_game()  # Redémarrer le jeu si le bouton est cliqué
 
 
 
@@ -269,8 +287,8 @@ while running:
                 if shapes_list and shapes_list[0].body.position.y <= 500:
                     del time_elapsed[body]
 
-
-
+        draw_restart_button_menu(window)
+        restart_button = draw_restart_button_menu(window)
 
 
 
