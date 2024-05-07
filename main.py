@@ -112,6 +112,29 @@ def create_preview_ball(window, space, mouse_pos, ball_type):
         preview_ball = Boule3(window, (mouse_pos, 50), space)
     preview_ball.dessin_preview()
 
+def restart_game():
+    global game_over, score
+    game_over = False
+    score = 0
+    # Supprimer toutes les balles de Pymunk
+    for body in space.bodies:
+        for shape in body.shapes:
+            space.remove(shape, body)  # Supprimer la forme du corp
+
+
+def draw_restart_button(window):
+    # Dessinez le bouton sur l'écran
+    restart_button = pygame.Rect(500, 400, 200, 50)  # Position et taille du bouton
+    pygame.draw.rect(window, (0, 255, 0), restart_button)  # Couleur verte pour le bouton
+    # Dessinez le texte sur le bouton
+    font = pygame.font.Font(None, 36)
+    text = font.render("Recommencer", True, (0, 0, 0))  # Texte en noir
+    text_rect = text.get_rect(center=restart_button.center)  # Utilisation de restart_button au lieu de button
+    window.blit(text, text_rect)
+
+    return restart_button  # Retourner le bouton pour qu'il puisse être utilisé dans la boucle principale
+
+
 def collision_callback(arbiter, space, data):
     global score  # Utilisation de la variable score globale
     global texte
@@ -134,54 +157,52 @@ def collision_callback(arbiter, space, data):
     if(new_shape_type == 6):
         planete = Boule2(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + shape1.collision_type ^ 2
+        score = score + shape1.collision_type ** 2
 
     if (new_shape_type == 7):
         planete = Boule3(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + shape1.collision_type ^ 2
+        score = score + shape1.collision_type ** 2
 
     if (new_shape_type == 8):
         planete = Boule4(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + shape1.collision_type ^ 2
+        score = score + shape1.collision_type ** 2
 
     if (new_shape_type == 9):
         planete = Boule5(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + shape1.collision_type ^ 2
+        score = score + shape1.collision_type ** 2
 
     if (new_shape_type == 10):
         planete = Boule6(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + shape1.collision_type ^ 2
+        score = score + shape1.collision_type ** 2
 
     if (new_shape_type == 11):
         planete = Boule7(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + shape1.collision_type ^ 2
+        score = score + shape1.collision_type ** 2
 
     if(new_shape_type == 12):
         planete = Boule8(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + shape1.collision_type ^ 2
+        score = score + shape1.collision_type ** 2
 
     if (new_shape_type == 13):
         planete = Boule9(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + shape1.collision_type ^ 2
+        score = score + shape1.collision_type ** 2
 
     if (new_shape_type == 14):
         planete = Boule10(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + shape1.collision_type ^ 2
+        score = score + shape1.collision_type ** 2
 
     if (new_shape_type == 15):
         planete = Boule11(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + shape1.collision_type ^ 2
-
-
+        score = score + shape1.collision_type ** 2
 
 
     texte = f"Score : {score}"
@@ -228,7 +249,8 @@ space.add(shape3)
 selected_ball_type = None
 
 
-police = pygame.font.SysFont('nirmala ui', 36)
+police_score = pygame.font.SysFont('nirmala ui', 36)
+police_end = pygame.font.SysFont('adlam display', 70)
 
 game_over = False
 
@@ -329,7 +351,7 @@ while running:
         pygame.draw.line(window, (88, 41, 0), (800, 150), (800, 650), 7) #droite
         pygame.draw.line(window, (88, 41, 0), (400, 650), (800, 650), 7) #gauche
 
-        texte_surface = police.render(texte, True, (0, 0, 0))
+        texte_surface = police_score.render(texte, True, (0, 0, 0))
         # Obtenir le rectangle englobant le texte pour le centrer
         texte_rect = texte_surface.get_rect(center=(100, 100))
         # Dessiner le texte sur la fenêtre à la position texte_rect
@@ -338,13 +360,24 @@ while running:
     else:
         window.fill((0, 0, 0))  # Fond noir
         # Afficher le message
-        message_surface = police.render("Game Over", True, (255, 255, 255))  # Texte en blanc
-        text_rect = message_surface.get_rect(center=(WINDOWSIZE[0] // 2, WINDOWSIZE[1] // 2))  # Centrer le texte
+        message_surface = police_end.render("GAME OVER", True, (255, 54, 0))
+        text_rect = message_surface.get_rect(center=(WINDOWSIZE[0] // 2, 250))  # Centrer le texte
         window.blit(message_surface, text_rect)
+
+        texte_surface = police_score.render(texte, True, (255, 255, 255))
+        texte_rect2 = texte_surface.get_rect(center=(WINDOWSIZE[0] // 2, 300))
+        window.blit(texte_surface, texte_rect2)
+
+        restart_button = draw_restart_button(window)
+
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                if restart_button.collidepoint(mouse_pos):
+                    restart_game()  # Redémarrer le jeu si le bouton est cliqué
 
 
 
