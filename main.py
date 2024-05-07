@@ -11,6 +11,7 @@ pygame.display.set_caption("Watermelon Game")
 
 
 pygame.init()
+image_de_fond = pygame.image.load("espace watermelon game.png")
 
 static_lines = []
 
@@ -243,7 +244,7 @@ while running:
         space.step(1/60)
 
 
-        window.fill((249, 228, 183))
+        window.blit(image_de_fond, (0,0))
 
         for body in space.bodies:
             for shape in body.shapes:
@@ -289,11 +290,11 @@ while running:
 
 
 
-        pygame.draw.line(window, (88, 41, 0), (400, 150), (400, 650), 7) #ligne du bas
-        pygame.draw.line(window, (88, 41, 0), (800, 150), (800, 650), 7) #droite
-        pygame.draw.line(window, (88, 41, 0), (400, 650), (800, 650), 7) #gauche
+        pygame.draw.line(window, (255, 255, 255), (400, 150), (400, 650), 7) #ligne du bas
+        pygame.draw.line(window, (255, 255, 255), (800, 150), (800, 650), 7) #droite
+        pygame.draw.line(window, (255, 255, 255), (400, 650), (800, 650), 7) #gauche
 
-        texte_surface = police_score.render(texte, True, (0, 0, 0))
+        texte_surface = police_score.render(texte, True, (255, 255, 255))
         # Obtenir le rectangle englobant le texte pour le centrer
         texte_rect = texte_surface.get_rect(center=(100, 100))
         # Dessiner le texte sur la fenêtre à la position texte_rect

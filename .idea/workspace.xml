@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="51ef0a3a-6d64-41a4-a95f-085dcad59a0a" name="Changes" comment="changement de la police et delai entre chaque apparition">
-      <change beforePath="$PROJECT_DIR$/.idea/Watermelon Game.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Watermelon Game.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="51ef0a3a-6d64-41a4-a95f-085dcad59a0a" name="Changes" comment="ajout d'une preview de la prochaine boule">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -42,15 +40,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.main.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/33783/Downloads/espace watermelon game.png",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="Watermelon Game" />
@@ -195,7 +194,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714486032129</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="ajout d'une preview de la prochaine boule">
+      <option name="closed" value="true" />
+      <created>1715084975621</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1715084975621</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -219,11 +226,11 @@
     <MESSAGE value="détection du contact entre les boules uniquement lorsqu'elles sont du même type" />
     <MESSAGE value="fusion des boules en contact" />
     <MESSAGE value="addition de plus de boules de plus grande taille et gestion de leur affichage et de leur fusion" />
-    <MESSAGE value="ajout d'une preview de la prochaine boule" />
     <MESSAGE value="utilisation de la convetion de nommage." />
     <MESSAGE value="changement du nom d'une variable" />
     <MESSAGE value="petite balle plus grande et gestion du clic le long des murs" />
     <MESSAGE value="changement de la police et delai entre chaque apparition" />
-    <option name="LAST_COMMIT_MESSAGE" value="changement de la police et delai entre chaque apparition" />
+    <MESSAGE value="ajout d'une preview de la prochaine boule" />
+    <option name="LAST_COMMIT_MESSAGE" value="ajout d'une preview de la prochaine boule" />
   </component>
 </project>
