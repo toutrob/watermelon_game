@@ -255,7 +255,7 @@ while running:
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
-                if restart_button.collidepoint(mouse_pos):
+                if draw_restart_button_menu(window).collidepoint(mouse_pos):
                     restart_game()  # Redémarrer le jeu si le bouton est cliqué
 
 
@@ -304,8 +304,8 @@ while running:
 
         if next_selected_ball_type is not None:
             next_ball(window, space, next_selected_ball_type)
+
         draw_restart_button_menu(window)
-        restart_button = draw_restart_button_menu(window)
 
 
 
@@ -332,15 +332,14 @@ while running:
         texte_rect2 = texte_surface.get_rect(center=(WINDOWSIZE[0] // 2, 300))
         window.blit(texte_surface, texte_rect2)
 
-        restart_button = draw_restart_button(window)
-
+        draw_restart_button(window)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
-                if restart_button.collidepoint(mouse_pos):
+                if draw_restart_button(window).collidepoint(mouse_pos):
                     restart_game()  # Redémarrer le jeu si le bouton est cliqué
 
 

@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="51ef0a3a-6d64-41a4-a95f-085dcad59a0a" name="Changes" comment="changement de la police et delai entre chaque apparition">
+    <list default="true" id="51ef0a3a-6d64-41a4-a95f-085dcad59a0a" name="Changes" comment="bouton restart en jeu">
       <change beforePath="$PROJECT_DIR$/.idea/Watermelon Game.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Watermelon Game.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -31,7 +31,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
