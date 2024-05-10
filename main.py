@@ -11,7 +11,7 @@ pygame.display.set_caption("Watermelon Game")
 
 
 pygame.init()
-image_de_fond = pygame.image.load("espace watermelon game.png")
+image_de_fond = pygame.image.load("espace watermelon game (2).png")
 
 static_lines = []
 
@@ -44,11 +44,11 @@ def create_preview_ball(window, space, mouse_pos, ball_type):
 
 def next_ball(window, space, next_ball_type):
     if next_ball_type == 1:
-        next_ball = Boule1(window, (1000, 150), space)
+        next_ball = Boule1(window, (1037, 187), space)
     elif next_ball_type == 2:
-        next_ball = Boule2(window, (1000, 150), space)
+        next_ball = Boule2(window, (1037, 187), space)
     elif next_ball_type == 3:
-        next_ball = Boule3(window, (1000, 150), space)
+        next_ball = Boule3(window, (1037, 187), space)
     next_ball.dessin_preview()
 
 
@@ -203,6 +203,7 @@ next_selected_ball_type = None
 selected_ball_type = random.randint(1, 3)  # Choix aléatoire d'un type de boule
 
 police_score = pygame.font.SysFont('nirmala ui', 36)
+police_next_boule = pygame.font.SysFont('nirmala ui', 18)
 police_end = pygame.font.SysFont('adlam display', 70)
 
 game_over = False
@@ -321,6 +322,10 @@ while running:
         texte_rect = texte_surface.get_rect(center=(100, 100))
         # Dessiner le texte sur la fenêtre à la position texte_rect
         window.blit(texte_surface, texte_rect)
+
+        next_boule = police_next_boule.render("NEXT :", True, (0,0,0))
+        rect_next_boule = next_boule.get_rect( center=(1037, 122) )
+        window.blit(next_boule, rect_next_boule)
 
     else:
         window.fill((0, 0, 0))  # Fond noir
