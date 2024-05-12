@@ -2,8 +2,9 @@ import random
 import pygame
 import pymunk
 import time
-from boules import Boules, Boule1, Boule2, Boule3, Boule4, Boule5, Boule6, Boule7, Boule8, Boule9, Boule10, Boule11
-import numpy
+from boules import Boule2, Boule3, Boule4, Boule5, Boule6, Boule7, Boule8, Boule9, Boule10, Boule11
+import fonctions_creation_boule
+
 
 WINDOWSIZE = (1200, 700)
 window = pygame.display.set_mode(WINDOWSIZE)
@@ -24,7 +25,7 @@ space.damping = 0.8
 score = 0
 texte = f"Score : {score}"
 
-def create_planete(window, space, position_x, ball_type):
+'''def create_planete(window, space, position_x, ball_type):
     if ball_type == 1:
         planete = Boule1(window, (position_x, 650), space)
     elif ball_type == 2:
@@ -49,7 +50,7 @@ def next_ball(window, space, next_ball_type):
         next_ball = Boule2(window, (1037, 187), space)
     elif next_ball_type == 3:
         next_ball = Boule3(window, (1037, 187), space)
-    next_ball.dessin_preview()
+    next_ball.dessin_preview()'''
 
 
 def restart_game():
@@ -97,6 +98,9 @@ def collision_callback(arbiter, space, data):
     shape1, shape2 = arbiter.shapes
     new_shape_type = shape1.collision_type + 1
 
+    contact_x = 0
+    contact_y = 0
+
     points = arbiter.contact_point_set.points
     for point in points:
         # Accède aux coordonnées du point de contact
@@ -107,52 +111,52 @@ def collision_callback(arbiter, space, data):
     space.remove(shape2, shape2.body)
 
 
-    if(new_shape_type == 6):
+    if new_shape_type == 6:
         planete = Boule2(window, (contact_x, contact_y), space)
         planete.gravite()
         score = score + shape1.collision_type ** 2
 
-    if (new_shape_type == 7):
+    if new_shape_type == 7:
         planete = Boule3(window, (contact_x, contact_y), space)
         planete.gravite()
         score = score + shape1.collision_type ** 2
 
-    if (new_shape_type == 8):
+    if new_shape_type == 8:
         planete = Boule4(window, (contact_x, contact_y), space)
         planete.gravite()
         score = score + shape1.collision_type ** 2
 
-    if (new_shape_type == 9):
+    if new_shape_type == 9:
         planete = Boule5(window, (contact_x, contact_y), space)
         planete.gravite()
         score = score + shape1.collision_type ** 2
 
-    if (new_shape_type == 10):
+    if new_shape_type == 10:
         planete = Boule6(window, (contact_x, contact_y), space)
         planete.gravite()
         score = score + shape1.collision_type ** 2
 
-    if (new_shape_type == 11):
+    if new_shape_type == 11:
         planete = Boule7(window, (contact_x, contact_y), space)
         planete.gravite()
         score = score + shape1.collision_type ** 2
 
-    if(new_shape_type == 12):
+    if new_shape_type == 12:
         planete = Boule8(window, (contact_x, contact_y), space)
         planete.gravite()
         score = score + shape1.collision_type ** 2
 
-    if (new_shape_type == 13):
+    if new_shape_type == 13:
         planete = Boule9(window, (contact_x, contact_y), space)
         planete.gravite()
         score = score + shape1.collision_type ** 2
 
-    if (new_shape_type == 14):
+    if new_shape_type == 14:
         planete = Boule10(window, (contact_x, contact_y), space)
         planete.gravite()
         score = score + shape1.collision_type ** 2
 
-    if (new_shape_type == 15):
+    if new_shape_type == 15:
         planete = Boule11(window, (contact_x, contact_y), space)
         planete.gravite()
         score = score + shape1.collision_type ** 2
@@ -166,16 +170,16 @@ def collision_callback(arbiter, space, data):
 
 # Ajout du gestionnaire de collision
 handler = space.add_collision_handler(5, 5)  # Collision entre les objets de type 5
-handler2 = space.add_collision_handler(6,6)
-handler3 = space.add_collision_handler(7,7)
-handler4 = space.add_collision_handler(8,8)
-handler5 = space.add_collision_handler(9,9)
-handler6 = space.add_collision_handler(10,10)
-handler7 = space.add_collision_handler(11,11)
-handler8 = space.add_collision_handler(12,12)
-handler9 = space.add_collision_handler(13,13)
-handler10 = space.add_collision_handler(14,14)
-handler11 = space.add_collision_handler(15,15)
+handler2 = space.add_collision_handler(6, 6)
+handler3 = space.add_collision_handler(7, 7)
+handler4 = space.add_collision_handler(8, 8)
+handler5 = space.add_collision_handler(9, 9)
+handler6 = space.add_collision_handler(10, 10)
+handler7 = space.add_collision_handler(11, 11)
+handler8 = space.add_collision_handler(12, 12)
+handler9 = space.add_collision_handler(13, 13)
+handler10 = space.add_collision_handler(14, 14)
+handler11 = space.add_collision_handler(15, 15)
 handler.begin = collision_callback
 handler2.begin = collision_callback
 handler3.begin = collision_callback
@@ -236,15 +240,15 @@ while running:
                 if can_create_planete == True:
                     mouse_position_x = pygame.mouse.get_pos()[0]
                     if 420 <= mouse_position_x <= 780:
-                        create_planete(window, space, mouse_position_x, selected_ball_type)
+                        fonctions_creation_boule.create_planete(window, space, mouse_position_x, selected_ball_type)
                         selected_ball_type = next_selected_ball_type
                         next_selected_ball_type = random.randint(1, 3)
                     if 320 < mouse_position_x < 420:
-                        create_planete(window, space, 420, selected_ball_type)
+                        fonctions_creation_boule.create_planete(window, space, 420, selected_ball_type)
                         selected_ball_type = next_selected_ball_type
                         next_selected_ball_type = random.randint(1, 3)
                     if 880 > mouse_position_x > 780:
-                        create_planete(window, space, 780, selected_ball_type)
+                        fonctions_creation_boule.create_planete(window, space, 780, selected_ball_type)
                         selected_ball_type = next_selected_ball_type
                         next_selected_ball_type = random.randint(1, 3)
 
@@ -265,7 +269,7 @@ while running:
         space.step(1/60)
 
 
-        window.blit(image_de_fond, (0,0))
+        window.blit(image_de_fond, (0, 0))
 
         for body in space.bodies:
             for shape in body.shapes:
@@ -275,11 +279,11 @@ while running:
         if selected_ball_type is not None:
             mouse_pos = pygame.mouse.get_pos()[0]
             if 420 <= mouse_pos <= 780:
-                create_preview_ball(window, space, mouse_pos, selected_ball_type)
+                fonctions_creation_boule.create_preview_ball(window, space, mouse_pos, selected_ball_type)
             elif mouse_pos < 420:
-                create_preview_ball(window, space, 420, selected_ball_type)
+                fonctions_creation_boule.create_preview_ball(window, space, 420, selected_ball_type)
             elif mouse_pos > 780:
-                create_preview_ball(window, space, 780, selected_ball_type)
+                fonctions_creation_boule.create_preview_ball(window, space, 780, selected_ball_type)
 
             for body in space.bodies:
                 for shape in body.shapes:
@@ -305,7 +309,7 @@ while running:
                     del time_elapsed[body]
 
         if next_selected_ball_type is not None:
-            next_ball(window, space, next_selected_ball_type)
+            fonctions_creation_boule.next_ball(window, space, next_selected_ball_type)
 
         draw_restart_button_menu(window)
 
@@ -313,9 +317,9 @@ while running:
 
 
 
-        pygame.draw.line(window, (255, 255, 255), (400, 150), (400, 650), 7) #ligne du bas
-        pygame.draw.line(window, (255, 255, 255), (800, 150), (800, 650), 7) #droite
-        pygame.draw.line(window, (255, 255, 255), (400, 650), (800, 650), 7) #gauche
+        pygame.draw.line(window, (255, 255, 255), (400, 150), (400, 650), 7)  #ligne du bas
+        pygame.draw.line(window, (255, 255, 255), (800, 150), (800, 650), 7)  #droite
+        pygame.draw.line(window, (255, 255, 255), (400, 650), (800, 650), 7)  #gauche
 
         texte_surface = police_score.render(texte, True, (255, 255, 255))
         # Obtenir le rectangle englobant le texte pour le centrer
@@ -323,8 +327,8 @@ while running:
         # Dessiner le texte sur la fenêtre à la position texte_rect
         window.blit(texte_surface, texte_rect)
 
-        next_boule = police_next_boule.render("NEXT :", True, (0,0,0))
-        rect_next_boule = next_boule.get_rect( center=(1037, 122) )
+        next_boule = police_next_boule.render("NEXT :", True, (0, 0, 0))
+        rect_next_boule = next_boule.get_rect(center=(1037, 122))
         window.blit(next_boule, rect_next_boule)
 
     else:
@@ -358,11 +362,11 @@ while running:
     clock.tick(60)
 
 
-        # Draw shapes
-        ##window.fill((255, 255, 255))
-        ##pygame.draw.circle(window, (255, 255, 0), (150, 200), 50)
-        ##pygame.draw.rect(window, (0, 200, 0), (100, 300, 300, 200))
-        ##pygame.draw.line(window, (0, 0, 100), (100, 100), (700, 500), 5)
+        #Draw shapes
+        #window.fill((255, 255, 255))
+        #pygame.draw.circle(window, (255, 255, 0), (150, 200), 50)
+        #pygame.draw.rect(window, (0, 200, 0), (100, 300, 300, 200))
+        #pygame.draw.line(window, (0, 0, 100), (100, 100), (700, 500), 5)
 
     pygame.display.flip()
 pygame.quit()

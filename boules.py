@@ -1,9 +1,9 @@
-import random
 import pygame
 import pymunk
 
 
 class Boules :
+    instances = []
     def __init__(self,fenetre, centre, rayon, masse, type_, sprite, espace):
         self.fenetre = fenetre
         self.rayon = rayon
@@ -15,6 +15,8 @@ class Boules :
         self.window_size = (1200, 700)
         self.centre_masque = pymunk.Body(self.masse, 100)
         self.centre_masque.friction = 0.2
+        Boules.instances.append(self)
+
 
     def gravite(self):
         '''centremasque = pymunk.Body(self.masse, 100)'''
