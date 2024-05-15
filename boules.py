@@ -2,9 +2,10 @@ import pygame
 import pymunk
 
 
-class Boules :
+class Boules:
     instances = []
-    def __init__(self,fenetre, centre, rayon, masse, type_, sprite, espace):
+
+    def __init__(self, fenetre, centre, rayon, masse, type_, sprite, espace):
         self.fenetre = fenetre
         self.rayon = rayon
         self.masse = masse
@@ -19,7 +20,6 @@ class Boules :
 
 
     def gravite(self):
-        '''centremasque = pymunk.Body(self.masse, 100)'''
         self.centre_masque.position = self.centre
 
         ball_shape = pymunk.Circle(self.centre_masque, self.rayon)
@@ -45,44 +45,44 @@ class Boules :
 
 class Boule1(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 15, 15, 5 , (0,255,0) , space)
+        super().__init__(fenetre, centre, 15, 15, 5, (0, 255, 0), space)
 
 class Boule2(Boules):
-    def __init__(self,fenetre, centre, space):
-        super().__init__(fenetre, centre, 25, 25, 6 , (255,0,0), space )
+    def __init__(self, fenetre, centre, space):
+        super().__init__(fenetre, centre, 25, 25, 6, (255, 0, 0), space)
 
 class Boule3(Boules):
-    def __init__(self,fenetre, centre, space):
-        super().__init__(fenetre, centre, 35, 35, 7, (0,0,255), space)
+    def __init__(self, fenetre, centre, space):
+        super().__init__(fenetre, centre, 35, 35, 7, (0, 0, 255), space)
 
 class Boule4(Boules):
-    def __init__(self,fenetre, centre, space):
-        super().__init__(fenetre, centre, 45, 45, 8, (255,255,0), space)
+    def __init__(self, fenetre, centre, space):
+        super().__init__(fenetre, centre, 45, 45, 8, (255, 255, 0), space)
 
 class Boule5(Boules):
-    def __init__(self,fenetre, centre, space):
-        super().__init__(fenetre, centre, 55, 55, 9, (0,255,255) ,space)
+    def __init__(self, fenetre, centre, space):
+        super().__init__(fenetre, centre, 55, 55, 9, (0, 255, 255), space)
 
 class Boule6(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 65, 65, 10, (255,0,255), space)
+        super().__init__(fenetre, centre, 65, 65, 10, (255, 0, 255), space)
 
 class Boule7(Boules):
-    def __init__(self,fenetre, centre, space):
-        super().__init__(fenetre, centre, 75, 75, 11, (130,255,130), space)
+    def __init__(self, fenetre, centre, space):
+        super().__init__(fenetre, centre, 75, 75, 11, (130, 255, 130), space)
 
 class Boule8(Boules):
-    def __init__(self,fenetre, centre, space):
-        super().__init__(fenetre, centre, 85, 85, 12, (130,130,255), space)
+    def __init__(self, fenetre, centre, space):
+        super().__init__(fenetre, centre, 85, 85, 12, (130, 130, 255), space)
 
 class Boule9(Boules):
-    def __init__(self,fenetre, centre, space):
-        super().__init__(fenetre, centre, 95, 95, 13, (130,130,130), space)
+    def __init__(self, fenetre, centre, space):
+        super().__init__(fenetre, centre, 95, 95, 13, (130, 130, 130), space)
 
 class Boule10(Boules):
-    def __init__(self,fenetre, centre, space):
-        super().__init__(fenetre, centre, 105, 105, 14, (156,130,20), space)
+    def __init__(self, fenetre, centre, space):
+        super().__init__(fenetre, centre, 105, 105, 14, (156, 130, 20), space)
 
 class Boule11(Boules):
-    def __init__(self,fenetre, centre, space):
-        super().__init__(fenetre, centre, 115, 115, 15, (12,200,111), space)
+    def __init__(self, fenetre, centre, space):
+        super().__init__(fenetre, centre, 115, 115, 15, (12, 200, 111), space)
