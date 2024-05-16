@@ -18,7 +18,8 @@ class Boules:
         self.centre_masque = pymunk.Body(self.masse, 100)
         self.centre_masque.friction = 0.2
         Boules.instances.append(self)
-        self.angle = 0
+        self.angle = self.centre_masque.angle
+        self.last_angle = None
 
         # Charger le sprite si c'est un chemin d'image
         if isinstance(self.sprite, str):
@@ -44,22 +45,46 @@ class Boules:
         angle_degrees = math.degrees(self.angle) + 180
         ball_pos = int(self.centre_masque.position.x), self.window_size[1] - int(self.centre_masque.position.y)
 
+
         if self.image:
+
+            if self.centre_masque.velocity.x != 0:
+                rotated_image = pygame.transform.rotate(self.image, angle_degrees * (self.centre_masque.velocity.x) / 10)
+                print(f"{self.centre_masque.velocity.x}")
+                rect = rotated_image.get_rect(center=ball_pos)
+                self.fenetre.blit(rotated_image, rect.topleft)
+                self.last_angle = angle_degrees * (self.centre_masque.velocity.x)
+
+            else :
+                if self.last_angle is not None:
+                    rotated_image1 = pygame.transform.rotate(self.image, self.last_angle)
+                    rect1 = rotated_image1.get_rect(center=ball_pos)
+                    self.fenetre.blit(rotated_image1, rect1.topleft)
+
+                else:
+                    rotated_image = pygame.transform.rotate(self.image, angle_degrees)
+                    rect = rotated_image.get_rect(center=ball_pos)
+                    self.fenetre.blit(rotated_image, rect.topleft)
+        else:
+            pygame.draw.circle(self.fenetre, self.sprite, ball_pos, self.rayon)
+
+        '''if self.image:
             rect = self.image.get_rect(center=ball_pos)
-            self.fenetre.blit(self.image, rect)
+            self.fenetre.blit(self.image, rect.topleft)
         else:
             pygame.draw.circle(self.fenetre, self.sprite, ball_pos, self.rayon)
 
 
 
-        '''if self.image != None:
-            rotated_planete_img = pygame.transform.rotate( self.image, angle_degrees)
+        if self.image != None:
+            rotated_planete_img = pygame.transform.rotate( self.image, - self.angle * 57.2958)
 
             offset = Vec2d(*rotated_planete_img.get_size()) / 2
             p = p - offset
+            rect = rotated_planete_img.get_rect(centre=ball_pos)
 
-            self.fenetre.blit(rotated_planete_img, self.centre)
-'''
+            self.fenetre.blit(rotated_planete_img, rect)'''
+
     def trouver_par_position(cls, x, y):
         for instance in cls.instances:
             if instance.x == x and instance.y == y:
