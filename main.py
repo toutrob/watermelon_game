@@ -61,7 +61,7 @@ def collision_callback(arbiter, space, data):
 
 
     if new_shape_type == 6:
-        planete = Boule11(window, (contact_x, contact_y), space)
+        planete = Boule2(window, (contact_x, contact_y), space)
         planete.gravite()
         score += 1
 
