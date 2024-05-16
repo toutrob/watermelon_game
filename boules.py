@@ -1,5 +1,6 @@
 import pygame
 import pymunk
+import math
 
 
 class Boules:
@@ -17,6 +18,14 @@ class Boules:
         self.centre_masque = pymunk.Body(self.masse, 100)
         self.centre_masque.friction = 0.2
         Boules.instances.append(self)
+        self.angle = 0
+
+        # Charger le sprite si c'est un chemin d'image
+        if isinstance(self.sprite, str):
+            self.image = pygame.image.load(self.sprite)
+            self.image = pygame.transform.scale(self.image, (2 * self.rayon, 2 * self.rayon))
+        else:
+            self.image = None
 
 
     def gravite(self):
@@ -30,9 +39,27 @@ class Boules:
 
 
     def dessin(self):
+        '''ball_pos = int(self.centre_masque.position.x), self.window_size[1] - int(self.centre_masque.position.y)
+        pygame.draw.circle(self.fenetre, self.sprite, ball_pos, self.rayon)'''
+        angle_degrees = math.degrees(self.angle) + 180
         ball_pos = int(self.centre_masque.position.x), self.window_size[1] - int(self.centre_masque.position.y)
-        pygame.draw.circle(self.fenetre, self.sprite, ball_pos, self.rayon)
 
+        if self.image:
+            rect = self.image.get_rect(center=ball_pos)
+            self.fenetre.blit(self.image, rect)
+        else:
+            pygame.draw.circle(self.fenetre, self.sprite, ball_pos, self.rayon)
+
+
+
+        '''if self.image != None:
+            rotated_planete_img = pygame.transform.rotate( self.image, angle_degrees)
+
+            offset = Vec2d(*rotated_planete_img.get_size()) / 2
+            p = p - offset
+
+            self.fenetre.blit(rotated_planete_img, self.centre)
+'''
     def trouver_par_position(cls, x, y):
         for instance in cls.instances:
             if instance.x == x and instance.y == y:
@@ -40,7 +67,15 @@ class Boules:
         return None
 
     def dessin_preview(self):
-        pygame.draw.circle(self.fenetre, self.sprite, self.centre, self.rayon)
+        '''pygame.draw.circle(self.fenetre, self.sprite, self.centre, self.rayon)'''
+        ball_pos = self.centre
+
+        if self.image:
+            rect = self.image.get_rect(center=ball_pos)
+            self.fenetre.blit(self.image, rect)
+        else:
+            pygame.draw.circle(self.fenetre, self.sprite, ball_pos, self.rayon)
+
 
 
 class Boule1(Boules):
@@ -85,4 +120,4 @@ class Boule10(Boules):
 
 class Boule11(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 115, 115, 15, (12, 200, 111), space)
+        super().__init__(fenetre, centre, 115, 115, 15, "sun.png", space)
