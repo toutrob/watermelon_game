@@ -68,49 +68,49 @@ def collision_callback(arbiter, space, data):
     elif new_shape_type == 7:
         planete = Boule3(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + 3
+        score += 3
 
     elif new_shape_type == 8:
         planete = Boule4(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + 6
+        score += 6
 
     elif new_shape_type == 9:
         planete = Boule5(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + 10
+        score += 10
 
     elif new_shape_type == 10:
         planete = Boule6(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + 15
+        score += 15
 
     elif new_shape_type == 11:
         planete = Boule7(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + 21
+        score += 21
 
     elif new_shape_type == 12:
         planete = Boule8(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + 28
+        score += 28
 
     elif new_shape_type == 13:
         planete = Boule9(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + 36
+        score += 36
 
     elif new_shape_type == 14:
         planete = Boule10(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + 45
+        score += 45
 
     elif new_shape_type == 15:
         planete = Boule11(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + 55
+        score += 55
     else:
-        score = score + 66
+        score += 66
 
 
     texte = f"Score : {score}"
@@ -307,15 +307,7 @@ while running:
                 if boutons.draw_restart_button(window).collidepoint(mouse_pos):
                     restart_game()  # Redémarrer le jeu si le bouton est cliqué
 
-
-
-
-
-
-
-
     clock.tick(60)
-
 
     pygame.display.flip()
 pygame.quit()
