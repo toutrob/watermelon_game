@@ -3,6 +3,7 @@ import pygame
 import pymunk
 import time
 from boules import Boule2, Boule3, Boule4, Boule5, Boule6, Boule7, Boule8, Boule9, Boule10, Boule11
+import boutons
 import fonctions_creation_boule
 
 
@@ -25,33 +26,6 @@ space.damping = 0.8
 score = 0
 texte = f"Score : {score}"
 
-'''def create_planete(window, space, position_x, ball_type):
-    if ball_type == 1:
-        planete = Boule1(window, (position_x, 650), space)
-    elif ball_type == 2:
-        planete = Boule2(window, (position_x, 650), space)
-    elif ball_type == 3:
-        planete = Boule3(window, (position_x, 650), space)
-    planete.gravite()
-
-def create_preview_ball(window, space, mouse_pos, ball_type):
-    if ball_type == 1:
-        preview_ball = Boule1(window, (mouse_pos, 50), space)
-    elif ball_type == 2:
-        preview_ball = Boule2(window, (mouse_pos, 50), space)
-    elif ball_type == 3:
-        preview_ball = Boule3(window, (mouse_pos, 50), space)
-    preview_ball.dessin_preview()
-
-def next_ball(window, space, next_ball_type):
-    if next_ball_type == 1:
-        next_ball = Boule1(window, (1037, 187), space)
-    elif next_ball_type == 2:
-        next_ball = Boule2(window, (1037, 187), space)
-    elif next_ball_type == 3:
-        next_ball = Boule3(window, (1037, 187), space)
-    next_ball.dessin_preview()'''
-
 
 def restart_game():
     global game_over, score, texte
@@ -62,31 +36,6 @@ def restart_game():
     for body in space.bodies:
         for shape in body.shapes:
             space.remove(shape, body)  # Supprimer la forme du corp
-
-
-def draw_restart_button(window):
-    # Dessinez le bouton sur l'écran
-    restart_button = pygame.Rect(500, 400, 200, 50)  # Position et taille du bouton
-    pygame.draw.rect(window, (0, 255, 0), restart_button)  # Couleur verte pour le bouton
-    # Dessinez le texte sur le bouton
-    font = pygame.font.Font(None, 36)
-    text = font.render("Recommencer", True, (0, 0, 0))  # Texte en noir
-    text_rect = text.get_rect(center=restart_button.center)  # Utilisation de restart_button au lieu de button
-    window.blit(text, text_rect)
-
-    return restart_button  # Retourner le bouton pour qu'il puisse être utilisé dans la boucle principale
-
-def draw_restart_button_menu(window):
-    restart_button = pygame.Rect(20, 20, 40, 40)  # Position et taille du bouton (en haut à gauche)
-    pygame.draw.rect(window, (0, 255, 0), restart_button)  # Couleur verte pour le bouton
-    # Dessinez le texte sur le bouton
-    font = pygame.font.Font(None, 20)
-    text = font.render("restart", True, (0, 0, 0))  # Texte en noir
-    text_rect = text.get_rect(center=restart_button.center)  # Centre du texte sur le bouton
-    window.blit(text, text_rect)
-    return restart_button
-
-
 
 
 def collision_callback(arbiter, space, data):
@@ -114,52 +63,54 @@ def collision_callback(arbiter, space, data):
     if new_shape_type == 6:
         planete = Boule2(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + shape1.collision_type ** 2
+        score += 1
 
-    if new_shape_type == 7:
+    elif new_shape_type == 7:
         planete = Boule3(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + shape1.collision_type ** 2
+        score = score + 3
 
-    if new_shape_type == 8:
+    elif new_shape_type == 8:
         planete = Boule4(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + shape1.collision_type ** 2
+        score = score + 6
 
-    if new_shape_type == 9:
+    elif new_shape_type == 9:
         planete = Boule5(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + shape1.collision_type ** 2
+        score = score + 10
 
-    if new_shape_type == 10:
+    elif new_shape_type == 10:
         planete = Boule6(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + shape1.collision_type ** 2
+        score = score + 15
 
-    if new_shape_type == 11:
+    elif new_shape_type == 11:
         planete = Boule7(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + shape1.collision_type ** 2
+        score = score + 21
 
-    if new_shape_type == 12:
+    elif new_shape_type == 12:
         planete = Boule8(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + shape1.collision_type ** 2
+        score = score + 28
 
-    if new_shape_type == 13:
+    elif new_shape_type == 13:
         planete = Boule9(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + shape1.collision_type ** 2
+        score = score + 36
 
-    if new_shape_type == 14:
+    elif new_shape_type == 14:
         planete = Boule10(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + shape1.collision_type ** 2
+        score = score + 45
 
-    if new_shape_type == 15:
+    elif new_shape_type == 15:
         planete = Boule11(window, (contact_x, contact_y), space)
         planete.gravite()
-        score = score + shape1.collision_type ** 2
+        score = score + 55
+    else:
+        score = score + 66
 
 
     texte = f"Score : {score}"
@@ -261,8 +212,10 @@ while running:
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
-                if draw_restart_button_menu(window).collidepoint(mouse_pos):
+                if boutons.draw_restart_button_menu(window).collidepoint(mouse_pos):
                     restart_game()  # Redémarrer le jeu si le bouton est cliqué
+                elif boutons.draw_quit_button_menu(window).collidepoint(mouse_pos):
+                    exit()
 
 
 
@@ -311,7 +264,8 @@ while running:
         if next_selected_ball_type is not None:
             fonctions_creation_boule.next_ball(window, space, next_selected_ball_type)
 
-        draw_restart_button_menu(window)
+        boutons.draw_restart_button_menu(window)
+        boutons.draw_quit_button_menu(window)
 
 
 
@@ -342,14 +296,15 @@ while running:
         texte_rect2 = texte_surface.get_rect(center=(WINDOWSIZE[0] // 2, 300))
         window.blit(texte_surface, texte_rect2)
 
-        draw_restart_button(window)
+        boutons.draw_restart_button(window)
+
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
-                if draw_restart_button(window).collidepoint(mouse_pos):
+                if boutons.draw_restart_button(window).collidepoint(mouse_pos):
                     restart_game()  # Redémarrer le jeu si le bouton est cliqué
 
 
@@ -361,12 +316,6 @@ while running:
 
     clock.tick(60)
 
-
-        #Draw shapes
-        #window.fill((255, 255, 255))
-        #pygame.draw.circle(window, (255, 255, 0), (150, 200), 50)
-        #pygame.draw.rect(window, (0, 200, 0), (100, 300, 300, 200))
-        #pygame.draw.line(window, (0, 0, 100), (100, 100), (700, 500), 5)
 
     pygame.display.flip()
 pygame.quit()
