@@ -112,7 +112,7 @@ def collision_callback(arbiter, space, data):
 
 
     if new_shape_type == 6:
-        planete = Boule2(window, (contact_x, contact_y), space)
+        planete = Boule11(window, (contact_x, contact_y), space)
         planete.gravite()
         score = score + shape1.collision_type ** 2
 
@@ -300,7 +300,7 @@ while running:
 
                                 # Vous pouvez également ajouter du code pour avertir le joueur ici
                                 print(
-                                    "Attention! Le corps dépasse la limite. Vous avez 5 secondes pour le remettre en dessous.")
+                                    "Attention! Le corps dépasse la limite. Vous avez 3 secondes pour le remettre en dessous.")
 
             for body in list(time_elapsed.keys()):
                 # Convertir body.shapes en liste avant d'accéder à son premier élément
