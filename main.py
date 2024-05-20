@@ -146,12 +146,16 @@ handler11.begin = collision_callback
 
 
 shape1 = pymunk.Segment(space.static_body, (400, 650), (400, 50), 0)
+shape1.friction = 0.5  # Définir le coefficient de frottement
 space.add(shape1)
 
+
 shape2 = pymunk.Segment(space.static_body, (800, 650), (800, 50), 0)
+shape2.friction = 0.5  # Définir le coefficient de frottement
 space.add(shape2)
 
 shape3 = pymunk.Segment(space.static_body, (400, 53), (800, 53), 0)
+shape3.friction = 0.5  # Définir le coefficient de frottement
 space.add(shape3)
 
 next_selected_ball_type = None
@@ -194,14 +198,17 @@ while running:
                         fonctions_creation_boule.create_planete(window, space, mouse_position_x, selected_ball_type)
                         selected_ball_type = next_selected_ball_type
                         next_selected_ball_type = random.randint(1, 3)
+
                     if 320 < mouse_position_x < 420:
                         fonctions_creation_boule.create_planete(window, space, 420, selected_ball_type)
                         selected_ball_type = next_selected_ball_type
                         next_selected_ball_type = random.randint(1, 3)
+
                     if 880 > mouse_position_x > 780:
                         fonctions_creation_boule.create_planete(window, space, 780, selected_ball_type)
                         selected_ball_type = next_selected_ball_type
                         next_selected_ball_type = random.randint(1, 3)
+
 
                     can_create_planete = False
                     pygame.time.set_timer(pygame.USEREVENT, 500)
@@ -227,7 +234,7 @@ while running:
         for body in space.bodies:
             for shape in body.shapes:
                 if isinstance(shape, pymunk.Circle):
-                    shape.ball.dessin()
+                    shape.ball.dessin(body)
 
         if selected_ball_type is not None:
             mouse_pos = pygame.mouse.get_pos()[0]
