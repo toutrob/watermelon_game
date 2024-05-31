@@ -5,15 +5,19 @@ import time
 from boules import Boule2, Boule3, Boule4, Boule5, Boule6, Boule7, Boule8, Boule9, Boule10, Boule11
 import boutons
 import fonctions_creation_boule
+import high_score
 
 
 WINDOWSIZE = (1200, 700)
 window = pygame.display.set_mode(WINDOWSIZE)
 pygame.display.set_caption("Watermelon Game")
 
+highscores = high_score.load_highscores()
 
 pygame.init()
 image_de_fond = pygame.image.load("espace watermelon game (2).png")
+quit_image = pygame.image.load('exit-run.png')
+restart_image = pygame.image.load('restart.png')
 
 static_lines = []
 
@@ -28,7 +32,11 @@ texte = f"Score : {score}"
 
 
 def restart_game():
-    global game_over, score, texte
+    global game_over, score, texte, highscores
+    if score > 0:
+        highscores.append(score)
+        highscores = sorted(highscores, reverse=True)[:5]  # Garder les 5 meilleurs scores
+        high_score.save_highscores(highscores)
     game_over = False
     score = 0
     texte = f"Score : {score}"
@@ -36,7 +44,6 @@ def restart_game():
     for body in space.bodies:
         for shape in body.shapes:
             space.remove(shape, body)  # Supprimer la forme du corp
-
 
 def collision_callback(arbiter, space, data):
     global score  # Utilisation de la variable score globale
@@ -212,14 +219,15 @@ while running:
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
-                if boutons.draw_restart_button_menu(window).collidepoint(mouse_pos):
+                if boutons.draw_restart_button_menu(window, restart_image).collidepoint(mouse_pos):
                     restart_game()  # Redémarrer le jeu si le bouton est cliqué
-                elif boutons.draw_quit_button_menu(window).collidepoint(mouse_pos):
+                elif boutons.draw_quit_button_menu(window, quit_image).collidepoint(mouse_pos):
                     exit()
 
 
 
         space.step(1/60)
+
 
 
         window.blit(image_de_fond, (0, 0))
@@ -264,8 +272,8 @@ while running:
         if next_selected_ball_type is not None:
             fonctions_creation_boule.next_ball(window, space, next_selected_ball_type)
 
-        boutons.draw_restart_button_menu(window)
-        boutons.draw_quit_button_menu(window)
+        boutons.draw_restart_button_menu(window, restart_image)
+        boutons.draw_quit_button_menu(window, quit_image)
 
 
 
@@ -285,6 +293,11 @@ while running:
         rect_next_boule = next_boule.get_rect(center=(1037, 122))
         window.blit(next_boule, rect_next_boule)
 
+        s = pygame.Surface((300, 300))  # la taille de votre surface
+        s.set_alpha(128)  # niveau de transparence global
+        s.fill((255, 255, 255))  # ceci remplit toute la surface
+        window.blit(s, (200, 100))  # (0,0) sont les coordonnées en haut à gauche
+
     else:
         window.fill((0, 0, 0))  # Fond noir
         # Afficher le message
@@ -295,6 +308,16 @@ while running:
         texte_surface = police_score.render(texte, True, (255, 255, 255))
         texte_rect2 = texte_surface.get_rect(center=(WINDOWSIZE[0] // 2, 300))
         window.blit(texte_surface, texte_rect2)
+
+        # Afficher les meilleurs scores
+        highscore_title_surface = police_score.render("Meilleurs Scores :", True, (255, 255, 255))
+        highscore_title_rect = highscore_title_surface.get_rect(center=(1000, 200))
+        window.blit(highscore_title_surface, highscore_title_rect)
+
+        for i, highscore in enumerate(highscores):
+            highscore_surface = police_score.render(f"{i + 1}. {highscore}", True, (255, 255, 255))
+            highscore_rect = highscore_surface.get_rect(center=(1000, 250 + i * 50))
+            window.blit(highscore_surface, highscore_rect)
 
         boutons.draw_restart_button(window)
 

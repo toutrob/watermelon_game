@@ -11,21 +11,16 @@ def draw_restart_button(window):
     window.blit(text, text_rect)
     return restart_button  # Retourner le bouton pour qu'il puisse être utilisé dans la boucle principale
 
-def draw_quit_button_menu(window: object) -> object:
+def draw_quit_button_menu(window, quit_image):
     quit_button = pygame.Rect(80, 20, 40, 40)
-    pygame.draw.rect(window, (0, 255, 0), quit_button)
-    font = pygame.font.Font(None, 20)
-    text = font.render("quit", True, (0, 0, 0))
-    text_rect = text.get_rect(center=quit_button.center)
-    window.blit(text, text_rect)
+    quit_image = pygame.transform.scale(quit_image, (quit_button.width, quit_button.height))
+    image_rect = quit_image.get_rect(center=quit_button.center)
+    window.blit(quit_image, image_rect)
     return quit_button
 
-def draw_restart_button_menu(window):
+def draw_restart_button_menu(window, restart_image):
     restart_button = pygame.Rect(20, 20, 40, 40)  # Position et taille du bouton (en haut à gauche)
-    pygame.draw.rect(window, (0, 255, 0), restart_button)  # Couleur verte pour le bouton
-    # Dessinez le texte sur le bouton
-    font = pygame.font.Font(None, 20)
-    text = font.render("restart", True, (0, 0, 0))  # Texte en noir
-    text_rect = text.get_rect(center=restart_button.center)  # Centre du texte sur le bouton
-    window.blit(text, text_rect)
+    restart_image = pygame.transform.scale(restart_image, (restart_button.width, restart_button.height))
+    image_rect = restart_image.get_rect(center=restart_button.center)
+    window.blit(restart_image, image_rect)
     return restart_button
