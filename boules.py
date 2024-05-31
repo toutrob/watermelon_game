@@ -1,12 +1,14 @@
 import pygame
 import pymunk
 import math
-
+def flipy(y):
+    """Small hack to convert chipmunk physics to pygame coordinates"""
+    return -y + 600
 
 class Boules:
     instances = []
 
-    def __init__(self, fenetre, centre, rayon, masse, type_, sprite, espace):
+    def __init__(self, fenetre, centre, rayon, masse, type_, sprite, espace, coeff_vitesse):
         self.fenetre = fenetre
         self.rayon = rayon
         self.masse = masse
@@ -15,10 +17,13 @@ class Boules:
         self.espace = espace
         self.centre = centre
         self.window_size = (1200, 700)
-        self.centre_masque = pymunk.Body(self.masse, 100)
-        self.centre_masque.friction = 0.2
+        moment = pymunk.moment_for_circle(self.masse, 0, self.rayon)
+        self.centre_masque = pymunk.Body(self.masse, moment)
+        self.centre_masque.friction = 0.5
         Boules.instances.append(self)
-        self.angle = 0
+        self.alpha_all = 0
+        self.coeff_vitesse = coeff_vitesse
+
 
         # Charger le sprite si c'est un chemin d'image
         if isinstance(self.sprite, str):
@@ -31,6 +36,7 @@ class Boules:
     def gravite(self):
         self.centre_masque.position = self.centre
 
+
         ball_shape = pymunk.Circle(self.centre_masque, self.rayon)
         ball_shape.ball = self
         ball_shape.collision_type = self.type
@@ -38,28 +44,33 @@ class Boules:
 
 
 
-    def dessin(self):
-        '''ball_pos = int(self.centre_masque.position.x), self.window_size[1] - int(self.centre_masque.position.y)
-        pygame.draw.circle(self.fenetre, self.sprite, ball_pos, self.rayon)'''
-        angle_degrees = math.degrees(self.angle) + 180
+    def dessin(self, body1):
+        vitesse = self.centre_masque.velocity.x * self.coeff_vitesse
+        vitesse_angulaire = vitesse / self.rayon
+        alpha = vitesse_angulaire * (1/60)
+        self.alpha_all = self.alpha_all + alpha
         ball_pos = int(self.centre_masque.position.x), self.window_size[1] - int(self.centre_masque.position.y)
-
+        #self.angle = self.centre_masque.angle
+        #angle = body.angle
+        angle_degrees = math.degrees(body1.angle)
+        print(f"Angle de rotation: {angle_degrees:.2f} degrés")
         if self.image:
-            rect = self.image.get_rect(center=ball_pos)
-            self.fenetre.blit(self.image, rect)
+            print(f"{vitesse}")
+            print(f"{vitesse_angulaire}")
+            print(f"{alpha}")
+            rotated_image = pygame.transform.rotate(self.image, - self.alpha_all)
+            rect = rotated_image.get_rect(center=ball_pos)
+            self.fenetre.blit(rotated_image, rect.topleft)
+
+
+
         else:
+            print(f"{vitesse}")
+            print(f"{vitesse_angulaire}")
+            print(f"{alpha}")
             pygame.draw.circle(self.fenetre, self.sprite, ball_pos, self.rayon)
 
 
-
-        '''if self.image != None:
-            rotated_planete_img = pygame.transform.rotate( self.image, angle_degrees)
-
-            offset = Vec2d(*rotated_planete_img.get_size()) / 2
-            p = p - offset
-
-            self.fenetre.blit(rotated_planete_img, self.centre)
-'''
     def trouver_par_position(cls, x, y):
         for instance in cls.instances:
             if instance.x == x and instance.y == y:
@@ -80,44 +91,44 @@ class Boules:
 
 class Boule1(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 15, 15, 5, (0, 255, 0), space)
+        super().__init__(fenetre, centre, 15, 15, 5, "eris.png", space, 100)
 
 class Boule2(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 25, 25, 6, (255, 0, 0), space)
+        super().__init__(fenetre, centre, 25, 25, 6, "pluto 2.5.png", space, 110)
 
 class Boule3(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 35, 35, 7, (0, 0, 255), space)
+        super().__init__(fenetre, centre, 35, 35, 7, "mercury 2.png", space, 120)
 
 class Boule4(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 45, 45, 8, (255, 255, 0), space)
+        super().__init__(fenetre, centre, 45, 45, 8, "mars.png", space, 130)
 
 class Boule5(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 55, 55, 9, (0, 255, 255), space)
+        super().__init__(fenetre, centre, 55, 55, 9, "venus.png", space, 140)
 
 class Boule6(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 65, 65, 10, (255, 0, 255), space)
+        super().__init__(fenetre, centre, 65, 65, 10, "earth.png", space, 150)
 
 class Boule7(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 75, 75, 11, (130, 255, 130), space)
+        super().__init__(fenetre, centre, 75, 75, 11, "neptune.png", space, 160)
 
 class Boule8(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 85, 85, 12, (130, 130, 255), space)
+        super().__init__(fenetre, centre, 85, 85, 12, "uranus.png", space, 170)
 
 class Boule9(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 95, 95, 13, (130, 130, 130), space)
+        super().__init__(fenetre, centre, 95, 95, 13, (130, 130, 130), space, 180)
 
 class Boule10(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 105, 105, 14, (156, 130, 20), space)
+        super().__init__(fenetre, centre, 110, 105, 14, (156, 130, 20), space, 190)
 
 class Boule11(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 115, 115, 15, "sun.png", space)
+        super().__init__(fenetre, centre, 125, 115, 15, "sun.png", space, 200)
