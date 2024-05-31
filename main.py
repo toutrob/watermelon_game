@@ -4,6 +4,7 @@ import pymunk
 import time
 from boules import Boule2, Boule3, Boule4, Boule5, Boule6, Boule7, Boule8, Boule9, Boule10, Boule11
 import boutons
+from boutons import podium_visible
 import fonctions_creation_boule
 import high_score
 
@@ -18,6 +19,7 @@ pygame.init()
 image_de_fond = pygame.image.load("espace watermelon game (2).png")
 quit_image = pygame.image.load('exit-run.png')
 restart_image = pygame.image.load('restart.png')
+podium_image = pygame.image.load('podium.png')
 
 static_lines = []
 
@@ -169,6 +171,7 @@ next_selected_ball_type = None
 selected_ball_type = random.randint(1, 3)  # Choix aléatoire d'un type de boule
 
 police_score = pygame.font.SysFont('nirmala ui', 36)
+police_score_menu = pygame.font.SysFont('nirmala ui', 50)
 police_next_boule = pygame.font.SysFont('nirmala ui', 18)
 police_end = pygame.font.SysFont('adlam display', 70)
 
@@ -228,6 +231,8 @@ while running:
                 mouse_pos = pygame.mouse.get_pos()
                 if boutons.draw_restart_button_menu(window, restart_image).collidepoint(mouse_pos):
                     restart_game()  # Redémarrer le jeu si le bouton est cliqué
+                if boutons.draw_podium_button_menu(window, podium_image).collidepoint(mouse_pos):
+                    boutons.toggle_podium()
                 elif boutons.draw_quit_button_menu(window, quit_image).collidepoint(mouse_pos):
                     exit()
 
@@ -279,8 +284,24 @@ while running:
         if next_selected_ball_type is not None:
             fonctions_creation_boule.next_ball(window, space, next_selected_ball_type)
 
+        if boutons.podium_visible:
+            s = pygame.Surface((800, 600))  # la taille de votre surface
+            s.set_alpha(200)  # niveau de transparence global
+            s.fill((255, 255, 255))  # ceci remplit toute la surface
+            window.blit(s, (200, 50))  # (0,0) sont les coordonnées en haut à gauche
+            # Afficher les meilleurs scores
+            highscore_title_surface = police_score_menu.render("Meilleurs Scores :", True, (0, 0, 0))
+            highscore_title_rect = highscore_title_surface.get_rect(center=(600, 150))
+            window.blit(highscore_title_surface, highscore_title_rect)
+            for i, highscore in enumerate(highscores):
+                highscore_surface = police_score_menu.render(f"{i + 1}. {highscore}", True, (0, 0, 0))
+                highscore_rect = highscore_surface.get_rect(center=(600, 250 + i * 70))
+                window.blit(highscore_surface, highscore_rect)
+
+
         boutons.draw_restart_button_menu(window, restart_image)
         boutons.draw_quit_button_menu(window, quit_image)
+        boutons.draw_podium_button_menu(window, podium_image)
 
 
 
@@ -300,10 +321,6 @@ while running:
         rect_next_boule = next_boule.get_rect(center=(1037, 122))
         window.blit(next_boule, rect_next_boule)
 
-        s = pygame.Surface((300, 300))  # la taille de votre surface
-        s.set_alpha(128)  # niveau de transparence global
-        s.fill((255, 255, 255))  # ceci remplit toute la surface
-        window.blit(s, (200, 100))  # (0,0) sont les coordonnées en haut à gauche
 
     else:
         window.fill((0, 0, 0))  # Fond noir

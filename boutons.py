@@ -1,5 +1,7 @@
 import pygame
 
+podium_visible = False
+
 def draw_restart_button(window):
     # Dessinez le bouton sur l'écran
     restart_button = pygame.Rect(500, 400, 200, 50)  # Position et taille du bouton
@@ -24,3 +26,14 @@ def draw_restart_button_menu(window, restart_image):
     image_rect = restart_image.get_rect(center=restart_button.center)
     window.blit(restart_image, image_rect)
     return restart_button
+
+def draw_podium_button_menu(window, podium_image):
+    podium_button = pygame.Rect(140, 20, 40, 40)  # Position et taille du bouton (en haut à gauche)
+    podium_image = pygame.transform.scale(podium_image, (podium_button.width, podium_button.height))
+    image_rect = podium_image.get_rect(center=podium_button.center)
+    window.blit(podium_image, image_rect)
+    return podium_button
+
+def toggle_podium():
+    global podium_visible
+    podium_visible = not podium_visible
