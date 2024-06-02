@@ -2,6 +2,8 @@ import random
 import pygame
 import pymunk
 import time
+
+import boules
 from boules import Boule2, Boule3, Boule4, Boule5, Boule6, Boule7, Boule8, Boule9, Boule10, Boule11
 import boutons
 import fonctions_creation_boule
@@ -29,6 +31,7 @@ space.damping = 0.8
 
 score = 0
 texte = f"Score : {score}"
+Next_Bouboule = True
 
 
 def restart_game():
@@ -63,6 +66,52 @@ def collision_callback(arbiter, space, data):
         contact_x, contact_y = point.point_a
         print("Point de contact : ({}, {})".format(contact_x, contact_y))
 
+    centre_shape1 = shape1.body.position
+    centre_shape2 = shape2.body.position
+    longueur_tableau = len(boules.Boules.instances)
+
+    i = 0
+    j = 0
+
+    for bouboules in boules.Boules.instances:
+
+        print(f"{i}")
+        print("bouboules")
+        print(f"centre forme{centre_shape1}")
+        print(f"centre bouboule{bouboules.trouver_centre().x, bouboules.trouver_centre().y}")
+
+
+        if bouboules.trouver_centre() == centre_shape1:
+            #boule_a_supprimer1 = boules.Boules.instances[i]
+            print("bouboules 1 ")
+            del boules.Boules.instances[i]
+
+            for bouboules2 in boules.Boules.instances:
+
+                print(f"{j}")
+                print("bouboules2")
+                print(f"centre forme{centre_shape2}")
+                print(f"centre bouboule2{bouboules2.trouver_centre().x, bouboules2.trouver_centre().y}")
+
+                if bouboules2.trouver_centre() == centre_shape2:
+                    # boule_a_supprimer1 = boules.Boules.instances[i]
+                    print("bouboules 1 ")
+                    del boules.Boules.instances[j]
+
+                j += 1
+
+
+
+        else:
+            print("t'as l'air con")
+            boule_a_supprimer1 = None
+            boule_a_supprimer2 = None
+
+        i += 1
+
+
+    del boule_a_supprimer1
+    del boule_a_supprimer2
     space.remove(shape1, shape1.body)
     space.remove(shape2, shape2.body)
 
@@ -194,8 +243,8 @@ while running:
             elif event.type == pygame.MOUSEMOTION:
 
                 if next_selected_ball_type is None:  # Si la boule n'a pas encore été choisie
-
-                    next_selected_ball_type = random.randint(1, 3)  # Choix aléatoire d'un type de boule
+                    next_selected_ball_type = 1
+                    #next_selected_ball_type = random.randint(1, 3)  # Choix aléatoire d'un type de boule
 
 
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -205,16 +254,19 @@ while running:
                         fonctions_creation_boule.create_planete(window, space, mouse_position_x, selected_ball_type)
                         selected_ball_type = next_selected_ball_type
                         next_selected_ball_type = random.randint(1, 3)
+                        #next_selected_ball_type = 1
 
                     if 320 < mouse_position_x < 420:
                         fonctions_creation_boule.create_planete(window, space, 420, selected_ball_type)
                         selected_ball_type = next_selected_ball_type
                         next_selected_ball_type = random.randint(1, 3)
+                        #next_selected_ball_type = 1
 
                     if 880 > mouse_position_x > 780:
                         fonctions_creation_boule.create_planete(window, space, 780, selected_ball_type)
                         selected_ball_type = next_selected_ball_type
                         next_selected_ball_type = random.randint(1, 3)
+                        #next_selected_ball_type = 1
 
 
                     can_create_planete = False
@@ -247,11 +299,15 @@ while running:
         if selected_ball_type is not None:
             mouse_pos = pygame.mouse.get_pos()[0]
             if 420 <= mouse_pos <= 780:
-                fonctions_creation_boule.create_preview_ball(window, space, mouse_pos, selected_ball_type)
+                fonctions_creation_boule.create_preview_ball(window, space, mouse_pos, selected_ball_type, Next_Bouboule)
+
+
             elif mouse_pos < 420:
-                fonctions_creation_boule.create_preview_ball(window, space, 420, selected_ball_type)
+                fonctions_creation_boule.create_preview_ball(window, space, 420, selected_ball_type, Next_Bouboule)
+
             elif mouse_pos > 780:
-                fonctions_creation_boule.create_preview_ball(window, space, 780, selected_ball_type)
+                fonctions_creation_boule.create_preview_ball(window, space, 780, selected_ball_type, Next_Bouboule)
+
 
             for body in space.bodies:
                 for shape in body.shapes:
@@ -283,7 +339,7 @@ while running:
         boutons.draw_quit_button_menu(window, quit_image)
 
 
-
+        print(f"il y a {len(boules.Boules.instances)} boules")
 
 
         pygame.draw.line(window, (255, 255, 255), (400, 150), (400, 650), 7)  #ligne du bas
@@ -304,6 +360,8 @@ while running:
         s.set_alpha(128)  # niveau de transparence global
         s.fill((255, 255, 255))  # ceci remplit toute la surface
         window.blit(s, (200, 100))  # (0,0) sont les coordonnées en haut à gauche
+
+
 
     else:
         window.fill((0, 0, 0))  # Fond noir

@@ -1,7 +1,9 @@
+import boules
 from boules import Boule1, Boule2, Boule3
-
+import pygame
 
 def create_planete(window, space, position_x, ball_type):
+
     if ball_type == 1:
         planete = Boule1(window, (position_x, 650), space)
     elif ball_type == 2:
@@ -12,24 +14,54 @@ def create_planete(window, space, position_x, ball_type):
         planete = 0
     planete.gravite()
 
-def create_preview_ball(window, space, mouse_pos, ball_type):
+def create_preview_ball(window, space, mouse_pos, ball_type, Next_Bouboule):
+    sprite1 = 'eris.png'
+    sprite2 = 'pluto 2.5.png'
+    sprite3 = 'mercury 2.png'
+
+
     if ball_type == 1:
-        preview_ball = Boule1(window, (mouse_pos, 50), space)
+        image = pygame.image.load(sprite1)
+        rect = image.get_rect(center=(mouse_pos, 50))
+        window.blit(image, rect.topleft)
+
     elif ball_type == 2:
-        preview_ball = Boule2(window, (mouse_pos, 50), space)
+        image = pygame.image.load(sprite2)
+        rect = image.get_rect(center=(mouse_pos, 50))
+        window.blit(image, rect.topleft)
+
     elif ball_type == 3:
-        preview_ball = Boule3(window, (mouse_pos, 50), space)
+        image = pygame.image.load(sprite3)
+        rect = image.get_rect(center=(mouse_pos, 50))
+        window.blit(image, rect.topleft)
+
     else:
-        preview_ball = 0
-    preview_ball.dessin_preview()
+        pygame.draw.circle(window, (0, 0, 0), (mouse_pos, 50), 10)
+
 
 def next_ball(window, space, next_ball_type):
+    sprite1 = 'eris.png'
+    sprite2 = 'pluto 2.5.png'
+    sprite3 = 'mercury 2.png'
+
     if next_ball_type == 1:
-        next_ball = Boule1(window, (1037, 187), space)
+        image = pygame.image.load(sprite1)
+        rect = image.get_rect(center=(1037, 187))
+        window.blit(image, rect.topleft)
+
     elif next_ball_type == 2:
-        next_ball = Boule2(window, (1037, 187), space)
+        image = pygame.image.load(sprite2)
+        rect = image.get_rect(center=(1037, 187))
+        window.blit(image, rect.topleft)
+
     elif next_ball_type == 3:
-        next_ball = Boule3(window, (1037, 187), space)
+        image = pygame.image.load(sprite3)
+        rect = image.get_rect(center=(1037, 187))
+        window.blit(image, rect.topleft)
+
     else:
-        next_ball = 0
-    next_ball.dessin_preview()
+        pygame.draw.circle(window, (0, 0, 0), (1037, 187), 10)
+
+def derniere_boule(Next_boule):
+    derniere_boule1 = Next_boule
+    return derniere_boule1

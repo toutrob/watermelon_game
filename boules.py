@@ -1,9 +1,6 @@
 import pygame
 import pymunk
 import math
-def flipy(y):
-    """Small hack to convert chipmunk physics to pygame coordinates"""
-    return -y + 600
 
 class Boules:
     instances = []
@@ -16,6 +13,7 @@ class Boules:
         self.sprite = sprite
         self.espace = espace
         self.centre = centre
+        self.centre_actuel = None
         self.window_size = (1200, 700)
         moment = pymunk.moment_for_circle(self.masse, 0, self.rayon)
         self.centre_masque = pymunk.Body(self.masse, moment)
@@ -53,11 +51,11 @@ class Boules:
         #self.angle = self.centre_masque.angle
         #angle = body.angle
         angle_degrees = math.degrees(body1.angle)
-        print(f"Angle de rotation: {angle_degrees:.2f} degrés")
+        #print(f"Angle de rotation: {angle_degrees:.2f} degrés")
         if self.image:
-            print(f"{vitesse}")
-            print(f"{vitesse_angulaire}")
-            print(f"{alpha}")
+            #print(f"{vitesse}")
+            #print(f"{vitesse_angulaire}")
+            #print(f"{alpha}")
             rotated_image = pygame.transform.rotate(self.image, - self.alpha_all)
             rect = rotated_image.get_rect(center=ball_pos)
             self.fenetre.blit(rotated_image, rect.topleft)
@@ -65,9 +63,9 @@ class Boules:
 
 
         else:
-            print(f"{vitesse}")
-            print(f"{vitesse_angulaire}")
-            print(f"{alpha}")
+            #print(f"{vitesse}")
+            #print(f"{vitesse_angulaire}")
+            #print(f"{alpha}")
             pygame.draw.circle(self.fenetre, self.sprite, ball_pos, self.rayon)
 
 
@@ -87,6 +85,10 @@ class Boules:
         else:
             pygame.draw.circle(self.fenetre, self.sprite, ball_pos, self.rayon)
 
+
+    def trouver_centre(self):
+        self.centre_actuel = self.centre_masque.position
+        return self.centre_actuel
 
 
 class Boule1(Boules):
