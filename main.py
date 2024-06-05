@@ -6,7 +6,6 @@ import time
 import boules
 from boules import Boule2, Boule3, Boule4, Boule5, Boule6, Boule7, Boule8, Boule9, Boule10, Boule11
 import boutons
-from boutons import podium_visible
 import fonctions_creation_boule
 import high_score
 
