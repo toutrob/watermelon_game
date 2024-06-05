@@ -1,4 +1,4 @@
-import boules
+
 from boules import Boule1, Boule2, Boule3
 import pygame
 

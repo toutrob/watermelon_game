@@ -6,7 +6,6 @@ import time
 import boules
 from boules import Boule2, Boule3, Boule4, Boule5, Boule6, Boule7, Boule8, Boule9, Boule10, Boule11
 import boutons
-from boutons import podium_visible
 import fonctions_creation_boule
 import high_score
 
@@ -51,6 +50,10 @@ def restart_game():
         for shape in body.shapes:
             space.remove(shape, body)  # Supprimer la forme du corp
 
+    while len(boules.Boules.instances) != 0:
+        del boules.Boules.instances[0]
+
+
 def collision_callback(arbiter, space, data):
     global score  # Utilisation de la variable score globale
     global texte
@@ -71,7 +74,7 @@ def collision_callback(arbiter, space, data):
 
     centre_shape1 = shape1.body.position
     centre_shape2 = shape2.body.position
-    longueur_tableau = len(boules.Boules.instances)
+
 
     i = 0
     j = 0
@@ -112,9 +115,14 @@ def collision_callback(arbiter, space, data):
 
         i += 1
 
+    '''if boule_a_supprimer1 is not None:
+        
+        del boule_a_supprimer1
+    
+    if boule_a_supprimer2 is not None:
+        del boule_a_supprimer2'''
 
-    del boule_a_supprimer1
-    del boule_a_supprimer2
+
     space.remove(shape1, shape1.body)
     space.remove(shape2, shape2.body)
 
@@ -366,6 +374,10 @@ while running:
         boutons.draw_podium_button_menu(window, podium_image)
 
         window.blit(rouge_game_over, (0, 0))  # (0,0) sont les coordonnées en haut à gauche
+        image_cycle_des_boules = pygame.image.load('Design_sans_titre__3_-removebg-preview.png')
+        rect = image_cycle_des_boules.get_rect(center=(200,375))
+        window.blit(image_cycle_des_boules, rect.topleft)
+
 
         print(f"il y a {len(boules.Boules.instances)} boules")
 
@@ -373,6 +385,8 @@ while running:
         pygame.draw.line(window, (255, 255, 255), (400, 150), (400, 650), 7)  #ligne du bas
         pygame.draw.line(window, (255, 255, 255), (800, 150), (800, 650), 7)  #droite
         pygame.draw.line(window, (255, 255, 255), (400, 650), (800, 650), 7)  #gauche
+
+
 
         texte_surface = police_score.render(texte, True, (255, 255, 255))
         # Obtenir le rectangle englobant le texte pour le centrer
