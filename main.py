@@ -331,7 +331,7 @@ while running:
                         bottom_y = shape.body.position.y - shape.radius  # Position en y du bas de la boule
                         if bottom_y > 550:  # Si la boule dépasse une certaine hauteur (par exemple 600 pixels)
                             if body in time_elapsed:
-                                if time.time() - time_elapsed[body] > 0.5:
+                                if time.time() - time_elapsed[body] > 0.7:
                                     rouge_game_over.set_alpha(50)
                                 if time.time() - time_elapsed[body] > 3:
                                     game_over = True
