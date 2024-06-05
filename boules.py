@@ -125,11 +125,11 @@ class Boule8(Boules):
 
 class Boule9(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 105, 95, 13, (130, 130, 130), space, 180)
+        super().__init__(fenetre, centre, 105, 95, 13, "saturne.png", space, 180)
 
 class Boule10(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 115, 105, 14, (156, 130, 20), space, 190)
+        super().__init__(fenetre, centre, 115, 105, 14, "jupiter.png", space, 190)
 
 class Boule11(Boules):
     def __init__(self, fenetre, centre, space):
