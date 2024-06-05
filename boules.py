@@ -97,40 +97,40 @@ class Boule1(Boules):
 
 class Boule2(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 30, 25, 6, "pluto 2.5.png", space, 110)
+        super().__init__(fenetre, centre, 25, 25, 6, "pluto 2.5.png", space, 110)
 
 class Boule3(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 45, 35, 7, "mercury 2.png", space, 120)
+        super().__init__(fenetre, centre, 35, 35, 7, "mercury 2.png", space, 120)
 
 class Boule4(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 55, 45, 8, "mars.png", space, 130)
+        super().__init__(fenetre, centre, 50, 45, 8, "mars.png", space, 130)
 
 class Boule5(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 65, 55, 9, "venus.png", space, 140)
+        super().__init__(fenetre, centre, 60, 55, 9, "venus.png", space, 140)
 
 class Boule6(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 75, 65, 10, "earth.png", space, 150)
+        super().__init__(fenetre, centre, 70, 65, 10, "earth.png", space, 150)
 
 class Boule7(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 85, 75, 11, "neptune.png", space, 160)
+        super().__init__(fenetre, centre, 80, 75, 11, "neptune.png", space, 160)
 
 class Boule8(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 95, 85, 12, "uranus.png", space, 170)
+        super().__init__(fenetre, centre, 90, 85, 12, "uranus.png", space, 170)
 
 class Boule9(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 105, 95, 13, (130, 130, 130), space, 180)
+        super().__init__(fenetre, centre, 100, 95, 13, (130, 130, 130), space, 180)
 
 class Boule10(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 115, 105, 14, (156, 130, 20), space, 190)
+        super().__init__(fenetre, centre, 110, 105, 14, (156, 130, 20), space, 190)
 
 class Boule11(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, centre, 125, 115, 15, "sun.png", space, 200)
+        super().__init__(fenetre, centre, 120, 115, 15, "sun.png", space, 200)
