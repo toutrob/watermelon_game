@@ -1,4 +1,5 @@
 import pygame
+import pymunk
 
 podium_visible = False
 
@@ -34,6 +35,28 @@ def draw_podium_button_menu(window, podium_image):
     window.blit(podium_image, image_rect)
     return podium_button
 
+def draw_antigravity_button(window, antigravity_image):
+    antigravity_button = pygame.Rect(1000, 500, 40, 40)
+    antigravity_image = pygame.transform.scale(antigravity_image, (antigravity_button.width, antigravity_button.height))
+    image_rect = antigravity_image.get_rect(center=antigravity_button.center)
+    window.blit(antigravity_image, image_rect)
+    return antigravity_button
+
 def toggle_podium():
     global podium_visible
     podium_visible = not podium_visible
+
+def toggle_antigravity(window, gravity):
+    gravity = (0, 1000)
+    return gravity
+
+'''def draw_antigravity_lines(window, space, gravity):
+    pygame.draw.line(window, (255, 255, 255), (400, 150), (800, 150), 7)
+    shape4 = pymunk.Segment(space.static_body, (400, 550), (800, 550), 0)
+    shape4.friction = 0.5  # Définir le coefficient de frottement
+    space.add(shape4)
+    return shape4'''
+
+def delete_antigravity_lines(space, forme_a_enlever):
+    space.remove(forme_a_enlever)
+

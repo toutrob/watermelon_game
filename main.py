@@ -21,6 +21,7 @@ image_de_fond = pygame.image.load("espace watermelon game (2).png")
 quit_image = pygame.image.load('exit-run.png')
 restart_image = pygame.image.load('restart.png')
 podium_image = pygame.image.load('podium.png')
+antigravity_image = pygame.image.load('pomme.png')
 
 static_lines = []
 
@@ -28,6 +29,7 @@ static_lines = []
 space = pymunk.Space()
 space.gravity = (0, -1000)
 space.damping = 0.8
+can_draw_the_gravity_line = False
 
 
 score = 0
@@ -64,6 +66,7 @@ def collision_callback(arbiter, space, data):
 
     contact_x = 0
     contact_y = 0
+
 
     points = arbiter.contact_point_set.points
     for point in points:
@@ -220,9 +223,13 @@ shape2 = pymunk.Segment(space.static_body, (800, 650), (800, 50), 0)
 shape2.friction = 0.5  # Définir le coefficient de frottement
 space.add(shape2)
 
+
 shape3 = pymunk.Segment(space.static_body, (400, 53), (800, 53), 0)
 shape3.friction = 0.5  # Définir le coefficient de frottement
 space.add(shape3)
+
+shape4 = None
+
 
 next_selected_ball_type = None
 selected_ball_type = random.randint(1, 3)  # Choix aléatoire d'un type de boule
@@ -235,6 +242,7 @@ police_end = pygame.font.SysFont('adlam display', 70)
 game_over = False
 
 time_elapsed = {}
+temps_sans_gravite = None
 
 running = True
 can_create_planete = True
@@ -247,54 +255,66 @@ while running:
     # Handle events
     if not game_over:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+
+            if can_draw_the_gravity_line == False:
+
+                if event.type == pygame.QUIT:
+                    running = False
 
 
-            elif event.type == pygame.MOUSEMOTION:
 
-                if next_selected_ball_type is None:  # Si la boule n'a pas encore été choisie
-                    next_selected_ball_type = 1
-                    #next_selected_ball_type = random.randint(1, 3)  # Choix aléatoire d'un type de boule
+                elif event.type == pygame.MOUSEMOTION:
 
-
-            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                if can_create_planete == True:
-                    mouse_position_x = pygame.mouse.get_pos()[0]
-                    if 420 <= mouse_position_x <= 780:
-                        fonctions_creation_boule.create_planete(window, space, mouse_position_x, selected_ball_type)
-                        selected_ball_type = next_selected_ball_type
-                        next_selected_ball_type = random.randint(1, 3)
-                        #next_selected_ball_type = 1
-
-                    if 320 < mouse_position_x < 420:
-                        fonctions_creation_boule.create_planete(window, space, 420, selected_ball_type)
-                        selected_ball_type = next_selected_ball_type
-                        next_selected_ball_type = random.randint(1, 3)
-                        #next_selected_ball_type = 1
-
-                    if 880 > mouse_position_x > 780:
-                        fonctions_creation_boule.create_planete(window, space, 780, selected_ball_type)
-                        selected_ball_type = next_selected_ball_type
-                        next_selected_ball_type = random.randint(1, 3)
-                        #next_selected_ball_type = 1
+                    if next_selected_ball_type is None:  # Si la boule n'a pas encore été choisie
+                        next_selected_ball_type = 1
+                        #next_selected_ball_type = random.randint(1, 3)  # Choix aléatoire d'un type de boule
 
 
-                    can_create_planete = False
-                    pygame.time.set_timer(pygame.USEREVENT, 500)
+                elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    if can_create_planete == True:
+                        mouse_position_x = pygame.mouse.get_pos()[0]
+                        if 420 <= mouse_position_x <= 780:
+                            fonctions_creation_boule.create_planete(window, space, mouse_position_x, selected_ball_type)
+                            selected_ball_type = next_selected_ball_type
+                            next_selected_ball_type = random.randint(1, 3)
+                            #next_selected_ball_type = 1
 
-            if event.type == pygame.USEREVENT:
-                can_create_planete = True
+                        if 320 < mouse_position_x < 420:
+                            fonctions_creation_boule.create_planete(window, space, 420, selected_ball_type)
+                            selected_ball_type = next_selected_ball_type
+                            next_selected_ball_type = random.randint(1, 3)
+                            #next_selected_ball_type = 1
+
+                        if 880 > mouse_position_x > 780:
+                            fonctions_creation_boule.create_planete(window, space, 780, selected_ball_type)
+                            selected_ball_type = next_selected_ball_type
+                            next_selected_ball_type = random.randint(1, 3)
+                            #next_selected_ball_type = 1
 
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = pygame.mouse.get_pos()
-                if boutons.draw_restart_button_menu(window, restart_image).collidepoint(mouse_pos):
-                    restart_game()  # Redémarrer le jeu si le bouton est cliqué
-                if boutons.draw_podium_button_menu(window, podium_image).collidepoint(mouse_pos):
-                    boutons.toggle_podium()
-                elif boutons.draw_quit_button_menu(window, quit_image).collidepoint(mouse_pos):
-                    exit()
+                        can_create_planete = False
+                        pygame.time.set_timer(pygame.USEREVENT, 500)
+
+                if event.type == pygame.USEREVENT:
+                    can_create_planete = True
+
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_pos = pygame.mouse.get_pos()
+                    if boutons.draw_restart_button_menu(window, restart_image).collidepoint(mouse_pos):
+                        restart_game()  # Redémarrer le jeu si le bouton est cliqué
+                    if boutons.draw_podium_button_menu(window, podium_image).collidepoint(mouse_pos):
+                        boutons.toggle_podium()
+                    if boutons.draw_antigravity_button(window, antigravity_image).collidepoint(mouse_pos):
+                        space.gravity = boutons.toggle_antigravity(window, space.gravity)
+                        shape4 = pymunk.Segment(space.static_body, (400, 550), (800, 550), 0)
+                        shape4.friction = 0.5  # Définir le coefficient de frottement
+                        space.add(shape4)
+                        can_draw_the_gravity_line = True
+
+                    elif boutons.draw_quit_button_menu(window, quit_image).collidepoint(mouse_pos):
+                        exit()
+
 
 
 
@@ -348,6 +368,28 @@ while running:
         if next_selected_ball_type is not None:
             fonctions_creation_boule.next_ball(window, space, next_selected_ball_type)
 
+        if can_draw_the_gravity_line == True:
+            #forme_a_supprimer = boutons.draw_antigravity_lines(window, space, space.gravity)
+            pygame.draw.line(window, (255, 255, 255), (400, 150), (800, 150), 7)
+
+            if temps_sans_gravite is not None:
+                if time.time() - temps_sans_gravite > 3:
+                    can_draw_the_gravity_line = False
+                    print("ok il faut mettre la fonction")
+                    if shape4 is not None:
+                        if shape4 in space.shapes:
+                            space.remove(shape4)
+                            shape4 = None
+                        else:
+                            del shape4
+
+                    space.gravity = (0, -1000)
+                    temps_sans_gravite = None
+
+            else:
+                temps_sans_gravite = time.time()
+
+
         if boutons.podium_visible:
             s = pygame.Surface((800, 600))  # la taille de votre surface
             s.set_alpha(200)  # niveau de transparence global
@@ -363,16 +405,18 @@ while running:
                 window.blit(highscore_surface, highscore_rect)
 
 
+
         boutons.draw_restart_button_menu(window, restart_image)
         boutons.draw_quit_button_menu(window, quit_image)
         boutons.draw_podium_button_menu(window, podium_image)
+        boutons.draw_antigravity_button(window, antigravity_image)
 
         image_cycle_des_boules = pygame.image.load('Design_sans_titre__3_-removebg-preview.png')
         rect = image_cycle_des_boules.get_rect(center=(200,375))
         window.blit(image_cycle_des_boules, rect.topleft)
 
 
-        print(f"il y a {len(boules.Boules.instances)} boules")
+        #print(f"il y a {len(boules.Boules.instances)} boules")
 
 
         pygame.draw.line(window, (255, 255, 255), (400, 150), (400, 650), 7)  #ligne du bas
