@@ -44,6 +44,7 @@ def restart_game():
         high_score.save_highscores(highscores)
     game_over = False
     score = 0
+    rouge_game_over.set_alpha(0)
     texte = f"Score : {score}"
     # Supprimer toutes les balles de Pymunk
     for body in space.bodies:
@@ -232,7 +233,9 @@ running = True
 can_create_planete = True
 clock = pygame.time.Clock()
 
-
+rouge_game_over = pygame.Surface(WINDOWSIZE)  # la taille de votre surface
+rouge_game_over.set_alpha(0)  # niveau de transparence global
+rouge_game_over.fill((255, 0, 0))  # ceci remplit toute la surface
 
 
 while running:
@@ -320,9 +323,10 @@ while running:
                         bottom_y = shape.body.position.y - shape.radius  # Position en y du bas de la boule
                         if bottom_y > 550:  # Si la boule dépasse une certaine hauteur (par exemple 600 pixels)
                             if body in time_elapsed:
+                                if time.time() - time_elapsed[body] > 0.5:
+                                    rouge_game_over.set_alpha(50)
                                 if time.time() - time_elapsed[body] > 3:
                                     game_over = True
-
                             else:
                                 # Si c'est la première fois que le corps dépasse la limite, enregistrer le temps actuel
                                 time_elapsed[body] = time.time()
@@ -331,11 +335,13 @@ while running:
                                 print(
                                     "Attention! Le corps dépasse la limite. Vous avez 3 secondes pour le remettre en dessous.")
 
+
             for body in list(time_elapsed.keys()):
                 # Convertir body.shapes en liste avant d'accéder à son premier élément
                 shapes_list = list(body.shapes)
                 if shapes_list and shapes_list[0].body.position.y <= 500:
                     del time_elapsed[body]
+                    rouge_game_over.set_alpha(0)
 
         if next_selected_ball_type is not None:
             fonctions_creation_boule.next_ball(window, space, next_selected_ball_type)
@@ -359,6 +365,7 @@ while running:
         boutons.draw_quit_button_menu(window, quit_image)
         boutons.draw_podium_button_menu(window, podium_image)
 
+        window.blit(rouge_game_over, (0, 0))  # (0,0) sont les coordonnées en haut à gauche
 
         print(f"il y a {len(boules.Boules.instances)} boules")
 
