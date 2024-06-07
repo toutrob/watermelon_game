@@ -1,7 +1,6 @@
 import pygame
 import pymunk
 import math
-import random
 
 class Boules:
     instances = []
@@ -94,94 +93,44 @@ class Boules:
 
 class Boule1(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, ( centre[0] + self.decalage, centre[1] ), 20, 15, 5, "eris.png", space, 100)
+        super().__init__(fenetre, centre, 20, 15, 5, "eris.png", space, 100)
 
 class Boule2(Boules):
-    decalage = random.randint(1, 2)
-    if decalage == 1:
-        decalage = 0.01
-    else:
-        declage = -0.01
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, ( centre[0] + self.decalage, centre[1] ), 25, 25, 6, "pluto 2.5.png", space, 110)
+        super().__init__(fenetre, centre, 25, 25, 6, "pluto 2.5.png", space, 110)
 
 class Boule3(Boules):
-    decalage = random.randint(1, 2)
-    if decalage == 1:
-        decalage = 0.01
-    else:
-        declage = -0.01
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, ( centre[0] + self.decalage, centre[1] ), 35, 35, 7, "mercury 2.png", space, 120)
+        super().__init__(fenetre, centre, 35, 35, 7, "mercury 2.png", space, 120)
 
 class Boule4(Boules):
-    decalage = random.randint(1, 2)
-    if decalage == 1:
-        decalage = 0.01
-    else:
-        declage = -0.01
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, ( centre[0] + self.decalage, centre[1] ), 50, 45, 8, "mars.png", space, 130)
+        super().__init__(fenetre, centre, 50, 45, 8, "mars.png", space, 130)
 
 class Boule5(Boules):
-    decalage = random.randint(1, 2)
-    if decalage == 1:
-        decalage = 0.01
-    else:
-        declage = -0.01
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, ( centre[0] + self.decalage, centre[1] ), 60, 55, 9, "venus.png", space, 140)
+        super().__init__(fenetre, centre, 60, 55, 9, "venus.png", space, 140)
 
 class Boule6(Boules):
-    decalage = random.randint(1, 2)
-    if decalage == 1:
-        decalage = 0.01
-    else:
-        declage = -0.01
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, ( centre[0] + self.decalage, centre[1] ), 70, 65, 10, "earth.png", space, 150)
+        super().__init__(fenetre, centre, 70, 65, 10, "earth.png", space, 150)
 
 class Boule7(Boules):
-    decalage = random.randint(1, 2)
-    if decalage == 1:
-        decalage = 0.01
-    else:
-        declage = -0.01
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, ( centre[0] + self.decalage, centre[1] ), 80, 75, 11, "neptune.png", space, 160)
+        super().__init__(fenetre, centre, 80, 75, 11, "neptune.png", space, 160)
 
 class Boule8(Boules):
-    decalage = random.randint(1, 2)
-    if decalage == 1:
-        decalage = 0.01
-    else:
-        declage = -0.01
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, ( centre[0] + self.decalage, centre[1] ), 90, 85, 12, "uranus.png", space, 170)
+        super().__init__(fenetre, centre, 90, 85, 12, "uranus.png", space, 170)
 
 class Boule9(Boules):
-    decalage = random.randint(1, 2)
-    if decalage == 1:
-        decalage = 0.01
-    else:
-        declage = -0.01
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, ( centre[0] + self.decalage, centre[1] ), 100, 95, 13, "saturne.png", space, 180)
+        super().__init__(fenetre, centre, 100, 95, 13, "saturne.png", space, 180)
 
 class Boule10(Boules):
-    decalage = random.randint(1, 2)
-    if decalage == 1:
-        decalage = 0.01
-    else:
-        declage = -0.01
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, ( centre[0] + self.decalage, centre[1] ), 110, 105, 14, "jupiter.png", space, 190)
+        super().__init__(fenetre, centre, 110, 105, 14, "jupiter.png", space, 190)
 
 class Boule11(Boules):
-    decalage = random.randint(1, 2)
-    if decalage == 1:
-        decalage = 0.01
-    else:
-        declage = -0.01
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, ( centre[0] + self.decalage, centre[1] ), 120, 115, 15, "sun.png", space, 200)
+        super().__init__(fenetre, centre, 120, 115, 15, "sun.png", space, 200)

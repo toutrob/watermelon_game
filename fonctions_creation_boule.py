@@ -1,15 +1,23 @@
 
 from boules import Boule1, Boule2, Boule3
 import pygame
+import random
 
 def create_planete(window, space, position_x, ball_type):
+    decalage = random.randint(1, 2)
+    if decalage == 1:
+        decalage = 0.01
+    elif decalage == 2:
+        decalage = -0.01
+    else:
+        decalage = 0
 
     if ball_type == 1:
-        planete = Boule1(window, (position_x, 650), space)
+        planete = Boule1(window, (position_x + decalage, 650), space)
     elif ball_type == 2:
-        planete = Boule2(window, (position_x, 650), space)
+        planete = Boule2(window, (position_x + decalage, 650), space)
     elif ball_type == 3:
-        planete = Boule3(window, (position_x, 650), space)
+        planete = Boule3(window, (position_x + decalage, 650), space)
     else:
         planete = 0
     planete.gravite()
