@@ -22,6 +22,7 @@ quit_image = pygame.image.load('exit-run.png')
 restart_image = pygame.image.load('restart.png')
 podium_image = pygame.image.load('podium.png')
 antigravity_image = pygame.image.load('pomme.png')
+delete_boule_image =pygame.image.load('pomme.png')
 
 static_lines = []
 
@@ -30,6 +31,7 @@ space = pymunk.Space()
 space.gravity = (0, -1000)
 space.damping = 0.8
 can_draw_the_gravity_line = False
+can_delete_a_boule = False
 
 
 score = 0
@@ -83,28 +85,12 @@ def collision_callback(arbiter, space, data):
     j = 0
 
     for bouboules in boules.Boules.instances:
-
-        print(f"{i}")
-        print("bouboules")
-        print(f"centre forme{centre_shape1}")
-        print(f"centre bouboule{bouboules.trouver_centre().x, bouboules.trouver_centre().y}")
-
-
         if bouboules.trouver_centre() == centre_shape1:
-            #boule_a_supprimer1 = boules.Boules.instances[i]
-            print("bouboules 1 ")
             del boules.Boules.instances[i]
 
             for bouboules2 in boules.Boules.instances:
 
-                print(f"{j}")
-                print("bouboules2")
-                print(f"centre forme{centre_shape2}")
-                print(f"centre bouboule2{bouboules2.trouver_centre().x, bouboules2.trouver_centre().y}")
-
                 if bouboules2.trouver_centre() == centre_shape2:
-                    # boule_a_supprimer1 = boules.Boules.instances[i]
-                    print("bouboules 1 ")
                     del boules.Boules.instances[j]
 
                 j += 1
@@ -258,9 +244,7 @@ while running:
     # Handle events
     if not game_over:
         for event in pygame.event.get():
-
-            if can_draw_the_gravity_line == False:
-
+            if can_draw_the_gravity_line == False and can_delete_a_boule == False:
                 if event.type == pygame.QUIT:
                     running = False
 
@@ -314,6 +298,8 @@ while running:
                         shape4.friction = 0.5  # Définir le coefficient de frottement
                         space.add(shape4)
                         can_draw_the_gravity_line = True
+                    if boutons.draw_delete_boules(window, delete_boule_image).collidepoint(mouse_pos):
+                        can_delete_a_boule = True
 
                     elif boutons.draw_quit_button_menu(window, quit_image).collidepoint(mouse_pos):
                         exit()
@@ -387,13 +373,28 @@ while running:
                             space.remove(shape4)
                             shape4 = None
                         else:
-                            del shape4
+                            shape4 = None
 
                     space.gravity = (0, -1000)
                     temps_sans_gravite = None
 
             else:
                 temps_sans_gravite = time.time()
+
+        if can_delete_a_boule == True :
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_pos = pygame.mouse.get_pos()
+                    p = 0
+                    for shape in boules.Boules.instances:
+                        if shape.dessin(shape.centre_masque).collidepoint(mouse_pos) == True:
+                            space.remove(shape.ball_shape, shape.centre_masque)
+                            del boules.Boules.instances[p]
+                            print("on a atteint ce point")
+                            can_delete_a_boule = False
+                        p += 1
+
+
 
 
         if boutons.podium_visible:
@@ -416,6 +417,7 @@ while running:
         boutons.draw_quit_button_menu(window, quit_image)
         boutons.draw_podium_button_menu(window, podium_image)
         boutons.draw_antigravity_button(window, antigravity_image)
+        boutons.draw_delete_boules(window, delete_boule_image)
 
         window.blit(rouge_game_over, (0, 0))  # (0,0) sont les coordonnées en haut à gauche
         image_cycle_des_boules = pygame.image.load('Design_sans_titre__3_-removebg-preview.png')

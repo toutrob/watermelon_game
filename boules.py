@@ -21,6 +21,7 @@ class Boules:
         Boules.instances.append(self)
         self.alpha_all = 0
         self.coeff_vitesse = coeff_vitesse
+        self.ball_shape = None
 
 
         # Charger le sprite si c'est un chemin d'image
@@ -39,6 +40,7 @@ class Boules:
         ball_shape.ball = self
         ball_shape.collision_type = self.type
         self.espace.add(self.centre_masque, ball_shape)
+        self.ball_shape = ball_shape
 
 
 
@@ -52,6 +54,7 @@ class Boules:
         #angle = body.angle
         angle_degrees = math.degrees(body1.angle)
         #print(f"Angle de rotation: {angle_degrees:.2f} degrés")
+        rect = None
         if self.image:
             #print(f"{vitesse}")
             #print(f"{vitesse_angulaire}")
@@ -67,6 +70,8 @@ class Boules:
             #print(f"{vitesse_angulaire}")
             #print(f"{alpha}")
             pygame.draw.circle(self.fenetre, self.sprite, ball_pos, self.rayon)
+
+        return rect
 
 
     def trouver_par_position(cls, x, y):
