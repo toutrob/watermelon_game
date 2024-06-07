@@ -94,7 +94,7 @@ class Boules:
 
 class Boule1(Boules):
     def __init__(self, fenetre, centre, space):
-        super().__init__(fenetre, ( centre[0] + self.decalage, centre[1] ), 20, 15, 5, "eris.png", space, 100)
+        super().__init__(fenetre, ( centre[0], centre[1] ), 20, 15, 5, "eris.png", space, 100)
 
 class Boule2(Boules):
     decalage = random.randint(1, 2)
