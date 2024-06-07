@@ -2,6 +2,8 @@ import random
 import pygame
 import pymunk
 import time
+import pygame_widgets
+from pygame_widgets.progressbar import ProgressBar
 
 import boules
 from boules import Boule2, Boule3, Boule4, Boule5, Boule6, Boule7, Boule8, Boule9, Boule10, Boule11
@@ -29,7 +31,7 @@ static_lines = []
 
 space = pymunk.Space()
 space.gravity = (0, -1000)
-space.damping = 0.8
+space.damping = 1
 can_draw_the_gravity_line = False
 can_delete_a_boule = False
 
@@ -239,12 +241,17 @@ rouge_game_over = pygame.Surface(WINDOWSIZE)  # la taille de votre surface
 rouge_game_over.set_alpha(0)  # niveau de transparence global
 rouge_game_over.fill((255, 0, 0))  # ceci remplit toute la surface
 
+progressBar = ProgressBar(window, 900, 500, 200, 40, lambda: score / 100, completedColour=(0, 200, 100), incompletedColour=(255,255,255), curved=True)
+progressBar2 = ProgressBar(window, 900, 400, 200, 40, lambda: score / 100, completedColour=(0, 200, 100), incompletedColour=(255,255,255), curved=True)
 
 while running:
     # Handle events
     if not game_over:
-        for event in pygame.event.get():
+        events = pygame.event.get()
+        for event in events:
+
             if can_draw_the_gravity_line == False and can_delete_a_boule == False:
+
                 if event.type == pygame.QUIT:
                     running = False
 
@@ -337,7 +344,7 @@ while running:
                         bottom_y = shape.body.position.y - shape.radius  # Position en y du bas de la boule
                         if bottom_y > 550:  # Si la boule dépasse une certaine hauteur (par exemple 600 pixels)
                             if body in time_elapsed:
-                                if time.time() - time_elapsed[body] > 0.7:
+                                if time.time() - time_elapsed[body] > 0.6:
                                     rouge_game_over.set_alpha(50)
                                 if time.time() - time_elapsed[body] > 3:
                                     game_over = True
@@ -412,7 +419,7 @@ while running:
                 window.blit(highscore_surface, highscore_rect)
 
 
-
+        pygame_widgets.update(events)
         boutons.draw_restart_button_menu(window, restart_image)
         boutons.draw_quit_button_menu(window, quit_image)
         boutons.draw_podium_button_menu(window, podium_image)
@@ -471,7 +478,8 @@ while running:
         boutons.draw_restart_button(window)
 
 
-        for event in pygame.event.get():
+
+        for event in events:
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
