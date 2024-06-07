@@ -93,12 +93,6 @@ class Boules:
 
 
 class Boule1(Boules):
-    decalage = random.randint(1, 2)
-    if decalage == 1:
-        decalage = 0.01
-    else:
-        declage = -0.01
-
     def __init__(self, fenetre, centre, space):
         super().__init__(fenetre, ( centre[0] + self.decalage, centre[1] ), 20, 15, 5, "eris.png", space, 100)
 
