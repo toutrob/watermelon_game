@@ -24,7 +24,7 @@ quit_image = pygame.image.load('exit-run.png')
 restart_image = pygame.image.load('restart.png')
 podium_image = pygame.image.load('podium.png')
 antigravity_image = pygame.image.load('pomme.png')
-delete_boule_image =pygame.image.load('pomme.png')
+delete_boule_image =pygame.image.load('png-clipart-black-hole-car-black-hole-spiral-rim-thumbnail.png')
 
 static_lines = []
 
@@ -479,13 +479,15 @@ while running:
 
 
 
-        for event in events:
+        for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 if boutons.draw_restart_button(window).collidepoint(mouse_pos):
                     restart_game()  # Redémarrer le jeu si le bouton est cliqué
+
+
 
     clock.tick(60)
 

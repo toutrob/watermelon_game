@@ -1,5 +1,4 @@
 import pygame
-import pymunk
 
 podium_visible = False
 
@@ -36,14 +35,14 @@ def draw_podium_button_menu(window, podium_image):
     return podium_button
 
 def draw_antigravity_button(window, antigravity_image):
-    antigravity_button = pygame.Rect(1000, 550, 40, 40)
+    antigravity_button = pygame.Rect(880, 500, 40, 40)
     antigravity_image = pygame.transform.scale(antigravity_image, (antigravity_button.width, antigravity_button.height))
     image_rect = antigravity_image.get_rect(center=antigravity_button.center)
     window.blit(antigravity_image, image_rect)
     return antigravity_button
 
 def draw_delete_boules(window, delete_boule_image):
-    delete_bouton = pygame.Rect(1000, 400, 40, 40)
+    delete_bouton = pygame.Rect(880, 400, 40, 40)
     delete_boule_image = pygame.transform.scale(delete_boule_image, (delete_bouton.width, delete_bouton.height))
     image_rect = delete_boule_image.get_rect(center=delete_bouton.center)
     window.blit(delete_boule_image, image_rect)
