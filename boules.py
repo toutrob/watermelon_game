@@ -23,7 +23,6 @@ class Boules:
         self.coeff_vitesse = coeff_vitesse
         self.ball_shape = None
 
-
         # Charger le sprite si c'est un chemin d'image
         if isinstance(self.sprite, str):
             self.image = pygame.image.load(self.sprite)
@@ -50,28 +49,20 @@ class Boules:
         alpha = vitesse_angulaire * (1/60)
         self.alpha_all = self.alpha_all + alpha
         ball_pos = int(self.centre_masque.position.x), self.window_size[1] - int(self.centre_masque.position.y)
-        #self.angle = self.centre_masque.angle
-        #angle = body.angle
-        angle_degrees = math.degrees(body1.angle)
-        #print(f"Angle de rotation: {angle_degrees:.2f} degrés")
-        rect = None
+
+        rect_image_a_cliquer = None
         if self.image:
-            #print(f"{vitesse}")
-            #print(f"{vitesse_angulaire}")
-            #print(f"{alpha}")
             rotated_image = pygame.transform.rotate(self.image, - self.alpha_all)
             rect = rotated_image.get_rect(center=ball_pos)
             self.fenetre.blit(rotated_image, rect.topleft)
+            rect_image_a_cliquer = pygame.Rect(ball_pos[0] - (self.rayon/2) - (self.rayon/6), ball_pos[1] - (self.rayon/2) - (self.rayon/6), (self.rayon +round(1/3 * (self.rayon))), (self.rayon + round(1/3 * (self.rayon))))
 
 
 
         else:
-            #print(f"{vitesse}")
-            #print(f"{vitesse_angulaire}")
-            #print(f"{alpha}")
             pygame.draw.circle(self.fenetre, self.sprite, ball_pos, self.rayon)
 
-        return rect
+        return rect_image_a_cliquer
 
 
     def trouver_par_position(cls, x, y):

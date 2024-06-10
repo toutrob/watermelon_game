@@ -418,6 +418,16 @@ while running:
                         p += 1
 
 
+        image_cycle_des_boules = pygame.image.load('Design_sans_titre__3_-removebg-preview.png')
+        rect = image_cycle_des_boules.get_rect(center=(200, 375))
+        window.blit(image_cycle_des_boules, rect.topleft)
+
+        pygame_widgets.update(events)
+        boutons.draw_restart_button_menu(window, restart_image)
+        boutons.draw_quit_button_menu(window, quit_image)
+        boutons.draw_podium_button_menu(window, podium_image)
+        boutons.draw_antigravity_button(window, antigravity_image)
+        boutons.draw_delete_boules(window, delete_boule_image)
 
 
         if boutons.podium_visible:
@@ -435,17 +445,11 @@ while running:
                 window.blit(highscore_surface, highscore_rect)
 
 
-        pygame_widgets.update(events)
-        boutons.draw_restart_button_menu(window, restart_image)
-        boutons.draw_quit_button_menu(window, quit_image)
-        boutons.draw_podium_button_menu(window, podium_image)
-        boutons.draw_antigravity_button(window, antigravity_image)
-        boutons.draw_delete_boules(window, delete_boule_image)
+
+
 
         window.blit(rouge_game_over, (0, 0))  # (0,0) sont les coordonnées en haut à gauche
-        image_cycle_des_boules = pygame.image.load('Design_sans_titre__3_-removebg-preview.png')
-        rect = image_cycle_des_boules.get_rect(center=(200,375))
-        window.blit(image_cycle_des_boules, rect.topleft)
+
 
 
         #print(f"il y a {len(boules.Boules.instances)} boules")
@@ -466,6 +470,7 @@ while running:
         next_boule = police_next_boule.render("NEXT :", True, (0, 0, 0))
         rect_next_boule = next_boule.get_rect(center=(1037, 122))
         window.blit(next_boule, rect_next_boule)
+
 
 
 
