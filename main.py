@@ -19,6 +19,8 @@ pygame.display.set_caption("Watermelon Game")
 highscores = high_score.load_highscores()
 
 pygame.init()
+pygame.mixer.init()
+
 image_de_fond = pygame.image.load("espace watermelon game (2).png")
 quit_image = pygame.image.load('exit-run.png')
 restart_image = pygame.image.load('restart.png')
@@ -28,6 +30,12 @@ delete_boule_image =pygame.image.load('png-clipart-black-hole-car-black-hole-spi
 
 static_lines = []
 
+pygame.mixer.music.load('musique_fond.mp3')
+pygame.mixer.music.play(-1)
+nouvelle_boule = pygame.mixer.Sound("nouvelle_boule.mp3")
+fusion_boule = pygame.mixer.Sound("fusion_boule.mp3")
+ecran_rouge = pygame.mixer.Sound("ecran_rouge.mp3")
+game_over_sound = pygame.mixer.Sound("game_over.mp3")
 
 space = pymunk.Space()
 space.gravity = (0, -1000)
@@ -50,6 +58,8 @@ def restart_game():
     game_over = False
     score = 0
     rouge_game_over.set_alpha(0)
+    game_over_sound.stop()
+    pygame.mixer.music.unpause()
     texte = f"Score : {score}"
     # Supprimer toutes les balles de Pymunk
     for body in space.bodies:
@@ -117,6 +127,7 @@ def collision_callback(arbiter, space, data):
     space.remove(shape1, shape1.body)
     space.remove(shape2, shape2.body)
 
+    fusion_boule.play()
 
     if new_shape_type == 6:
         planete = Boule2(window, (contact_x, contact_y), space)
@@ -271,6 +282,7 @@ while running:
                             fonctions_creation_boule.create_planete(window, space, mouse_position_x, selected_ball_type)
                             selected_ball_type = next_selected_ball_type
                             next_selected_ball_type = random.randint(1, 3)
+                            nouvelle_boule.play()
                             #next_selected_ball_type = 1
 
                         if 320 < mouse_position_x < 420:
@@ -346,6 +358,8 @@ while running:
                             if body in time_elapsed:
                                 if time.time() - time_elapsed[body] > 0.6:
                                     rouge_game_over.set_alpha(50)
+                                    pygame.mixer.music.pause()
+                                    ecran_rouge.play()
                                 if time.time() - time_elapsed[body] > 3:
                                     game_over = True
                             else:
@@ -363,6 +377,8 @@ while running:
                 if shapes_list and shapes_list[0].body.position.y <= 500:
                     del time_elapsed[body]
                     rouge_game_over.set_alpha(0)
+                    ecran_rouge.stop()
+                    pygame.mixer.music.unpause()
 
         if next_selected_ball_type is not None:
             fonctions_creation_boule.next_ball(window, space, next_selected_ball_type)
@@ -455,6 +471,8 @@ while running:
 
 
     else:
+        ecran_rouge.stop()
+        game_over_sound.play()
         window.fill((0, 0, 0))  # Fond noir
         # Afficher le message
         message_surface = police_end.render("GAME OVER", True, (255, 54, 0))
