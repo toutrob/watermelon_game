@@ -397,9 +397,7 @@ while running:
                                 time_elapsed[body] = time.time()
 
                                 # Vous pouvez également ajouter du code pour avertir le joueur ici
-                                print(
-                                    "Attention! Le corps dépasse la limite. Vous avez 3 secondes pour le remettre en dessous.")
-
+                                print("Attention! Le corps dépasse la limite. Vous avez 3 secondes pour le remettre en dessous.")
 
             for body in list(time_elapsed.keys()):
                 # Convertir body.shapes en liste avant d'accéder à son premier élément
