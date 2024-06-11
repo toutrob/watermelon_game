@@ -37,7 +37,9 @@ can_delete_a_boule = False
 
 
 score = 0
+money_pouvoir = 0
 texte = f"Score : {score}"
+texte_money_pouvoir = f"money pouvoir : {money_pouvoir}"
 Next_Bouboule = True
 
 
@@ -450,6 +452,10 @@ while running:
         texte_rect = texte_surface.get_rect(center=(100, 100))
         # Dessiner le texte sur la fenêtre à la position texte_rect
         window.blit(texte_surface, texte_rect)
+
+        money_pouvoir_surface = police_score.render(texte_money_pouvoir, True, (255, 255, 255))
+        texte_money_pouvoir_rect = money_pouvoir_surface.get_rect(center=(1000, 350))
+        window.blit(money_pouvoir_surface, texte_money_pouvoir_rect)
 
         next_boule = police_next_boule.render("NEXT :", True, (0, 0, 0))
         rect_next_boule = next_boule.get_rect(center=(1037, 122))
