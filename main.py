@@ -43,6 +43,8 @@ space.damping = 1
 can_draw_the_gravity_line = False
 can_delete_a_boule = False
 
+ecran_rouge_playing = False
+
 
 score = 0
 money_pouvoir = 0
@@ -361,7 +363,9 @@ while running:
                                 if time.time() - time_elapsed[body] > 0.6:
                                     rouge_game_over.set_alpha(50)
                                     pygame.mixer.music.pause()
-                                    ecran_rouge.play()
+                                    if not ecran_rouge_playing:
+                                        ecran_rouge.play()
+                                        ecran_rouge_playing = True
                                 if time.time() - time_elapsed[body] > 3:
                                     game_over = True
                             else:
@@ -378,6 +382,7 @@ while running:
                     del time_elapsed[body]
                     rouge_game_over.set_alpha(0)
                     ecran_rouge.stop()
+                    ecran_rouge_playing = False
                     pygame.mixer.music.unpause()
 
         if next_selected_ball_type is not None:
@@ -481,6 +486,7 @@ while running:
 
     else:
         ecran_rouge.stop()
+        ecran_rouge_playing = False
         game_over_sound.play()
         window.fill((0, 0, 0))  # Fond noir
         # Afficher le message
