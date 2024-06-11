@@ -52,13 +52,15 @@ Next_Bouboule = True
 
 
 def restart_game():
-    global game_over, score, texte, highscores
+    global game_over, score, texte, highscores,money_pouvoir
     if score > 0:
         highscores.append(score)
         highscores = sorted(highscores, reverse=True)[:5]  # Garder les 5 meilleurs scores
         high_score.save_highscores(highscores)
     game_over = False
     score = 0
+    money_pouvoir = 0
+
     rouge_game_over.set_alpha(0)
     game_over_sound.stop()
     pygame.mixer.music.unpause()
@@ -75,6 +77,8 @@ def restart_game():
 def collision_callback(arbiter, space, data):
     global score  # Utilisation de la variable score globale
     global texte
+    global money_pouvoir
+    global texte_money_pouvoir
 
 
     # Récupère les informations sur les objets en collision
@@ -135,56 +139,68 @@ def collision_callback(arbiter, space, data):
         planete = Boule2(window, (contact_x, contact_y), space)
         planete.gravite()
         score += 1
+        money_pouvoir += 1
 
     elif new_shape_type == 7:
         planete = Boule3(window, (contact_x, contact_y), space)
         planete.gravite()
         score += 3
+        money_pouvoir +=3
 
     elif new_shape_type == 8:
         planete = Boule4(window, (contact_x, contact_y), space)
         planete.gravite()
         score += 6
+        money_pouvoir += 6
 
     elif new_shape_type == 9:
         planete = Boule5(window, (contact_x, contact_y), space)
         planete.gravite()
         score += 10
+        money_pouvoir += 10
 
     elif new_shape_type == 10:
         planete = Boule6(window, (contact_x, contact_y), space)
         planete.gravite()
         score += 15
+        money_pouvoir += 15
 
     elif new_shape_type == 11:
         planete = Boule7(window, (contact_x, contact_y), space)
         planete.gravite()
         score += 21
+        money_pouvoir += 21
 
     elif new_shape_type == 12:
         planete = Boule8(window, (contact_x, contact_y), space)
         planete.gravite()
         score += 28
+        money_pouvoir += 28
 
     elif new_shape_type == 13:
         planete = Boule9(window, (contact_x, contact_y), space)
         planete.gravite()
         score += 36
+        money_pouvoir += 36
 
     elif new_shape_type == 14:
         planete = Boule10(window, (contact_x, contact_y), space)
         planete.gravite()
         score += 45
+        money_pouvoir += 45
 
     elif new_shape_type == 15:
         planete = Boule11(window, (contact_x, contact_y), space)
         planete.gravite()
         score += 55
+        money_pouvoir += 55
     else:
         score += 66
+        money_pouvoir += 66
 
 
     texte = f"Score : {score}"
+    #texte_money_pouvoir = f" money pouvoir : {money_pouvoir}"
 
 
 
@@ -254,8 +270,8 @@ rouge_game_over = pygame.Surface(WINDOWSIZE)  # la taille de votre surface
 rouge_game_over.set_alpha(0)  # niveau de transparence global
 rouge_game_over.fill((255, 0, 0))  # ceci remplit toute la surface
 
-progressBar = ProgressBar(window, 900, 500, 200, 40, lambda: score / 100, completedColour=(0, 200, 100), incompletedColour=(255,255,255), curved=True)
-progressBar2 = ProgressBar(window, 900, 400, 200, 40, lambda: score / 100, completedColour=(0, 200, 100), incompletedColour=(255,255,255), curved=True)
+progressBar = ProgressBar(window, 900, 500, 200, 40, lambda: money_pouvoir / 400, completedColour=(0, 200, 100), incompletedColour=(255,255,255), curved=True)
+progressBar2 = ProgressBar(window, 900, 400, 200, 40, lambda: money_pouvoir / 750, completedColour=(0, 200, 100), incompletedColour=(255,255,255), curved=True)
 
 while running:
     # Handle events
@@ -314,13 +330,25 @@ while running:
                     if boutons.draw_podium_button_menu(window, podium_image).collidepoint(mouse_pos):
                         boutons.toggle_podium()
                     if boutons.draw_antigravity_button(window, antigravity_image).collidepoint(mouse_pos):
-                        space.gravity = boutons.toggle_antigravity(window, space.gravity)
-                        shape4 = pymunk.Segment(space.static_body, (400, 550), (800, 550), 0)
-                        shape4.friction = 0.5  # Définir le coefficient de frottement
-                        space.add(shape4)
-                        can_draw_the_gravity_line = True
+                        if(money_pouvoir >= 400):
+                            space.gravity = boutons.toggle_antigravity(window, space.gravity)
+                            shape4 = pymunk.Segment(space.static_body, (400, 550), (800, 550), 0)
+                            shape4.friction = 0.5  # Définir le coefficient de frottement
+                            space.add(shape4)
+                            can_draw_the_gravity_line = True
+                            money_pouvoir -= 400
+                            #texte_money_pouvoir = f"money pouvoir : {money_pouvoir}"
+
                     if boutons.draw_delete_boules(window, delete_boule_image).collidepoint(mouse_pos):
-                        can_delete_a_boule = True
+                        if(money_pouvoir >= 750):
+                            can_delete_a_boule = True
+                            money_pouvoir -= 750
+                            #texte_money_pouvoir = f"money pouvoir : {money_pouvoir}"
+
+
+
+
+
 
                     elif boutons.draw_quit_button_menu(window, quit_image).collidepoint(mouse_pos):
                         exit()
@@ -469,9 +497,9 @@ while running:
         # Dessiner le texte sur la fenêtre à la position texte_rect
         window.blit(texte_surface, texte_rect)
 
-        money_pouvoir_surface = police_score.render(texte_money_pouvoir, True, (255, 255, 255))
-        texte_money_pouvoir_rect = money_pouvoir_surface.get_rect(center=(1000, 350))
-        window.blit(money_pouvoir_surface, texte_money_pouvoir_rect)
+        #money_pouvoir_surface = police_score.render(texte_money_pouvoir, True, (255, 255, 255))
+        #texte_money_pouvoir_rect = money_pouvoir_surface.get_rect(center=(1000, 350))
+        #window.blit(money_pouvoir_surface, texte_money_pouvoir_rect)
 
         next_boule = police_next_boule.render("NEXT :", True, (0, 0, 0))
         rect_next_boule = next_boule.get_rect(center=(1037, 122))
