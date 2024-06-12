@@ -47,9 +47,8 @@ ecran_rouge_playing = False
 
 
 score = 0
-money_pouvoir = 0
+money_pouvoir = 1000
 texte = f"Score : {score}"
-texte_money_pouvoir = f"money pouvoir : {money_pouvoir}"
 Next_Bouboule = True
 
 
@@ -202,7 +201,7 @@ def collision_callback(arbiter, space, data):
 
 
     texte = f"Score : {score}"
-    #texte_money_pouvoir = f" money pouvoir : {money_pouvoir}"
+
 
 
 
@@ -329,8 +328,10 @@ while running:
                     mouse_pos = pygame.mouse.get_pos()
                     if boutons.draw_restart_button_menu(window, restart_image).collidepoint(mouse_pos):
                         restart_game()  # Redémarrer le jeu si le bouton est cliqué
+
                     if boutons.draw_podium_button_menu(window, podium_image).collidepoint(mouse_pos):
                         boutons.toggle_podium()
+
                     if boutons.draw_antigravity_button(window, antigravity_image).collidepoint(mouse_pos):
                         if(money_pouvoir >= 400):
                             space.gravity = boutons.toggle_antigravity(window, space.gravity)
@@ -339,13 +340,12 @@ while running:
                             space.add(shape4)
                             can_draw_the_gravity_line = True
                             money_pouvoir -= 400
-                            #texte_money_pouvoir = f"money pouvoir : {money_pouvoir}"
+
 
                     if boutons.draw_delete_boules(window, delete_boule_image).collidepoint(mouse_pos):
                         if(money_pouvoir >= 750):
                             can_delete_a_boule = True
                             money_pouvoir -= 750
-                            #texte_money_pouvoir = f"money pouvoir : {money_pouvoir}"
 
 
 
@@ -438,6 +438,16 @@ while running:
                 temps_sans_gravite = time.time()
 
         if can_delete_a_boule == True :
+            police_end_smaller = pygame.font.Font(None, 20)
+
+            message_surface_delete_a_boule = police_end_smaller.render("Vous voulez utilisez un trou noir, il va supprimer une boule.", True, (255, 255, 255))
+            text_rect_delete_a_boule = message_surface_delete_a_boule.get_rect(center=(1000, 350))  # Centrer le texte
+            window.blit(message_surface_delete_a_boule, text_rect_delete_a_boule)
+
+            message_surface_delete_a_boule2 = police_end_smaller.render("Attention, choisissez bien !", True, (255, 255, 255))
+            text_rect_delete_a_boule2 = message_surface_delete_a_boule.get_rect(center=(1000, 365))  # Centrer le texte
+            window.blit(message_surface_delete_a_boule2, text_rect_delete_a_boule2)
+
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pos = pygame.mouse.get_pos()
