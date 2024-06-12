@@ -32,10 +32,14 @@ static_lines = []
 
 pygame.mixer.music.load('musique_fond.mp3')
 pygame.mixer.music.play(-1)
-nouvelle_boule = pygame.mixer.Sound("nouvelle_boule.mp3")
+nouvelle_boule1 = pygame.mixer.Sound("nouvelle_boule1.mp3")
+nouvelle_boule2 = pygame.mixer.Sound("nouvelle_boule2.mp3")
+nouvelle_boule3 = pygame.mixer.Sound("nouvelle_boule3.mp3")
 fusion_boule = pygame.mixer.Sound("fusion_boule.mp3")
 ecran_rouge = pygame.mixer.Sound("ecran_rouge.mp3")
 game_over_sound = pygame.mixer.Sound("game_over.mp3")
+antigravity_sound = pygame.mixer.Sound("antigravity.mp3")
+delete_boules_sound = pygame.mixer.Sound("delete_boules.mp3")
 
 space = pymunk.Space()
 space.gravity = (0, -1000)
@@ -299,9 +303,14 @@ while running:
                         mouse_position_x = pygame.mouse.get_pos()[0]
                         if 420 <= mouse_position_x <= 780:
                             fonctions_creation_boule.create_planete(window, space, mouse_position_x, selected_ball_type)
+                            if selected_ball_type == 1:
+                                nouvelle_boule1.play()
+                            elif selected_ball_type == 3:
+                                nouvelle_boule3.play()
+                            else:
+                                nouvelle_boule2.play()
                             selected_ball_type = next_selected_ball_type
                             next_selected_ball_type = random.randint(1, 3)
-                            nouvelle_boule.play()
                             #next_selected_ball_type = 1
 
                         if 320 < mouse_position_x < 420:
@@ -334,7 +343,7 @@ while running:
 
                     if boutons.draw_antigravity_button(window, antigravity_image).collidepoint(mouse_pos):
                         if(money_pouvoir >= 400):
-                            space.gravity = boutons.toggle_antigravity(window, space.gravity)
+                            space.gravity = boutons.toggle_antigravity(window, space.gravity, antigravity_sound)
                             shape4 = pymunk.Segment(space.static_body, (400, 550), (800, 550), 0)
                             shape4.friction = 0.5  # Définir le coefficient de frottement
                             space.add(shape4)
@@ -454,6 +463,7 @@ while running:
                     p = 0
                     for shape in boules.Boules.instances:
                         if shape.dessin(shape.centre_masque).collidepoint(mouse_pos) == True:
+                            delete_boules_sound.play()
                             space.remove(shape.ball_shape, shape.centre_masque)
                             del boules.Boules.instances[p]
                             print("on a atteint ce point")

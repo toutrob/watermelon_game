@@ -53,8 +53,9 @@ def toggle_podium():
     global podium_visible
     podium_visible = not podium_visible
 
-def toggle_antigravity(window, gravity):
+def toggle_antigravity(window, gravity, antigravity_sound):
     gravity = (0, 1000)
+    antigravity_sound.play()
     return gravity
 
 def delete_antigravity_lines(space, forme_a_enlever):
