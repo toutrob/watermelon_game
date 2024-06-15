@@ -34,6 +34,13 @@ def draw_podium_button_menu(window, podium_image):
     window.blit(podium_image, image_rect)
     return podium_button
 
+def draw_sound_button_menu(window, sound_image):
+    sound_button = pygame.Rect(200, 20, 40, 40)  # Position et taille du bouton (en haut à gauche)
+    sound_image = pygame.transform.scale(sound_image, (sound_button.width, sound_button.height))
+    image_rect = sound_image.get_rect(center=sound_button.center)
+    window.blit(sound_image, image_rect)
+    return sound_button
+
 def draw_antigravity_button(window, antigravity_image):
     antigravity_button = pygame.Rect(880, 500, 40, 40)
     antigravity_image = pygame.transform.scale(antigravity_image, (antigravity_button.width, antigravity_button.height))
