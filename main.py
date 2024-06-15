@@ -6,7 +6,6 @@ import pygame_widgets
 from pygame_widgets.progressbar import ProgressBar
 
 import boules
-import music
 from boules import Boule2, Boule3, Boule4, Boule5, Boule6, Boule7, Boule8, Boule9, Boule10, Boule11
 import boutons
 import fonctions_creation_boule
