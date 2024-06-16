@@ -26,21 +26,27 @@ image_de_fond = pygame.image.load("espace watermelon game (2).png")
 quit_image = pygame.image.load('exit-run.png')
 restart_image = pygame.image.load('restart.png')
 podium_image = pygame.image.load('podium.png')
+sound_image = pygame.image.load('music_off.png')
 antigravity_image = pygame.image.load('pomme.png')
 delete_boule_image =pygame.image.load('png-clipart-black-hole-car-black-hole-spiral-rim-thumbnail.png')
 
 
 pygame.mixer.music.load('musique_fond.mp3')
-fusion_boule = pygame.mixer.Sound("fusion_boule.mp3")
 pygame.mixer.music.play(-1)
-nouvelle_boule = pygame.mixer.Sound("nouvelle_boule.mp3")
+nouvelle_boule1 = pygame.mixer.Sound("nouvelle_boule1.mp3")
+nouvelle_boule2 = pygame.mixer.Sound("nouvelle_boule2.mp3")
+nouvelle_boule3 = pygame.mixer.Sound("nouvelle_boule3.mp3")
+fusion_boule = pygame.mixer.Sound("fusion_boule.mp3")
 ecran_rouge = pygame.mixer.Sound("ecran_rouge.mp3")
 game_over_sound = pygame.mixer.Sound("game_over.mp3")
+antigravity_sound = pygame.mixer.Sound("antigravity.mp3")
+delete_boules_sound = pygame.mixer.Sound("delete_boules.mp3")
 
 space = pymunk.Space()
 space.gravity = (0, -1000)
 space.damping = 1
 
+music_info = True
 
 def restart_game():
     if etat_du_jeu.score > 0:
@@ -53,7 +59,9 @@ def restart_game():
 
     rouge_game_over.set_alpha(0)
     game_over_sound.stop()
-    pygame.mixer.music.unpause()
+    if music_info:
+        pygame.mixer.music.unpause()
+
     etat_du_jeu.texte = f"Score : {etat_du_jeu.score}"
     # Supprimer toutes les balles de Pymunk
     for body in space.bodies:
@@ -163,9 +171,15 @@ while etat_du_jeu.running:
                         mouse_position_x = pygame.mouse.get_pos()[0]
                         if 420 <= mouse_position_x <= 780:
                             fonctions_creation_boule.create_planete(window, space, mouse_position_x, selected_ball_type)
+                            if selected_ball_type == 1:
+                                nouvelle_boule1.play()
+                            elif selected_ball_type == 3:
+                                nouvelle_boule3.play()
+                            else:
+                                nouvelle_boule2.play()
                             selected_ball_type = etat_du_jeu.next_selected_ball_type
                             etat_du_jeu.next_selected_ball_type = random.randint(1, 3)
-                            nouvelle_boule.play()
+                            #next_selected_ball_type = 1
 
                         if 320 < mouse_position_x < 420:
                             fonctions_creation_boule.create_planete(window, space, 420, selected_ball_type)
@@ -195,9 +209,17 @@ while etat_du_jeu.running:
                     if boutons.draw_podium_button_menu(window, podium_image).collidepoint(mouse_pos):
                         boutons.toggle_podium()
 
+                    if boutons.draw_sound_button_menu(window, sound_image).collidepoint(mouse_pos):
+                        if music_info == True:
+                            pygame.mixer.music.pause()
+                            music_info = False
+                        else:
+                            pygame.mixer.music.unpause()
+                            music_info = True
+
                     if boutons.draw_antigravity_button(window, antigravity_image).collidepoint(mouse_pos):
                         if(etat_du_jeu.money_pouvoir >= 400):
-                            space.gravity = boutons.toggle_antigravity(window, space.gravity)
+                            space.gravity = boutons.toggle_antigravity(window, space.gravity, antigravity_sound)
                             shape4 = pymunk.Segment(space.static_body, (400, 550), (800, 550), 0)
                             shape4.friction = 0.5  # Définir le coefficient de frottement
                             space.add(shape4)
@@ -269,12 +291,13 @@ while etat_du_jeu.running:
             for body in list(time_elapsed.keys()):
                 # Convertir body.shapes en liste avant d'accéder à son premier élément
                 shapes_list = list(body.shapes)
-                if shapes_list and shapes_list[0].body.position.y <= 500:
+                if shapes_list and shapes_list[0].body.position.y - shapes_list[0].radius <= 500:
                     del time_elapsed[body]
                     rouge_game_over.set_alpha(0)
                     ecran_rouge.stop()
                     etat_du_jeu.ecran_rouge_playing = False
-                    pygame.mixer.music.unpause()
+                    if music_info:
+                        pygame.mixer.music.unpause()
 
         if etat_du_jeu.next_selected_ball_type is not None:
             fonctions_creation_boule.next_ball(window, space, etat_du_jeu.next_selected_ball_type)
@@ -317,6 +340,7 @@ while etat_du_jeu.running:
                     p = 0
                     for shape in boules.Boules.instances:
                         if shape.dessin(shape.centre_masque).collidepoint(mouse_pos) == True:
+                            delete_boules_sound.play()
                             space.remove(shape.ball_shape, shape.centre_masque)
                             del boules.Boules.instances[p]
                             etat_du_jeu.can_delete_a_boule = False
@@ -333,6 +357,7 @@ while etat_du_jeu.running:
         boutons.draw_restart_button_menu(window, restart_image)
         boutons.draw_quit_button_menu(window, quit_image)
         boutons.draw_podium_button_menu(window, podium_image)
+        boutons.draw_sound_button_menu(window, sound_image)
         boutons.draw_antigravity_button(window, antigravity_image)
         boutons.draw_delete_boules(window, delete_boule_image)
 
