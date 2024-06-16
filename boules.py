@@ -1,7 +1,5 @@
 import pygame
 import pymunk
-import math
-
 class Boules:
     instances = []
 
