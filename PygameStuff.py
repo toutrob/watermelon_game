@@ -28,9 +28,9 @@ class PygameStuff:
         self.rouge_game_over.set_alpha(0)  # niveau de transparence global
         self.rouge_game_over.fill((255, 0, 0))  # ceci remplit toute la surface
 
-        self.progressBar = ProgressBar(self.window, 900, 500, 200, 40, lambda: etat_du_jeu.money_pouvoir / 400, completedColour=(0, 200, 100), incompletedColour=(255,255,255), curved=True)
+        self.progressBar = ProgressBar(self.window, 900, 500, 200, 40, lambda: etat_du_jeu.money_pouvoir / 400, completedColour=(0, 75, 255), incompletedColour=(255,255,255), curved=True)
         # barre de chargement du pouvoir trou noir
-        self.progressBar2 = ProgressBar(self.window, 900, 400, 200, 40, lambda: etat_du_jeu.money_pouvoir / 750, completedColour=(0, 200, 100), incompletedColour=(255,255,255), curved=True)
+        self.progressBar2 = ProgressBar(self.window, 900, 400, 200, 40, lambda: etat_du_jeu.money_pouvoir / 750, completedColour=(0, 75, 255), incompletedColour=(255,255,255), curved=True)
         # barre de chargement du pouvoir 0 gravité
 
 
