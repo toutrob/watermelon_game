@@ -1,10 +1,9 @@
 import boules
 from boules import Boule2, Boule3, Boule4, Boule5, Boule6, Boule7, Boule8, Boule9, Boule10, Boule11
-import pygame
 
 
 
-def collision_callback(arbiter, space, data, window,etat_du_jeu, affichage_pygame):
+def collision_callback(arbiter, space, data, window,game_state, pygame_handler):
     # Récupère les informations sur les objets en collision
     shape1, shape2 = arbiter.shapes
     new_shape_type = shape1.collision_type + 1
@@ -17,19 +16,19 @@ def collision_callback(arbiter, space, data, window,etat_du_jeu, affichage_pygam
         # Accède aux coordonnées du point de contact
         contact_x, contact_y = point.point_a
 
-    centre_shape1 = shape1.body.position
-    centre_shape2 = shape2.body.position
+    center_shape1 = shape1.body.position
+    center_shape2 = shape2.body.position
 
     i = 0
     j = 0
 
     for bouboules in boules.Boules.instances:
-        if bouboules.trouver_centre() == centre_shape1:
+        if bouboules.find_center() == center_shape1:
             del boules.Boules.instances[i]
 
             for bouboules2 in boules.Boules.instances:
 
-                if bouboules2.trouver_centre() == centre_shape2:
+                if bouboules2.find_center() == center_shape2:
                     del boules.Boules.instances[j]
 
                 j += 1
@@ -45,71 +44,71 @@ def collision_callback(arbiter, space, data, window,etat_du_jeu, affichage_pygam
     space.remove(shape1, shape1.body)
     space.remove(shape2, shape2.body)
 
-    affichage_pygame.fusion_boule.play()
+    pygame_handler.fusion_boule.play()
 
     if new_shape_type == 6:
-        planete = Boule2(window, (contact_x, contact_y), space)
-        planete.gravite()
-        etat_du_jeu.score += 1
-        etat_du_jeu.money_pouvoir += 1
+        planet = Boule2(window, (contact_x, contact_y), space)
+        planet.gravity()
+        game_state.score += 1
+        game_state.money_power += 1
 
     elif new_shape_type == 7:
-        planete = Boule3(window, (contact_x, contact_y), space)
-        planete.gravite()
-        etat_du_jeu.score += 3
-        etat_du_jeu.money_pouvoir += 3
+        planet = Boule3(window, (contact_x, contact_y), space)
+        planet.gravity()
+        game_state.score += 3
+        game_state.money_power += 3
 
     elif new_shape_type == 8:
-        planete = Boule4(window, (contact_x, contact_y), space)
-        planete.gravite()
-        etat_du_jeu.score += 6
-        etat_du_jeu.money_pouvoir += 6
+        planet = Boule4(window, (contact_x, contact_y), space)
+        planet.gravity()
+        game_state.score += 6
+        game_state.money_power += 6
 
     elif new_shape_type == 9:
-        planete = Boule5(window, (contact_x, contact_y), space)
-        planete.gravite()
-        etat_du_jeu.score += 10
-        etat_du_jeu.money_pouvoir += 10
+        planet = Boule5(window, (contact_x, contact_y), space)
+        planet.gravity()
+        game_state.score += 10
+        game_state.money_power += 10
 
     elif new_shape_type == 10:
-        planete = Boule6(window, (contact_x, contact_y), space)
-        planete.gravite()
-        etat_du_jeu.score += 15
-        etat_du_jeu.money_pouvoir += 15
+        planet = Boule6(window, (contact_x, contact_y), space)
+        planet.gravity()
+        game_state.score += 15
+        game_state.money_power += 15
 
     elif new_shape_type == 11:
-        planete = Boule7(window, (contact_x, contact_y), space)
-        planete.gravite()
-        etat_du_jeu.score += 21
-        etat_du_jeu.money_pouvoir += 21
+        planet = Boule7(window, (contact_x, contact_y), space)
+        planet.gravity()
+        game_state.score += 21
+        game_state.money_power += 21
 
     elif new_shape_type == 12:
-        planete = Boule8(window, (contact_x, contact_y), space)
-        planete.gravite()
-        etat_du_jeu.score += 28
-        etat_du_jeu.money_pouvoir += 28
+        planet = Boule8(window, (contact_x, contact_y), space)
+        planet.gravity()
+        game_state.score += 28
+        game_state.money_power += 28
 
     elif new_shape_type == 13:
-        planete = Boule9(window, (contact_x, contact_y), space)
-        planete.gravite()
-        etat_du_jeu.score += 36
-        etat_du_jeu.money_pouvoir += 36
+        planet = Boule9(window, (contact_x, contact_y), space)
+        planet.gravity()
+        game_state.score += 36
+        game_state.money_power += 36
 
     elif new_shape_type == 14:
-        planete = Boule10(window, (contact_x, contact_y), space)
-        planete.gravite()
-        etat_du_jeu.score += 45
-        etat_du_jeu.money_pouvoir += 45
+        planet = Boule10(window, (contact_x, contact_y), space)
+        planet.gravity()
+        game_state.score += 45
+        game_state.money_power += 45
 
     elif new_shape_type == 15:
-        planete = Boule11(window, (contact_x, contact_y), space)
-        planete.gravite()
-        etat_du_jeu.score += 55
-        etat_du_jeu.money_pouvoir += 55
+        planet = Boule11(window, (contact_x, contact_y), space)
+        planet.gravity()
+        game_state.score += 55
+        game_state.money_power += 55
     else:
-        etat_du_jeu.score += 66
-        etat_du_jeu.money_pouvoir += 66
+        game_state.score += 66
+        game_state.money_power += 66
 
-    etat_du_jeu.texte = f"Score : {etat_du_jeu.score}"
+    game_state.texte = f"Score : {game_state.score}"
 
     return True  # Retourne True pour permettre à la collision de se produire

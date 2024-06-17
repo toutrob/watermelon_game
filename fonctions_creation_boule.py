@@ -20,7 +20,7 @@ def create_planete(window, space, position_x, ball_type):
         planete = Boule3(window, (position_x + decalage, 650), space)
     else:
         planete = 0
-    planete.gravite()
+    planete.gravity()
 
 def create_preview_ball(window, space, mouse_pos, ball_type, Next_Bouboule):
     sprite1 = 'eris.png'
