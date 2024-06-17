@@ -68,7 +68,3 @@ def next_ball(window, space, next_ball_type):
 
     else:
         pygame.draw.circle(window, (0, 0, 0), (1037, 187), 10)
-
-def derniere_boule(Next_boule):
-    derniere_boule1 = Next_boule
-    return derniere_boule1

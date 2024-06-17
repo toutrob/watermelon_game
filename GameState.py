@@ -1,4 +1,5 @@
 import high_score
+import random
 
 class GameState:
     def __init__(self):
@@ -25,6 +26,9 @@ class GameState:
         self.ecran_rouge_playing = False
         #constante gérant si l'ecran rouge de game over imminent doit rester activée
 
+        self.selected_ball_type = random.randint(1, 3)  # Choix aléatoire d'un type de boule
+
+
         self.next_Bouboule = True
         #constante gérant l'apparition de la boule dans les airs
 
@@ -41,3 +45,10 @@ class GameState:
         self.can_create_planete = True
         #permet de dire si une planète peut etre créer ou non
         #permet de set-up le premier type de boule
+
+        self.music_info = True
+        #permet de savoir si la musique de fond principale doit être jouée ou non
+
+        self.time_elapsed = {}
+        #créer une liste afin de stocker le temps écoulé dedans, utilisé pour l'écran rouge ou les pouvoirs
+

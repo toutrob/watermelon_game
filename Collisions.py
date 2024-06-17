@@ -4,7 +4,7 @@ import pygame
 
 
 
-def collision_callback(arbiter, space, data, window,etat_du_jeu):
+def collision_callback(arbiter, space, data, window,etat_du_jeu, affichage_pygame):
     # Récupère les informations sur les objets en collision
     shape1, shape2 = arbiter.shapes
     new_shape_type = shape1.collision_type + 1
@@ -45,7 +45,7 @@ def collision_callback(arbiter, space, data, window,etat_du_jeu):
     space.remove(shape1, shape1.body)
     space.remove(shape2, shape2.body)
 
-    #fusion_boule.play()
+    affichage_pygame.fusion_boule.play()
 
     if new_shape_type == 6:
         planete = Boule2(window, (contact_x, contact_y), space)

@@ -3,50 +3,27 @@ import pygame
 import pymunk
 import time
 import pygame_widgets
-from pygame_widgets.progressbar import ProgressBar
 import Collisions
+import Physic
 import boules
 import boutons
 import fonctions_creation_boule
 import high_score
 import GameState
+import PygameStuff
 
 
 etat_du_jeu = GameState.GameState()
-
-
-WINDOWSIZE = (1200, 700)
-window = pygame.display.set_mode(WINDOWSIZE)
-pygame.display.set_caption("Watermelon Game")
+affichage_pygame = PygameStuff.PygameStuff(etat_du_jeu)
+espace_physique = Physic.Physic()
 
 pygame.init()
-pygame.mixer.init()
 
-image_de_fond = pygame.image.load("espace watermelon game (2).png")
-quit_image = pygame.image.load('exit-run.png')
-restart_image = pygame.image.load('restart.png')
-podium_image = pygame.image.load('podium.png')
-sound_image = pygame.image.load('music_off.png')
-antigravity_image = pygame.image.load('pomme.png')
-delete_boule_image =pygame.image.load('png-clipart-black-hole-car-black-hole-spiral-rim-thumbnail.png')
-
-
-pygame.mixer.music.load('musique_fond.mp3')
-pygame.mixer.music.play(-1)
-nouvelle_boule1 = pygame.mixer.Sound("nouvelle_boule1.mp3")
-nouvelle_boule2 = pygame.mixer.Sound("nouvelle_boule2.mp3")
-nouvelle_boule3 = pygame.mixer.Sound("nouvelle_boule3.mp3")
-fusion_boule = pygame.mixer.Sound("fusion_boule.mp3")
-ecran_rouge = pygame.mixer.Sound("ecran_rouge.mp3")
-game_over_sound = pygame.mixer.Sound("game_over.mp3")
-antigravity_sound = pygame.mixer.Sound("antigravity.mp3")
-delete_boules_sound = pygame.mixer.Sound("delete_boules.mp3")
 
 space = pymunk.Space()
 space.gravity = (0, -1000)
 space.damping = 1
 
-music_info = True
 
 def restart_game():
     if etat_du_jeu.score > 0:
@@ -57,9 +34,9 @@ def restart_game():
     etat_du_jeu.score = 0
     etat_du_jeu.money_pouvoir = 0
 
-    rouge_game_over.set_alpha(0)
-    game_over_sound.stop()
-    if music_info:
+    affichage_pygame.rouge_game_over.set_alpha(0)
+    affichage_pygame.game_over_sound.stop()
+    if etat_du_jeu.music_info:
         pygame.mixer.music.unpause()
 
     etat_du_jeu.texte = f"Score : {etat_du_jeu.score}"
@@ -76,37 +53,37 @@ def restart_game():
 
 # Ajout du gestionnaire de collision
 handler = space.add_collision_handler(5, 5)  # Collision entre les objets de type 5
-handler.begin = lambda arbiter, space, data: Collisions.collision_callback(arbiter, space, data, window,etat_du_jeu)
+handler.begin = lambda arbiter, space, data: Collisions.collision_callback(arbiter, space, data, affichage_pygame.window,etat_du_jeu, affichage_pygame)
 
 handler2 = space.add_collision_handler(6, 6)
-handler2.begin = lambda arbiter, space, data: Collisions.collision_callback(arbiter, space, data, window,etat_du_jeu)
+handler2.begin = lambda arbiter, space, data: Collisions.collision_callback(arbiter, space, data, affichage_pygame.window,etat_du_jeu, affichage_pygame)
 
 handler3 = space.add_collision_handler(7, 7)
-handler3.begin = lambda arbiter, space, data: Collisions.collision_callback(arbiter, space, data, window,etat_du_jeu)
+handler3.begin = lambda arbiter, space, data: Collisions.collision_callback(arbiter, space, data, affichage_pygame.window,etat_du_jeu, affichage_pygame)
 
 handler4 = space.add_collision_handler(8, 8)
-handler4.begin = lambda arbiter, space, data: Collisions.collision_callback(arbiter, space, data, window,etat_du_jeu)
+handler4.begin = lambda arbiter, space, data: Collisions.collision_callback(arbiter, space, data, affichage_pygame.window,etat_du_jeu, affichage_pygame)
 
 handler5 = space.add_collision_handler(9, 9)
-handler5.begin = lambda arbiter, space, data: Collisions.collision_callback(arbiter, space, data, window,etat_du_jeu)
+handler5.begin = lambda arbiter, space, data: Collisions.collision_callback(arbiter, space, data, affichage_pygame.window,etat_du_jeu, affichage_pygame)
 
 handler6 = space.add_collision_handler(10, 10)
-handler6.begin = lambda arbiter, space, data: Collisions.collision_callback(arbiter, space, data, window,etat_du_jeu)
+handler6.begin = lambda arbiter, space, data: Collisions.collision_callback(arbiter, space, data, affichage_pygame.window,etat_du_jeu, affichage_pygame)
 
 handler7 = space.add_collision_handler(11, 11)
-handler7.begin = lambda arbiter, space, data: Collisions.collision_callback(arbiter, space, data, window,etat_du_jeu)
+handler7.begin = lambda arbiter, space, data: Collisions.collision_callback(arbiter, space, data, affichage_pygame.window,etat_du_jeu, affichage_pygame)
 
 handler8 = space.add_collision_handler(12, 12)
-handler8.begin = lambda arbiter, space, data: Collisions.collision_callback(arbiter, space, data, window,etat_du_jeu)
+handler8.begin = lambda arbiter, space, data: Collisions.collision_callback(arbiter, space, data, affichage_pygame.window,etat_du_jeu, affichage_pygame)
 
 handler9 = space.add_collision_handler(13, 13)
-handler9.begin = lambda arbiter, space, data: Collisions.collision_callback(arbiter, space, data, window,etat_du_jeu)
+handler9.begin = lambda arbiter, space, data: Collisions.collision_callback(arbiter, space, data, affichage_pygame.window,etat_du_jeu, affichage_pygame)
 
 handler10 = space.add_collision_handler(14, 14)
-handler10.begin = lambda arbiter, space, data: Collisions.collision_callback(arbiter, space, data, window,etat_du_jeu)
+handler10.begin = lambda arbiter, space, data: Collisions.collision_callback(arbiter, space, data, affichage_pygame.window,etat_du_jeu, affichage_pygame)
 
 handler11 = space.add_collision_handler(15, 15)
-handler11.begin = lambda arbiter, space, data: Collisions.collision_callback(arbiter, space, data, window,etat_du_jeu)
+handler11.begin = lambda arbiter, space, data: Collisions.collision_callback(arbiter, space, data, affichage_pygame.window,etat_du_jeu, affichage_pygame)
 
 
 
@@ -127,24 +104,8 @@ space.add(shape3)
 
 shape4 = None
 
-
-selected_ball_type = random.randint(1, 3)  # Choix aléatoire d'un type de boule
-
-police_score = pygame.font.SysFont('nirmala ui', 36)
-police_score_menu = pygame.font.SysFont('nirmala ui', 50)
-police_next_boule = pygame.font.SysFont('nirmala ui', 18)
-police_end = pygame.font.SysFont('adlam display', 70)
-
-
-time_elapsed = {}
 clock = pygame.time.Clock()
 
-rouge_game_over = pygame.Surface(WINDOWSIZE)  # la taille de votre surface
-rouge_game_over.set_alpha(0)  # niveau de transparence global
-rouge_game_over.fill((255, 0, 0))  # ceci remplit toute la surface
-
-progressBar = ProgressBar(window, 900, 500, 200, 40, lambda: etat_du_jeu.money_pouvoir / 400, completedColour=(0, 200, 100), incompletedColour=(255,255,255), curved=True)
-progressBar2 = ProgressBar(window, 900, 400, 200, 40, lambda: etat_du_jeu.money_pouvoir / 750, completedColour=(0, 200, 100), incompletedColour=(255,255,255), curved=True)
 
 while etat_du_jeu.running:
     # Handle events
@@ -170,26 +131,26 @@ while etat_du_jeu.running:
                     if etat_du_jeu.can_create_planete == True:
                         mouse_position_x = pygame.mouse.get_pos()[0]
                         if 420 <= mouse_position_x <= 780:
-                            fonctions_creation_boule.create_planete(window, space, mouse_position_x, selected_ball_type)
-                            if selected_ball_type == 1:
-                                nouvelle_boule1.play()
-                            elif selected_ball_type == 3:
-                                nouvelle_boule3.play()
+                            fonctions_creation_boule.create_planete(affichage_pygame.window, space, mouse_position_x, etat_du_jeu.selected_ball_type)
+                            if etat_du_jeu.selected_ball_type == 1:
+                                affichage_pygame.nouvelle_boule1.play()
+                            elif etat_du_jeu.selected_ball_type == 3:
+                                affichage_pygame.nouvelle_boule3.play()
                             else:
-                                nouvelle_boule2.play()
-                            selected_ball_type = etat_du_jeu.next_selected_ball_type
+                                affichage_pygame.nouvelle_boule2.play()
+                            etat_du_jeu.selected_ball_type = etat_du_jeu.next_selected_ball_type
                             etat_du_jeu.next_selected_ball_type = random.randint(1, 3)
                             #next_selected_ball_type = 1
 
                         if 320 < mouse_position_x < 420:
-                            fonctions_creation_boule.create_planete(window, space, 420, selected_ball_type)
-                            selected_ball_type = etat_du_jeu.next_selected_ball_type
+                            fonctions_creation_boule.create_planete(affichage_pygame.window, space, 420, etat_du_jeu.selected_ball_type)
+                            etat_du_jeu.selected_ball_type = etat_du_jeu.next_selected_ball_type
                             etat_du_jeu.next_selected_ball_type = random.randint(1, 3)
 
 
                         if 880 > mouse_position_x > 780:
-                            fonctions_creation_boule.create_planete(window, space, 780, selected_ball_type)
-                            selected_ball_type = etat_du_jeu.next_selected_ball_type
+                            fonctions_creation_boule.create_planete(affichage_pygame.window, space, 780, etat_du_jeu.selected_ball_type)
+                            etat_du_jeu.selected_ball_type = etat_du_jeu.next_selected_ball_type
                             etat_du_jeu.next_selected_ball_type = random.randint(1, 3)
 
 
@@ -203,23 +164,23 @@ while etat_du_jeu.running:
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pos = pygame.mouse.get_pos()
-                    if boutons.draw_restart_button_menu(window, restart_image).collidepoint(mouse_pos):
+                    if boutons.draw_restart_button_menu(affichage_pygame.window, affichage_pygame.restart_image).collidepoint(mouse_pos):
                         restart_game()  # Redémarrer le jeu si le bouton est cliqué
 
-                    if boutons.draw_podium_button_menu(window, podium_image).collidepoint(mouse_pos):
+                    if boutons.draw_podium_button_menu(affichage_pygame.window, affichage_pygame.podium_image).collidepoint(mouse_pos):
                         boutons.toggle_podium()
 
-                    if boutons.draw_sound_button_menu(window, sound_image).collidepoint(mouse_pos):
-                        if music_info == True:
+                    if boutons.draw_sound_button_menu(affichage_pygame.window, affichage_pygame.sound_image).collidepoint(mouse_pos):
+                        if etat_du_jeu.music_info == True:
                             pygame.mixer.music.pause()
-                            music_info = False
+                            etat_du_jeu.music_info = False
                         else:
                             pygame.mixer.music.unpause()
-                            music_info = True
+                            etat_du_jeu.music_info = True
 
-                    if boutons.draw_antigravity_button(window, antigravity_image).collidepoint(mouse_pos):
+                    if boutons.draw_antigravity_button(affichage_pygame.window, affichage_pygame.antigravity_image).collidepoint(mouse_pos):
                         if(etat_du_jeu.money_pouvoir >= 400):
-                            space.gravity = boutons.toggle_antigravity(window, space.gravity, antigravity_sound)
+                            space.gravity = boutons.toggle_antigravity(affichage_pygame.window, space.gravity, affichage_pygame.antigravity_sound)
                             shape4 = pymunk.Segment(space.static_body, (400, 550), (800, 550), 0)
                             shape4.friction = 0.5  # Définir le coefficient de frottement
                             space.add(shape4)
@@ -227,44 +188,39 @@ while etat_du_jeu.running:
                             etat_du_jeu.money_pouvoir -= 400
 
 
-                    if boutons.draw_delete_boules(window, delete_boule_image).collidepoint(mouse_pos):
+                    if boutons.draw_delete_boules(affichage_pygame.window, affichage_pygame.delete_boule_image).collidepoint(mouse_pos):
                         if(etat_du_jeu.money_pouvoir >= 750):
                             etat_du_jeu.can_delete_a_boule = True
                             etat_du_jeu.money_pouvoir -= 750
 
 
 
-
-
-
-                    elif boutons.draw_quit_button_menu(window, quit_image).collidepoint(mouse_pos):
+                    elif boutons.draw_quit_button_menu(affichage_pygame.window, affichage_pygame.quit_image).collidepoint(mouse_pos):
                         exit()
-
 
 
 
         space.step(1/60)
 
 
-
-        window.blit(image_de_fond, (0, 0))
+        affichage_pygame.window.blit(affichage_pygame.image_de_fond, (0, 0))
 
         for body in space.bodies:
             for shape in body.shapes:
                 if isinstance(shape, pymunk.Circle):
                     shape.ball.dessin(body)
 
-        if selected_ball_type is not None:
+        if etat_du_jeu.selected_ball_type is not None:
             mouse_pos = pygame.mouse.get_pos()[0]
             if 420 <= mouse_pos <= 780:
-                fonctions_creation_boule.create_preview_ball(window, space, mouse_pos, selected_ball_type, etat_du_jeu.next_Bouboule)
+                fonctions_creation_boule.create_preview_ball(affichage_pygame.window, space, mouse_pos, etat_du_jeu.selected_ball_type, etat_du_jeu.next_Bouboule)
 
 
             elif mouse_pos < 420:
-                fonctions_creation_boule.create_preview_ball(window, space, 420, selected_ball_type, etat_du_jeu.next_Bouboule)
+                fonctions_creation_boule.create_preview_ball(affichage_pygame.window, space, 420, etat_du_jeu.selected_ball_type, etat_du_jeu.next_Bouboule)
 
             elif mouse_pos > 780:
-                fonctions_creation_boule.create_preview_ball(window, space, 780, selected_ball_type, etat_du_jeu.next_Bouboule)
+                fonctions_creation_boule.create_preview_ball(affichage_pygame.window, space, 780, etat_du_jeu.selected_ball_type, etat_du_jeu.next_Bouboule)
 
 
             for body in space.bodies:
@@ -272,39 +228,38 @@ while etat_du_jeu.running:
                     if isinstance(shape, pymunk.Circle):
                         bottom_y = shape.body.position.y - shape.radius  # Position en y du bas de la boule
                         if bottom_y > 550:  # Si la boule dépasse une certaine hauteur (par exemple 600 pixels)
-                            if body in time_elapsed:
-                                if time.time() - time_elapsed[body] > 0.6:
-                                    rouge_game_over.set_alpha(50)
+                            if body in etat_du_jeu.time_elapsed:
+                                if time.time() - etat_du_jeu.time_elapsed[body] > 0.6:
+                                    affichage_pygame.rouge_game_over.set_alpha(50)
                                     pygame.mixer.music.pause()
                                     if not etat_du_jeu.ecran_rouge_playing:
-                                        ecran_rouge.play()
+                                        affichage_pygame.ecran_rouge.play()
                                         etat_du_jeu.ecran_rouge_playing = True
-                                if time.time() - time_elapsed[body] > 3:
+                                if time.time() - etat_du_jeu.time_elapsed[body] > 3:
                                     etat_du_jeu.game_over = True
                             else:
                                 # Si c'est la première fois que le corps dépasse la limite, enregistrer le temps actuel
-                                time_elapsed[body] = time.time()
+                                etat_du_jeu.time_elapsed[body] = time.time()
 
                                 # Vous pouvez également ajouter du code pour avertir le joueur ici
                                 print("Attention! Le corps dépasse la limite. Vous avez 3 secondes pour le remettre en dessous.")
 
-            for body in list(time_elapsed.keys()):
+            for body in list(etat_du_jeu.time_elapsed.keys()):
                 # Convertir body.shapes en liste avant d'accéder à son premier élément
                 shapes_list = list(body.shapes)
                 if shapes_list and shapes_list[0].body.position.y - shapes_list[0].radius <= 500:
-                    del time_elapsed[body]
-                    rouge_game_over.set_alpha(0)
-                    ecran_rouge.stop()
+                    del etat_du_jeu.time_elapsed[body]
+                    affichage_pygame.rouge_game_over.set_alpha(0)
+                    affichage_pygame.ecran_rouge.stop()
                     etat_du_jeu.ecran_rouge_playing = False
-                    if music_info:
+                    if etat_du_jeu.music_info:
                         pygame.mixer.music.unpause()
 
         if etat_du_jeu.next_selected_ball_type is not None:
-            fonctions_creation_boule.next_ball(window, space, etat_du_jeu.next_selected_ball_type)
+            fonctions_creation_boule.next_ball(affichage_pygame.window, space, etat_du_jeu.next_selected_ball_type)
 
         if etat_du_jeu.can_draw_the_gravity_line == True:
-            #forme_a_supprimer = boutons.draw_antigravity_lines(window, space, space.gravity)
-            pygame.draw.line(window, (255, 255, 255), (400, 150), (800, 150), 7)
+            pygame.draw.line(affichage_pygame.window, (255, 255, 255), (400, 150), (800, 150), 7)
 
             if etat_du_jeu.temps_sans_gravite is not None:
                 if time.time() - etat_du_jeu.temps_sans_gravite > 3:
@@ -324,15 +279,7 @@ while etat_du_jeu.running:
                 etat_du_jeu.temps_sans_gravite = time.time()
 
         if etat_du_jeu.can_delete_a_boule == True :
-            police_end_smaller = pygame.font.Font(None, 20)
-
-            message_surface_delete_a_boule = police_end_smaller.render("Vous voulez utilisez un trou noir, il va supprimer une boule.", True, (255, 255, 255))
-            text_rect_delete_a_boule = message_surface_delete_a_boule.get_rect(center=(1000, 350))  # Centrer le texte
-            window.blit(message_surface_delete_a_boule, text_rect_delete_a_boule)
-
-            message_surface_delete_a_boule2 = police_end_smaller.render("Attention, choisissez bien !", True, (255, 255, 255))
-            text_rect_delete_a_boule2 = message_surface_delete_a_boule.get_rect(center=(1000, 365))  # Centrer le texte
-            window.blit(message_surface_delete_a_boule2, text_rect_delete_a_boule2)
+            affichage_pygame.delete_boule_message()
 
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -340,100 +287,31 @@ while etat_du_jeu.running:
                     p = 0
                     for shape in boules.Boules.instances:
                         if shape.dessin(shape.centre_masque).collidepoint(mouse_pos) == True:
-                            delete_boules_sound.play()
+                            affichage_pygame.delete_boules_sound.play()
                             space.remove(shape.ball_shape, shape.centre_masque)
                             del boules.Boules.instances[p]
                             etat_du_jeu.can_delete_a_boule = False
                         p += 1
 
-        pygame.draw.line(window, (255, 255, 255), (400, 150), (400, 650), 7)  # ligne du bas
-        pygame.draw.line(window, (255, 255, 255), (800, 150), (800, 650), 7)  # droite
-        pygame.draw.line(window, (255, 255, 255), (400, 650), (800, 650), 7)  # gauche
-        image_cycle_des_boules = pygame.image.load('Design_sans_titre__3_-removebg-preview.png')
-        rect = image_cycle_des_boules.get_rect(center=(200, 375))
-        window.blit(image_cycle_des_boules, rect.topleft)
+        affichage_pygame.affichage_image()
 
         pygame_widgets.update(events)
-        boutons.draw_restart_button_menu(window, restart_image)
-        boutons.draw_quit_button_menu(window, quit_image)
-        boutons.draw_podium_button_menu(window, podium_image)
-        boutons.draw_sound_button_menu(window, sound_image)
-        boutons.draw_antigravity_button(window, antigravity_image)
-        boutons.draw_delete_boules(window, delete_boule_image)
+        boutons.draw_restart_button_menu(affichage_pygame.window, affichage_pygame.restart_image)
+        boutons.draw_quit_button_menu(affichage_pygame.window, affichage_pygame.quit_image)
+        boutons.draw_podium_button_menu(affichage_pygame.window, affichage_pygame.podium_image)
+        boutons.draw_sound_button_menu(affichage_pygame.window, affichage_pygame.sound_image)
+        boutons.draw_antigravity_button(affichage_pygame.window, affichage_pygame.antigravity_image)
+        boutons.draw_delete_boules(affichage_pygame.window, affichage_pygame.delete_boule_image)
 
 
         if boutons.podium_visible:
-            s = pygame.Surface((800, 600))  # la taille de votre surface
-            s.set_alpha(200)  # niveau de transparence global
-            s.fill((255, 255, 255))  # ceci remplit toute la surface
-            window.blit(s, (200, 50))  # (0,0) sont les coordonnées en haut à gauche
-            # Afficher les meilleurs scores
-            highscore_title_surface = police_score_menu.render("Meilleurs Scores :", True, (0, 0, 0))
-            highscore_title_rect = highscore_title_surface.get_rect(center=(600, 150))
-            window.blit(highscore_title_surface, highscore_title_rect)
-            for i, highscore in enumerate(etat_du_jeu.highscores):
-                highscore_surface = police_score_menu.render(f"{i + 1}. {highscore}", True, (0, 0, 0))
-                highscore_rect = highscore_surface.get_rect(center=(600, 250 + i * 70))
-                window.blit(highscore_surface, highscore_rect)
+            affichage_pygame.highscores_visibles()
 
-
-
-
-
-        window.blit(rouge_game_over, (0, 0))  # (0,0) sont les coordonnées en haut à gauche
-
-
-
-        #print(f"il y a {len(boules.Boules.instances)} boules")
-
-
-
-
-
-        texte_surface = police_score.render(etat_du_jeu.texte, True, (255, 255, 255))
-        # Obtenir le rectangle englobant le texte pour le centrer
-        texte_rect = texte_surface.get_rect(center=(100, 100))
-        # Dessiner le texte sur la fenêtre à la position texte_rect
-        window.blit(texte_surface, texte_rect)
-
-        #money_pouvoir_surface = police_score.render(texte_money_pouvoir, True, (255, 255, 255))
-        #texte_money_pouvoir_rect = money_pouvoir_surface.get_rect(center=(1000, 350))
-        #window.blit(money_pouvoir_surface, texte_money_pouvoir_rect)
-
-        next_boule = police_next_boule.render("NEXT :", True, (0, 0, 0))
-        rect_next_boule = next_boule.get_rect(center=(1037, 122))
-        window.blit(next_boule, rect_next_boule)
-
-
-
-
+        affichage_pygame.window.blit(affichage_pygame.rouge_game_over, (0, 0))  # (0,0) sont les coordonnées en haut à gauche
 
     else:
-        ecran_rouge.stop()
-        etat_du_jeu.ecran_rouge_playing = False
-        game_over_sound.play()
-        window.fill((0, 0, 0))  # Fond noir
-        # Afficher le message
-        message_surface = police_end.render("GAME OVER", True, (255, 54, 0))
-        text_rect = message_surface.get_rect(center=(WINDOWSIZE[0] // 2, 250))  # Centrer le texte
-        window.blit(message_surface, text_rect)
-
-        texte_surface = police_score.render(etat_du_jeu.texte, True, (255, 255, 255))
-        texte_rect2 = texte_surface.get_rect(center=(WINDOWSIZE[0] // 2, 300))
-        window.blit(texte_surface, texte_rect2)
-
-        # Afficher les meilleurs scores
-        highscore_title_surface = police_score.render("Meilleurs Scores :", True, (255, 255, 255))
-        highscore_title_rect = highscore_title_surface.get_rect(center=(1000, 200))
-        window.blit(highscore_title_surface, highscore_title_rect)
-
-        for i, highscore in enumerate(etat_du_jeu.highscores):
-            highscore_surface = police_score.render(f"{i + 1}. {highscore}", True, (255, 255, 255))
-            highscore_rect = highscore_surface.get_rect(center=(1000, 250 + i * 50))
-            window.blit(highscore_surface, highscore_rect)
-
-        boutons.draw_restart_button(window)
-
+        affichage_pygame.game_over_screen()
+        boutons.draw_restart_button(affichage_pygame.window)
 
 
         for event in pygame.event.get():
@@ -441,7 +319,7 @@ while etat_du_jeu.running:
                 etat_du_jeu.running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
-                if boutons.draw_restart_button(window).collidepoint(mouse_pos):
+                if boutons.draw_restart_button(affichage_pygame.window).collidepoint(mouse_pos):
                     restart_game()  # Redémarrer le jeu si le bouton est cliqué
 
 
