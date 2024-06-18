@@ -1,18 +1,24 @@
 import pygame
+#Fichier de gestion des boutons
 
 podium_visible = False
 
+#Bouton du menu game over
 def draw_restart_button(window):
-    # Dessinez le bouton sur l'écran
+    # creation d'un rectangle qui represente le bouton
     restart_button = pygame.Rect(500, 400, 200, 50)  # Position et taille du bouton
+    #dessiner le bouton
     pygame.draw.rect(window, (0, 255, 0), restart_button)  # Couleur verte pour le bouton
     # Dessinez le texte sur le bouton
-    font = pygame.font.Font(None, 36)
+    font = pygame.font.Font(None, 36) #Police et taille du texte
+    #ecrit le texte dans le rectangle
     text = font.render("Recommencer", True, (0, 0, 0))  # Texte en noir
-    text_rect = text.get_rect(center=restart_button.center)  # Utilisation de restart_button au lieu de button
-    window.blit(text, text_rect)
+    #centrer le texte a l'interieur du bouton
+    text_rect = text.get_rect(center=restart_button.center)
+    window.blit(text, text_rect) #dessine le tesxte
     return restart_button  # Retourner le bouton pour qu'il puisse être utilisé dans la boucle principale
 
+#Bontons de l'écran de jeu'
 def draw_quit_button_menu(window, quit_image):
     quit_button = pygame.Rect(80, 20, 40, 40)
     quit_image = pygame.transform.scale(quit_image, (quit_button.width, quit_button.height))
@@ -41,6 +47,7 @@ def draw_sound_button_menu(window, sound_image):
     window.blit(sound_image, image_rect)
     return sound_button
 
+#Boutons des pouvoirs
 def draw_antigravity_button(window, antigravity_image):
     antigravity_button = pygame.Rect(880, 500, 40, 40)
     antigravity_image = pygame.transform.scale(antigravity_image, (antigravity_button.width, antigravity_button.height))
