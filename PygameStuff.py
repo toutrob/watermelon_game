@@ -2,6 +2,7 @@ import pygame
 from pygame_widgets.progressbar import ProgressBar
 
 class PygameStuff:
+    #initialisation des modules
     pygame.init()
     pygame.mixer.init()
     def __init__(self, game_state):
@@ -44,7 +45,7 @@ class PygameStuff:
         # image du bouton pour le pouvoir de trou noir
 
         #chargement de tous les sons dont on a besoin : musique, effet sonore etc...
-        pygame.mixer.music.load('musique_fond.mp3')
+        pygame.mixer.music.load('musique_fond.mp3') #musique de fond qui tourne en boucle
         pygame.mixer.music.play(-1)
         self.new_boule1 = pygame.mixer.Sound("nouvelle_boule1.mp3")
         self.new_boule2 = pygame.mixer.Sound("nouvelle_boule2.mp3")
@@ -56,27 +57,32 @@ class PygameStuff:
         self.delete_boules_sound = pygame.mixer.Sound("delete_boules.mp3")
 
 
-
+#gestion de l'affichage des elements graphiques à l'ecran
     def affichage_image(self):
+        #Trois lignes blanches sont dessinées pour créer un cadre.
         pygame.draw.line(self.window, (255, 255, 255), (400, 150), (400, 650), 7)  # ligne du bas
         pygame.draw.line(self.window, (255, 255, 255), (800, 150), (800, 650), 7)  # droite
         pygame.draw.line(self.window, (255, 255, 255), (400, 650), (800, 650), 7)  # gauche
 
+        #affichage d'une image
         image_boules_life_cycle = pygame.image.load('Design_sans_titre__3_-removebg-preview.png')
         rect = image_boules_life_cycle.get_rect(center=(200, 375))
         self.window.blit(image_boules_life_cycle, rect.topleft)
 
+        #texte du score
         texte_surface = self.font_score.render(self.game_state.texte, True, (255, 255, 255))
         # Obtenir le rectangle englobant le texte pour le centrer
         texte_rect = texte_surface.get_rect(center=(100, 100))
         # Dessiner le texte sur la fenêtre à la position texte_rect
         self.window.blit(texte_surface, texte_rect)
 
+        #boules suivante
         next_boule = self.font_next_boule.render("NEXT :", True, (0, 0, 0))
         rect_next_boule = next_boule.get_rect(center=(1037, 122))
         self.window.blit(next_boule, rect_next_boule)
 
 
+    #pour afficher un message a l'utilisateur lors de l'utilisation du pouvoir trou noir
     def delete_boule_message(self):
         font_delete_boule = pygame.font.Font(None, 20)
 
@@ -90,12 +96,12 @@ class PygameStuff:
         text_rect_delete_a_boule2 = message_surface_delete_a_boule.get_rect(center=(1000, 365))  # Centrer le texte
         self.window.blit(message_surface_delete_a_boule2, text_rect_delete_a_boule2)
 
-
+    #affiche la fenetre du highscore en superposition du jeu
     def highscores_visibles (self):
-        s = pygame.Surface((800, 600))  # la taille de votre surface
+        s = pygame.Surface((800, 600))  # la taille de la surface
         s.set_alpha(200)  # niveau de transparence global
         s.fill((255, 255, 255))  # ceci remplit toute la surface
-        self.window.blit(s, (200, 50))  # (0,0) sont les coordonnées en haut à gauche
+        self.window.blit(s, (200, 50))  # (0,0) coordonnées en haut à gauche
         # Afficher les meilleurs scores
         highscore_title_surface = self.font_score_menu.render("Meilleurs Scores :", True, (0, 0, 0))
         highscore_title_rect = highscore_title_surface.get_rect(center=(600, 150))
@@ -105,17 +111,18 @@ class PygameStuff:
             highscore_rect = highscore_surface.get_rect(center=(600, 250 + i * 70))
             self.window.blit(highscore_surface, highscore_rect)
 
-
+    #permet d'afficher l'ecran game over
     def game_over_screen(self):
-        self.red_screen.stop()
+        self.red_screen.stop() #arret de l'ecran rouge
         self.game_state.red_screen_playing = False
-        self.game_over_sound.play()
+        self.game_over_sound.play() #joue la musique game over
         self.window.fill((0, 0, 0))  # Fond noir
         # Afficher le message
         message_surface = self.font_end.render("GAME OVER", True, (255, 54, 0))
         text_rect = message_surface.get_rect(center=(self.window_size[0] // 2, 250))  # Centrer le texte
         self.window.blit(message_surface, text_rect)
 
+        #affiche es score actuel
         texte_surface = self.font_score.render(self.game_state.texte, True, (255, 255, 255))
         texte_rect2 = texte_surface.get_rect(center=(self.window_size[0] // 2, 300))
         self.window.blit(texte_surface, texte_rect2)
