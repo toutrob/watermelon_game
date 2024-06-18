@@ -58,11 +58,16 @@ def collision_callback(arbiter, space, data, window,game_state, pygame_handler):
 
         i += 1
 
+    #on détruit ensuite les boules de l'espace physique
     space.remove(shape1, shape1.body)
     space.remove(shape2, shape2.body)
 
+    #on joue le son de fusion des boules
     pygame_handler.fusion_boule.play()
 
+
+    #Pour chaque type de boules, on créé une boule du type attendu
+    #on incrémente le score et la monnaie de pouvoir
     if new_shape_type == 6:
         planet = Boule2(window, (contact_x, contact_y), space)
         planet.gravity()
@@ -126,6 +131,7 @@ def collision_callback(arbiter, space, data, window,game_state, pygame_handler):
         game_state.score += 66
         game_state.money_power += 66
 
+    #on oublie pas de changer l'affichage du score a faire à l'écran
     game_state.texte = f"Score : {game_state.score}"
 
     return True  # Retourne True pour permettre à la collision de se produire
