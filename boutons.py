@@ -62,12 +62,12 @@ def draw_delete_boules(window, delete_boule_image):
     window.blit(delete_boule_image, image_rect)
     return delete_bouton
 
-
+#Bascule l'etat d'affichage de la fenetre podium en jeu
 def toggle_podium():
     global podium_visible
     podium_visible = not podium_visible
 
-
+#Enleve la ligne qui ferme le rectangle quand le pouvoir antigravité est activé
 def delete_antigravity_lines(space, forme_a_enlever):
     space.remove(forme_a_enlever)
 
