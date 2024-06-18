@@ -158,7 +158,6 @@ while games_state.running:
                         exit()
 
 
-
         physic_space.space.step(1/60)
 
 
@@ -206,7 +205,7 @@ while games_state.running:
             for body in list(games_state.time_elapsed.keys()):
                 # Convertir body.shapes en liste avant d'accéder à son premier élément
                 shapes_list = list(body.shapes)
-                if shapes_list and shapes_list[0].body.position.y - shapes_list[0].radius <= 500:
+                if shapes_list and shapes_list[0].body.position.y - shapes_list[0].radius <= 550:
                     del games_state.time_elapsed[body]
                     pygame_handler.red_game_over.set_alpha(0)
                     pygame_handler.red_screen.stop()

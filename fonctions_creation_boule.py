@@ -13,7 +13,7 @@ def create_planete(window, space, position_x, ball_type):
         decalage = 0
 
     if ball_type == 1:
-        planete = Boule1(window, (position_x + decalage , 650), space)
+        planete = Boule1(window, (position_x + decalage, 650), space)
     elif ball_type == 2:
         planete = Boule2(window, (position_x + decalage, 650), space)
     elif ball_type == 3:

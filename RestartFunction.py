@@ -11,7 +11,7 @@ def restart_game(game_state, pygame_handler, physic_space):
     game_state.score = 0
     game_state.money_power = 0
 
-    pygame_handler.rouge_game_over.set_alpha(0)
+    pygame_handler.red_game_over.set_alpha(0)
     pygame_handler.game_over_sound.stop()
     if game_state.music_info:
         pygame.mixer.music.unpause()
