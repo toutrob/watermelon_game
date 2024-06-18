@@ -7,7 +7,7 @@ class GameState:
 
         self.texte = f"Score : {self.score}" #texte montrant au joueur son score actuel
 
-        self.money_pouvoir = 1000 #points permettant l'achet des pouvoirs
+        self.money_power = 1000 #points permettant l'achet des pouvoirs
 
         self.highscores = high_score.load_highscores() #liste des highscore
         # usuellement à 5, monte à 6 lorsque une partie recommence
@@ -23,7 +23,7 @@ class GameState:
         # empeche le clic autre que sur une boule
         # repasse a false une fois que l'on a cliquer une boule
 
-        self.ecran_rouge_playing = False
+        self.red_screen_playing = False
         #constante gérant si l'ecran rouge de game over imminent doit rester activée
 
         self.selected_ball_type = random.randint(1, 3)  # Choix aléatoire d'un type de boule
@@ -35,7 +35,7 @@ class GameState:
         self.next_selected_ball_type = None
         #selection de ce que va être la prochaine boule (en haut a droite)
 
-        self.temps_sans_gravite = None
+        self.time_without_gravity = None
         #permet de garder en compte depuis combien de temps la gravité est inversée
         #une fois à 3 secondes, cette constante repasse a None
 

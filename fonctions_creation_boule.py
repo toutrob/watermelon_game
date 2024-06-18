@@ -13,14 +13,14 @@ def create_planete(window, space, position_x, ball_type):
         decalage = 0
 
     if ball_type == 1:
-        planete = Boule1(window, (position_x + decalage , 650), space)
+        planete = Boule1(window, (position_x + decalage, 650), space)
     elif ball_type == 2:
         planete = Boule2(window, (position_x + decalage, 650), space)
     elif ball_type == 3:
         planete = Boule3(window, (position_x + decalage, 650), space)
     else:
         planete = 0
-    planete.gravite()
+    planete.gravity()
 
 def create_preview_ball(window, space, mouse_pos, ball_type, Next_Bouboule):
     sprite1 = 'eris.png'
