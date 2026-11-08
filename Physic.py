@@ -1,101 +1,145 @@
-import pymunk
-import pygame
 import time
+import pygame
+import pymunk
 import boules
 
 class Physic:
-
     def __init__(self, game_state, pygame_handler):
-        self.space = pymunk.Space() #création d'un espace de gravité
-        self.space.gravity = (0, -1000) #set-up des variables de cette espace (-1000 de gravité)
-        self.space.damping = 1 #rétention des objets dans l'espace
+        self.space = pymunk.Space()
+        self.space.gravity = (0, -1100)
+        self.space.damping = 0.99
 
-        shape1 = pymunk.Segment(self.space.static_body, (400, 650), (400, 50), 0)
-        shape1.friction = 0.5  # Définir le coefficient de frottement
+        # Parois latérales prolongées jusqu'en haut de la fenêtre (y = 750)
+        shape1 = pymunk.Segment(self.space.static_body, (400, 750), (400, 50), 4)
+        shape1.friction = 0.22
+        shape1.elasticity = 0.2
         self.space.add(shape1)
-        #defition des collisions de la barres de gauche
 
-        shape2 = pymunk.Segment(self.space.static_body, (800, 650), (800, 50), 0)
-        shape2.friction = 0.5  # Définir le coefficient de frottement
+        shape2 = pymunk.Segment(self.space.static_body, (800, 750), (800, 50), 4)
+        shape2.friction = 0.22
+        shape2.elasticity = 0.2
         self.space.add(shape2)
-        # defition des collisions de la barres de droite
 
-        shape3 = pymunk.Segment(self.space.static_body, (400, 53), (800, 53), 0)
-        shape3.friction = 0.5  # Définir le coefficient de frottement
+        shape3 = pymunk.Segment(self.space.static_body, (400, 53), (800, 53), 4)
+        shape3.friction = 0.25
+        shape3.elasticity = 0.1
         self.space.add(shape3)
-        # defition des collisions de la barres du bas
 
-        self.shape4 = None #création de ce qui sera plus tard une barre quand la gravité sera inversée
-
-        self.game_state = game_state #on va utiliser un objeet de la classe GameState
-
-        self.pygame_handler = pygame_handler  #on va utiliser un objeet de la classe PygameHandler
-
-
-
-
+        self.shape4 = None
+        self.game_state = game_state
+        self.pygame_handler = pygame_handler
 
     def add_bar_antigravity(self):
-        self.pygame_handler.antigravity_sound.play() #jouer le son du pouvoir d'anti-gravité
-        self.space.gravity = (0, 1000) #changement de gravité dans l'espace
-        self.shape4 = pymunk.Segment(self.space.static_body, (400, 550), (800, 550), 0)
-        #création de collision sur une barre rajouté en haut de la boite sur la shape4
+        if self.game_state.can_draw_the_gravity_line:
+            return
+        self.pygame_handler.antigravity_sound.play()
 
-        self.shape4.friction = 0.5  # Définir le coefficient de frottement
-        self.space.add(self.shape4) # ajout de la shape4 dan s l'espace
+        # 1. Rentrer toutes les boules qui dépassent légèrement du haut du bol AVANT de fermer le couvercle
+        for ball in boules.Boules.instances:
+            bx, by = ball.center_masque.position
+            min_x = 400 + ball.radius + 4
+            max_x = 800 - ball.radius - 4
+            max_y = 550 - ball.radius - 5  # Sous la barre y=550
+            clamped_x = max(min_x, min(max_x, bx))
+            clamped_y = min(max_y, max(53 + ball.radius + 3, by))
+            ball.center_masque.position = (clamped_x, clamped_y)
+            ball.center_masque.velocity = (ball.center_masque.velocity.x * 0.5, 180)
+
+        # 2. Créer la barre de plafond et inverser la gravité
+        self.shape4 = pymunk.Segment(self.space.static_body, (400, 550), (800, 550), 5)
+        self.shape4.friction = 0.22
+        self.shape4.elasticity = 0.15
+        self.space.add(self.shape4)
+
+        self.space.gravity = (0, 900)
         self.game_state.can_draw_the_gravity_line = True
-        #On definit une constante a True qui empechera la click dans la boucle principale
-        #elle sera remise a False au bout de 3 secondes
-        self.game_state.money_power -= 400
-        #on soustrait le cout du pouvoir
+        self.game_state.time_without_gravity = time.time()
+        self.game_state.money_power -= self.game_state.antigravity_cost
+        self.game_state.antigravity_cost += 250
+
+    def enforce_boundaries(self):
+        # Garde-fou physique à chaque frame : aucune boule ne peut sortir du bol
+        antigrav = self.game_state.can_draw_the_gravity_line
+        for ball in boules.Boules.instances:
+            bx, by = ball.center_masque.position
+            vx, vy = ball.center_masque.velocity
+            r = ball.radius
+
+            min_x = 400 + r + 2
+            max_x = 800 - r - 2
+            min_y = 53 + r + 2
+
+            new_x, new_y = bx, by
+            new_vx, new_vy = vx, vy
+
+            if bx < min_x:
+                new_x = min_x
+                new_vx = max(0, vx)
+            elif bx > max_x:
+                new_x = max_x
+                new_vx = min(0, vx)
+
+            if by < min_y:
+                new_y = min_y
+                new_vy = max(0, vy)
+
+            # Pendant l'antigravité, interdiction absolue de dépasser y = 550
+            if antigrav:
+                max_y = 550 - r - 3
+                if by > max_y:
+                    new_y = max_y
+                    new_vy = min(0, vy)
+
+            if (new_x, new_y) != (bx, by):
+                ball.center_masque.position = (new_x, new_y)
+                ball.center_masque.velocity = (new_vx, new_vy)
 
     def anti_gravity_function(self):
-
         if self.game_state.time_without_gravity is not None:
-            #si le on a deja un temps sans gravité on regarde si il est supérieur a 3
             if time.time() - self.game_state.time_without_gravity > 3:
-                # on regarde si cela fait 3 secondes que le pouvoir est actif
-                # si oui on remet la constante a False et on ré autorise le click
                 self.game_state.can_draw_the_gravity_line = False
                 if self.shape4 is not None:
-
                     if self.shape4 in self.space.shapes:
                         self.space.remove(self.shape4)
-                        # on supprime la forme de l'espace
-                        # on la refixe a None jusqu'a la prochaine activation
-                        self.shape4 = None
-                    else:
-                        self.shape4 = None
-
-                #Enfin on remet fixe la gravité de base
-                self.space.gravity = (0, -1000)
+                    self.shape4 = None
+                self.space.gravity = (0, -1100)
                 self.game_state.time_without_gravity = None
-
+                self.game_state.time_elapsed.clear()
         else:
-            #sinon on défnit le temps de de début du pouvoir
             self.game_state.time_without_gravity = time.time()
 
-    def delte_ball_function(self):
+    def delte_ball_function(self, events=None):
         self.pygame_handler.delete_boule_message()
-        #on affiche le message de déscrition du pouvoir
+        mouse_pos = pygame.mouse.get_pos()
 
-        #on attend un click
-        for event in pygame.event.get():
+        hovered_ball = None
+        for ball in reversed(boules.Boules.instances):
+            if ball.is_clicked(mouse_pos):
+                hovered_ball = ball
+                break
+
+        if hovered_ball is not None:
+            bx, by = hovered_ball.get_screen_pos()
+            pygame.draw.circle(self.pygame_handler.window, (200, 100, 255), (bx, by), hovered_ball.radius + 5, 3)
+
+        if events is None:
+            return
+
+        for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = pygame.mouse.get_pos()
-                p = 0
-                for shape in boules.Boules.instances:
-                    #on attend la collision entre le click et la boule
-                    if shape.draw(shape.center_masque).collidepoint(mouse_pos) == True:
-                        #si il y a collision entre les deux
-                        #on joue le son de suppression des boules
-                        self.pygame_handler.delete_boules_sound.play()
-                        #on enleve de l'espace la boule à l'endroit du click
-                        self.space.remove(shape.ball_shape, shape.center_masque)
-                        #on supprime l'OBJET boules
-                        del boules.Boules.instances[p]
-                        #on repasse la constante empechant le click autre part que sur une boule
-                        # a False pour autoriser le click
-                        self.game_state.can_delete_a_boule = False
-                    p += 1
+                if event.button == 3:
+                    self.game_state.can_delete_a_boule = False
+                    return
 
+                if event.button == 1 and hovered_ball is not None:
+                    self.pygame_handler.delete_boules_sound.play()
+                    self.game_state.time_elapsed.pop(hovered_ball.center_masque, None)
+                    if hovered_ball.ball_shape in self.space.shapes:
+                        self.space.remove(hovered_ball.ball_shape, hovered_ball.center_masque)
+                    if hovered_ball in boules.Boules.instances:
+                        boules.Boules.instances.remove(hovered_ball)
+
+                    self.game_state.money_power -= self.game_state.delete_cost
+                    self.game_state.delete_cost += 450
+                    self.game_state.can_delete_a_boule = False
+                    return

@@ -1,13 +1,24 @@
-#Gere le chargement et la sauvegarde des scores élevés à partir d'un fichier texte
+import os
 
-#Pour charger le highscore
+HIGHSCORE_FILE = "highscores.txt"
+
 def load_highscores():
-    with open("highscores.txt", "r") as file: #ouvre le fichier en mode lecture
-        highscores = [int(line.strip()) for line in file.readlines()] #lit toutes les lignes, enleve les espaces et convertit en un entier
-        return sorted(highscores, reverse=True)[:5]#Tri des scores par ordre decroissant et affiche les 5 premiers
+    if not os.path.exists(HIGHSCORE_FILE):
+        return [0, 0, 0, 0, 0]
+    try:
+        with open(HIGHSCORE_FILE, "r", encoding="utf-8") as file:
+            highscores = [int(line.strip()) for line in file if line.strip().isdigit()]
+            highscores = sorted(highscores, reverse=True)[:5]
+            while len(highscores) < 5:
+                highscores.append(0)
+            return highscores
+    except Exception:
+        return [0, 0, 0, 0, 0]
 
-#Pour enregistrer le highscore
 def save_highscores(highscores):
-    with open("highscores.txt", "w") as file: #ouvre le fichier en mode ecriture
-        for score in highscores:
-            file.write(f"{score}\n") #chaque score est ecrit dans le fichier sur une nouvelle ligne
+    try:
+        with open(HIGHSCORE_FILE, "w", encoding="utf-8") as file:
+            for score in sorted(highscores, reverse=True)[:5]:
+                file.write(f"{score}\n")
+    except Exception as e:
+        print(f"Erreur sauvegarde highscores : {e}")
