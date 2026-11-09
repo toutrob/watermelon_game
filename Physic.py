@@ -1,3 +1,4 @@
+import math
 import time
 import pygame
 import pymunk
@@ -9,7 +10,6 @@ class Physic:
         self.space.gravity = (0, -1100)
         self.space.damping = 0.99
 
-        # Parois latérales prolongées jusqu'en haut de la fenêtre (y = 750)
         shape1 = pymunk.Segment(self.space.static_body, (400, 750), (400, 50), 4)
         shape1.friction = 0.22
         shape1.elasticity = 0.2
@@ -34,18 +34,16 @@ class Physic:
             return
         self.pygame_handler.antigravity_sound.play()
 
-        # 1. Rentrer toutes les boules qui dépassent légèrement du haut du bol AVANT de fermer le couvercle
         for ball in boules.Boules.instances:
             bx, by = ball.center_masque.position
             min_x = 400 + ball.radius + 4
             max_x = 800 - ball.radius - 4
-            max_y = 550 - ball.radius - 5  # Sous la barre y=550
+            max_y = 550 - ball.radius - 5
             clamped_x = max(min_x, min(max_x, bx))
             clamped_y = min(max_y, max(53 + ball.radius + 3, by))
             ball.center_masque.position = (clamped_x, clamped_y)
             ball.center_masque.velocity = (ball.center_masque.velocity.x * 0.5, 180)
 
-        # 2. Créer la barre de plafond et inverser la gravité
         self.shape4 = pymunk.Segment(self.space.static_body, (400, 550), (800, 550), 5)
         self.shape4.friction = 0.22
         self.shape4.elasticity = 0.15
@@ -58,7 +56,6 @@ class Physic:
         self.game_state.antigravity_cost += 250
 
     def enforce_boundaries(self):
-        # Garde-fou physique à chaque frame : aucune boule ne peut sortir du bol
         antigrav = self.game_state.can_draw_the_gravity_line
         for ball in boules.Boules.instances:
             bx, by = ball.center_masque.position
@@ -83,7 +80,6 @@ class Physic:
                 new_y = min_y
                 new_vy = max(0, vy)
 
-            # Pendant l'antigravité, interdiction absolue de dépasser y = 550
             if antigrav:
                 max_y = 550 - r - 3
                 if by > max_y:
@@ -120,7 +116,9 @@ class Physic:
 
         if hovered_ball is not None:
             bx, by = hovered_ball.get_screen_pos()
-            pygame.draw.circle(self.pygame_handler.window, (200, 100, 255), (bx, by), hovered_ball.radius + 5, 3)
+            pulse_r = hovered_ball.radius + 6 + int(3 * math.sin(time.time() * 10.0))
+            pygame.draw.circle(self.pygame_handler.window, (210, 110, 255), (bx, by), pulse_r, 3)
+            pygame.draw.circle(self.pygame_handler.window, (255, 200, 255), (bx, by), hovered_ball.radius + 2, 1)
 
         if events is None:
             return
@@ -132,7 +130,10 @@ class Physic:
                     return
 
                 if event.button == 1 and hovered_ball is not None:
+                    bx, by = hovered_ball.get_screen_pos()
                     self.pygame_handler.delete_boules_sound.play()
+                    self.pygame_handler.trigger_blackhole_vfx(bx, by, hovered_ball.radius)
+
                     self.game_state.time_elapsed.pop(hovered_ball.center_masque, None)
                     if hovered_ball.ball_shape in self.space.shapes:
                         self.space.remove(hovered_ball.ball_shape, hovered_ball.center_masque)

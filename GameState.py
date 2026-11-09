@@ -1,4 +1,5 @@
 import random
+import time
 import high_score
 
 class GameState:
@@ -9,21 +10,24 @@ class GameState:
         self.score = 0
         self.texte = f"Score : {self.score}"
 
-        # Départ à 0 : les pouvoirs se méritent !
         self.money_power = 0
+        self.display_money_power = 0.0
         self.antigravity_cost = self.BASE_ANTIGRAVITY_COST
         self.delete_cost = self.BASE_DELETE_COST
 
         self.highscores = high_score.load_highscores()
         self.game_over = False
         self.game_over_sound_played = False
+        self.paused = False
 
         self.can_draw_the_gravity_line = False
         self.can_delete_a_boule = False
         self.red_screen_playing = False
+        self.red_overlay_alpha = 0.0
 
         self.selected_ball_type = self.pick_random_ball()
         self.next_selected_ball_type = self.pick_random_ball()
+        self.next_ball_anim_time = time.time()
         self.next_Bouboule = True
 
         self.time_without_gravity = None
@@ -33,7 +37,6 @@ class GameState:
         self.time_elapsed = {}
 
     def pick_random_ball(self):
-        # Déblocage progressif des 5 premières planètes selon le score (comme Suika Game)
         if self.score >= 250:
             return random.choices([1, 2, 3, 4, 5], weights=[32, 28, 20, 13, 7], k=1)[0]
         elif self.score >= 80:

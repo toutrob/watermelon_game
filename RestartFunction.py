@@ -10,8 +10,10 @@ def restart_game(game_state, pygame_handler, physic_space):
 
     game_state.game_over = False
     game_state.game_over_sound_played = False
+    game_state.paused = False
     game_state.score = 0
     game_state.money_power = 0
+    game_state.display_money_power = 0.0
     game_state.antigravity_cost = game_state.BASE_ANTIGRAVITY_COST
     game_state.delete_cost = game_state.BASE_DELETE_COST
 
@@ -20,6 +22,11 @@ def restart_game(game_state, pygame_handler, physic_space):
     game_state.time_without_gravity = None
     game_state.can_create_planete = True
     game_state.time_elapsed.clear()
+    game_state.red_overlay_alpha = 0.0
+
+    pygame_handler.particles.clear()
+    pygame_handler.shockwaves.clear()
+    pygame_handler.floating_texts.clear()
 
     physic_space.space.gravity = (0, -1100)
     if physic_space.shape4 is not None:
