@@ -10,8 +10,9 @@ QUIT_MENU_RECT = pygame.Rect(80, 20, 44, 44)
 PODIUM_MENU_RECT = pygame.Rect(140, 20, 44, 44)
 SOUND_MENU_RECT = pygame.Rect(200, 20, 44, 44)
 
-DELETE_CLICK_ZONE = pygame.Rect(865, 390, 285, 58)
-ANTIGRAVITY_CLICK_ZONE = pygame.Rect(865, 475, 285, 58)
+# Barres décalées à x=890 pour éviter tout faux clic près du bord droit de la cuve (x=800)
+DELETE_CLICK_ZONE = pygame.Rect(890, 390, 280, 58)
+ANTIGRAVITY_CLICK_ZONE = pygame.Rect(890, 475, 280, 58)
 
 DELETE_BOULE_RECT = DELETE_CLICK_ZONE
 ANTIGRAVITY_RECT = ANTIGRAVITY_CLICK_ZONE
@@ -28,7 +29,7 @@ def _init_fonts():
     if _font_button is None:
         _font_button = pygame.font.SysFont('nirmala ui', 28, bold=True)
         _font_bar_title = pygame.font.SysFont('nirmala ui', 15, bold=True)
-        _font_bar_val = pygame.font.SysFont('nirmala ui', 16, bold=True)
+        _font_bar_val = pygame.font.SysFont('nirmala ui', 15, bold=True)
 
 def _draw_styled_icon_btn(window, rect, image, active=False, muted=False):
     mouse_pos = pygame.mouse.get_pos()
@@ -54,8 +55,11 @@ def _draw_styled_icon_btn(window, rect, image, active=False, muted=False):
 
     return rect
 
-def draw_integrated_power_bar(window, rect, icon_img, title, current_pts, cost_pts, theme_color, active=False, active_text=""):
-    """Barre de progression unique sans reflet interne, avec couleur propre à chaque pouvoir."""
+def draw_integrated_power_bar(
+    window, rect, icon_img, title, current_pts, cost_pts, theme_color,
+    active=False, active_text="", armed=False
+):
+    """Barre de progression unique avec icône intégrée et état d'armement anti-missclick."""
     _init_fonts()
     t = time.time()
     mouse_pos = pygame.mouse.get_pos()
@@ -71,8 +75,8 @@ def draw_integrated_power_bar(window, rect, icon_img, title, current_pts, cost_p
     bg_alpha = 235 if hovered else 205
     pygame.draw.rect(surf, (14, 20, 44, bg_alpha), (0, 0, w, h), border_radius=radius)
 
-    # 2. Remplissage unique dans la couleur du pouvoir (sans double barre)
-    if active:
+    # 2. Remplissage unique dans la couleur du pouvoir
+    if active or armed:
         fill_ratio = 1.0
         fill_col = (
             _clamp(theme_color[0] + 45),
@@ -109,9 +113,9 @@ def draw_integrated_power_bar(window, rect, icon_img, title, current_pts, cost_p
             border_bottom_right_radius=radius
         )
 
-    # 3. Bordure extérieure assortie à la couleur du pouvoir
-    if active:
-        border_col = (255, 245, 150)
+    # 3. Bordure extérieure
+    if active or armed:
+        border_col = (255, 235, 110)
         border_w = 3
     elif ready:
         glow = int(45 + 40 * math.sin(t * 8.0))
@@ -141,8 +145,8 @@ def draw_integrated_power_bar(window, rect, icon_img, title, current_pts, cost_p
     pygame.draw.circle(surf, medallion_bg, medallion_center, radius - 2)
     pygame.draw.circle(surf, border_col, medallion_center, radius - 2, 2)
 
-    if active or ready:
-        angle = math.sin(t * 5.0) * 10.0
+    if active or ready or armed:
+        angle = math.sin(t * (9.0 if armed else 5.0)) * 10.0
         icon_to_draw = pygame.transform.rotate(icon_img, angle)
     else:
         icon_to_draw = icon_img
@@ -158,8 +162,11 @@ def draw_integrated_power_bar(window, rect, icon_img, title, current_pts, cost_p
     if active:
         status_txt = active_text if active_text else "ACTIF !"
         status_col = (255, 245, 130)
+    elif armed:
+        status_txt = "RECLIQUEZ POUR ACTIVER"
+        status_col = (255, 240, 110)
     elif ready:
-        status_txt = f"PRÊT ! ({cost_pts} pts)" if not hovered else "CLIQUER POUR ACTIVER"
+        status_txt = f"PRÊT ! ({cost_pts} pts)" if not hovered else "CLIQUER POUR ARMER"
         status_col = (255, 255, 190)
     else:
         status_txt = f"{int(current_pts)} / {cost_pts} pts"

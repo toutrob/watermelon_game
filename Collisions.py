@@ -21,6 +21,8 @@ def collision_callback(arbiter, space, data, window, game_state, pygame_handler)
     ball2 = getattr(shape2, "ball", None)
 
     if ball1 is None or ball2 is None or ball1.merged or ball2.merged:
+        if hasattr(arbiter, "process_collision"):
+            arbiter.process_collision = False
         return False
 
     ball1.merged = True
@@ -32,7 +34,6 @@ def collision_callback(arbiter, space, data, window, game_state, pygame_handler)
     mid_x = (pos1.x + pos2.x) / 2.0
     mid_y = (pos1.y + pos2.y) / 2.0
 
-    # Si l'une des deux boules était déjà en alerte de dépassement, on conserve son ancienneté !
     inherited_alert_time = None
     t1 = game_state.time_elapsed.get(shape1.body)
     t2 = game_state.time_elapsed.get(shape2.body)
@@ -79,8 +80,7 @@ def collision_callback(arbiter, space, data, window, game_state, pygame_handler)
             planet = planet_cls(window, (spawn_x, spawn_y), space_obj, is_merge=True)
             planet.gravity()
 
-            # Si la fusion a lieu au-dessus de la ligne haute, elle n'annule pas le chrono d'alerte
-            if inherited_alert_time is not None and (spawn_y + new_radius * 0.4 > 550):
+            if inherited_alert_time is not None and (spawn_y - new_radius > 550):
                 planet.spawn_time = time.time() - 1.0
                 game_state.time_elapsed[planet.center_masque] = inherited_alert_time
 
@@ -107,4 +107,7 @@ def collision_callback(arbiter, space, data, window, game_state, pygame_handler)
             pygame_handler.trigger_merge_vfx(screen_x, screen_y, 140, (253, 195, 45), gain_score)
 
     space.add_post_step_callback(post_step_merge, (shape1, shape2))
+    # Compatibilité Pymunk 7+ et Pymunk 6
+    if hasattr(arbiter, "process_collision"):
+        arbiter.process_collision = False
     return False

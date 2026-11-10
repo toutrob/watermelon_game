@@ -14,11 +14,21 @@ games_state = GameState.GameState()
 pygame_handler = PygameStuff.PygameStuff(games_state)
 physic_space = Physic.Physic(games_state, pygame_handler)
 
+# Compatibilité universelle Pymunk 6.x et Pymunk 7.x+
 for ball_type in range(5, 16):
-    handler = physic_space.space.add_collision_handler(ball_type, ball_type)
-    handler.begin = lambda arbiter, space, data: Collisions.collision_callback(
-        arbiter, physic_space.space, data, pygame_handler.window, games_state, pygame_handler
-    )
+    if hasattr(physic_space.space, "add_collision_handler"):
+        handler = physic_space.space.add_collision_handler(ball_type, ball_type)
+        handler.begin = lambda arbiter, space, data: Collisions.collision_callback(
+            arbiter, physic_space.space, data, pygame_handler.window, games_state, pygame_handler
+        )
+    else:
+        physic_space.space.on_collision(
+            ball_type,
+            ball_type,
+            begin=lambda arbiter, space, data: Collisions.collision_callback(
+                arbiter, physic_space.space, data, pygame_handler.window, games_state, pygame_handler
+            ),
+        )
 
 clock = pygame.time.Clock()
 DROP_COOLDOWN_MS = 180
@@ -92,12 +102,15 @@ while games_state.running:
 
                 # 1. Boutons du menu et barres de pouvoirs cliquables
                 if boutons.RESTART_MENU_RECT.collidepoint(mouse_pos):
+                    games_state.antigravity_armed_until = 0.0
                     RestartFunction.restart_game(games_state, pygame_handler, physic_space)
 
                 elif boutons.PODIUM_MENU_RECT.collidepoint(mouse_pos):
+                    games_state.antigravity_armed_until = 0.0
                     boutons.toggle_podium()
 
                 elif boutons.SOUND_MENU_RECT.collidepoint(mouse_pos):
+                    games_state.antigravity_armed_until = 0.0
                     if games_state.music_info:
                         pygame.mixer.music.pause()
                         games_state.music_info = False
@@ -106,23 +119,34 @@ while games_state.running:
                         games_state.music_info = True
 
                 elif boutons.ANTIGRAVITY_CLICK_ZONE.collidepoint(mouse_pos):
+                    # Protection anti-missclick en 2 clics :
+                    # 1er clic = arme la barre pendant 2.5s | 2e clic = déclenche l'antigravité
                     if games_state.money_power >= games_state.antigravity_cost:
-                        physic_space.add_bar_antigravity()
+                        now_click = time.time()
+                        if now_click < games_state.antigravity_armed_until:
+                            games_state.antigravity_armed_until = 0.0
+                            physic_space.add_bar_antigravity()
+                        else:
+                            games_state.antigravity_armed_until = now_click + 2.5
 
                 elif boutons.DELETE_CLICK_ZONE.collidepoint(mouse_pos):
+                    games_state.antigravity_armed_until = 0.0
                     if games_state.money_power >= games_state.delete_cost and len(boules.Boules.instances) > 0:
                         games_state.can_delete_a_boule = True
 
                 elif boutons.QUIT_MENU_RECT.collidepoint(mouse_pos):
                     games_state.running = False
 
-                # 2. Lâcher d'une planète (bloqué si une boule dépasse déjà hors de la case)
+                # 2. Lâcher d'une planète (zone restreinte autour de la cuve 380..820 pour ne jamais déborder sur les barres)
                 elif (
                     not boutons.podium_visible
                     and games_state.can_create_planete
                     and not games_state.red_screen_playing
-                    and 320 <= mouse_pos[0] <= 880
+                    and 380 <= mouse_pos[0] <= 820
                 ):
+                    # Tout clic dans la zone de jeu désarme l'antigravité si elle avait été touchée par erreur
+                    games_state.antigravity_armed_until = 0.0
+
                     current_type = games_state.selected_ball_type
                     fonctions_creation_boule.create_planete(
                         pygame_handler.window, physic_space.space, mouse_pos[0], current_type
@@ -159,7 +183,6 @@ while games_state.running:
                 age = now - ball.spawn_time
                 bottom_y = body.position.y - ball.radius
 
-                # Après 0.5s (fin de la chute depuis le haut), si le bas de la boule est hors de la case (> 550)
                 if age > 0.5 and bottom_y > 550:
                     if body not in games_state.time_elapsed:
                         games_state.time_elapsed[body] = now
@@ -186,7 +209,7 @@ while games_state.running:
             for ball in boules.Boules.instances:
                 ball.in_danger = False
 
-        # Gestion sonore de l'alerte (sans clignotement d'écran rouge)
+        # Gestion sonore de l'alerte
         if danger_balls_info:
             pygame.mixer.music.pause()
             if not games_state.red_screen_playing:
@@ -203,11 +226,11 @@ while games_state.running:
         pygame_handler.window.blit(pygame_handler.background_image, (0, 0))
         pygame_handler.draw_chamber_backdrop()
 
-        # 2. Dessin des boules (celles avec ball.in_danger=True clignotent directement en rouge)
+        # 2. Dessin des boules
         for ball in boules.Boules.instances:
             ball.draw()
 
-        # 3. Boule de prévisualisation en haut
+        # 3. Boule de prévisualisation + ligne de visée discrète
         if games_state.selected_ball_type is not None and not games_state.red_screen_playing:
             mouse_x = pygame.mouse.get_pos()[0]
             fonctions_creation_boule.create_preview_ball(
@@ -229,7 +252,7 @@ while games_state.running:
         if games_state.can_delete_a_boule:
             physic_space.delte_ball_function(events)
 
-        # 6. Cadre plasma, chenillard rouge + chrono sur la boule, VFX et barres de pouvoirs
+        # 6. Cadre plasma, barre circulaire rouge sur la boule qui dépasse, VFX et barres de pouvoirs
         pygame_handler.affichage_image()
         pygame_handler.draw_danger_zone_and_balls(danger_balls_info)
         pygame_handler.update_and_draw_vfx()

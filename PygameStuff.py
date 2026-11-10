@@ -112,7 +112,7 @@ class PygameStuff:
         pygame.draw.circle(self.window, (240, 250, 255), (x, y), 4)
 
     def draw_danger_zone_and_balls(self, danger_balls_info):
-        """Affiche une barre circulaire continue (sans crans) qui tourne dans le sens antihoraire."""
+        """Affiche une barre circulaire continue (sans crans ni chrono) qui tourne dans le sens antihoraire."""
         bar_color = (*Boules.DANGER_SPACE_RED, 220)
 
         for ball, elapsed in danger_balls_info:
@@ -125,12 +125,10 @@ class PygameStuff:
             bar_surf = pygame.Surface((surf_size, surf_size), pygame.SRCALPHA)
             cx, cy = surf_size // 2, surf_size // 2
 
-            # Nombre de points élevé pour tracer une courbe 100% lisse et sans aucun cran
             steps = max(2, int(90 * ratio))
             points = []
             for i in range(steps + 1):
                 t_step = (i / steps) * ratio
-                # Sens antihoraire en partant du haut (-pi/2)
                 angle = -math.pi / 2 - t_step * math.tau
                 px = cx + math.cos(angle) * ring_r
                 py = cy + math.sin(angle) * ring_r
@@ -138,7 +136,6 @@ class PygameStuff:
 
             if len(points) >= 2:
                 pygame.draw.lines(bar_surf, bar_color, False, points, 5)
-                # Extrémités arrondies pour une finition propre
                 pygame.draw.circle(bar_surf, bar_color, (int(points[0][0]), int(points[0][1])), 2)
                 pygame.draw.circle(bar_surf, bar_color, (int(points[-1][0]), int(points[-1][1])), 2)
 
@@ -203,11 +200,13 @@ class PygameStuff:
             active_text="CIBLEZ UNE PLANÈTE"
         )
 
-        # 2. Antigravité : Bleu Cyan Électrique (0, 150, 255)
+        # 2. Antigravité : Bleu Cyan Électrique (0, 150, 255) avec sécurité d'armement
         anti_text = ""
         if self.game_state.can_draw_the_gravity_line and self.game_state.time_without_gravity:
             rem = max(0.0, 3.0 - (time.time() - self.game_state.time_without_gravity))
             anti_text = f"ACTIF : {rem:.1f}s"
+
+        is_armed = time.time() < getattr(self.game_state, "antigravity_armed_until", 0.0)
 
         boutons.draw_integrated_power_bar(
             self.window,
@@ -218,7 +217,8 @@ class PygameStuff:
             self.game_state.antigravity_cost,
             theme_color=(0, 150, 255),
             active=self.game_state.can_draw_the_gravity_line,
-            active_text=anti_text
+            active_text=anti_text,
+            armed=is_armed
         )
 
     def trigger_merge_vfx(self, x, y, radius, color, points_gained):
@@ -327,11 +327,11 @@ class PygameStuff:
             self.window.blit(txt_surf, pos)
 
     def delete_boule_message(self):
-        self._draw_panel(855, 310, 305, 64, border_color=(180, 90, 255))
+        self._draw_panel(880, 310, 295, 64, border_color=(180, 90, 255))
         msg1 = self.font_delete_boule.render("Cliquez sur une planète à aspirer", True, (255, 255, 255))
         msg2 = self.font_delete_boule.render("(Clic droit ou barre : Annuler)", True, (215, 185, 255))
-        self.window.blit(msg1, msg1.get_rect(center=(1007, 330)))
-        self.window.blit(msg2, msg2.get_rect(center=(1007, 353)))
+        self.window.blit(msg1, msg1.get_rect(center=(1027, 330)))
+        self.window.blit(msg2, msg2.get_rect(center=(1027, 353)))
 
     def draw_pause_overlay(self):
         overlay = pygame.Surface(self.window_size, pygame.SRCALPHA)

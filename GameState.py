@@ -14,6 +14,7 @@ class GameState:
         self.display_money_power = 0.0
         self.antigravity_cost = self.BASE_ANTIGRAVITY_COST
         self.delete_cost = self.BASE_DELETE_COST
+        self.antigravity_armed_until = 0.0  # Sécurité anti-missclick
 
         self.highscores = high_score.load_highscores()
         self.game_over = False

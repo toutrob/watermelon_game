@@ -2,6 +2,7 @@ import math
 import random
 import time
 import pygame
+import boules
 from boules import Boules, Boule1, Boule2, Boule3, Boule4, Boule5
 
 PREVIEW_MAP = {
@@ -19,6 +20,37 @@ def get_clamped_drop_x(mouse_x, ball_type):
     min_x = 400 + radius + 4
     max_x = 800 - radius - 4
     return max(min_x, min(max_x, mouse_x))
+
+def _get_landing_y(drop_x, start_y):
+    """Calcule la hauteur d'impact sur la boule la plus haute en dessous ou le fond de la cuve."""
+    landing_y = 644
+    for ball in boules.Boules.instances:
+        bx, by = ball.get_screen_pos()
+        if by > start_y:
+            dx = abs(drop_x - bx)
+            if dx < ball.radius:
+                hit_y = int(by - math.sqrt(max(0, ball.radius ** 2 - dx ** 2)))
+                if hit_y < landing_y:
+                    landing_y = hit_y
+    return max(start_y + 10, landing_y)
+
+def _draw_discreet_aim_line(window, x, start_y, end_y, color):
+    """Dessine un filet de visée ultra-léger et semi-transparent."""
+    height = end_y - start_y
+    if height <= 12:
+        return
+
+    line_surf = pygame.Surface((8, height), pygame.SRCALPHA)
+    # Petits tirets fins avec transparence progressive (très discret : alpha max 36/255)
+    step = 14
+    for y in range(0, height - 6, step):
+        progress = y / height
+        alpha = int(100 * (1.0 - 0.35 * progress))
+        pygame.draw.line(line_surf, (*color, alpha), (4, y), (4, min(height, y + 7)), 1)
+
+    # Minuscule point d'impact translucide au bout de la ligne
+    pygame.draw.circle(line_surf, (*color, 50), (4, height - 3), 2)
+    window.blit(line_surf, (x - 4, start_y))
 
 def create_planete(window, space, position_x, ball_type):
     decalage = random.uniform(-0.4, 0.4)
@@ -42,6 +74,12 @@ def create_preview_ball(window, space, mouse_pos, ball_type, Next_Bouboule):
         t = time.time()
         bob_y = 50 + int(math.sin(t * 5.0) * 3)
 
+        # Ligne de visée légère et transparente sous la boule
+        start_line_y = bob_y + radius + 10
+        end_line_y = _get_landing_y(draw_x, start_line_y)
+        _draw_discreet_aim_line(window, draw_x, start_line_y, end_line_y, glow_col)
+
+        # Halo doux autour de la boule
         halo_surf = pygame.Surface((radius * 2 + 24, radius * 2 + 24), pygame.SRCALPHA)
         pulse = int(50 + 25 * math.sin(t * 6.0))
         pygame.draw.circle(halo_surf, (*glow_col, pulse), (radius + 12, radius + 12), radius + 8)
