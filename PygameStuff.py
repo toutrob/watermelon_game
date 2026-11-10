@@ -17,11 +17,13 @@ class PygameStuff:
 
         self.font_score = pygame.font.SysFont('nirmala ui', 32, bold=True)
         self.font_sub = pygame.font.SysFont('nirmala ui', 18, bold=True)
-        self.font_score_menu = pygame.font.SysFont('nirmala ui', 42, bold=True)
+        self.font_score_menu = pygame.font.SysFont('nirmala ui', 40, bold=True)
         self.font_next_boule = pygame.font.SysFont('nirmala ui', 18, bold=True)
-        self.font_end = pygame.font.SysFont('adlam display', 64)
+        self.font_end = pygame.font.SysFont('adlam display', 58)
         self.font_delete_boule = pygame.font.SysFont('nirmala ui', 16, bold=True)
         self.font_popup = pygame.font.SysFont('nirmala ui', 24, bold=True)
+        self.font_podium_rank = pygame.font.SysFont('nirmala ui', 26, bold=True)
+        self.font_podium_score = pygame.font.SysFont('nirmala ui', 22, bold=True)
 
         self.red_game_over = pygame.Surface(self.window_size)
         self.red_game_over.set_alpha(0)
@@ -200,7 +202,7 @@ class PygameStuff:
             active_text="CIBLEZ UNE PLANÈTE"
         )
 
-        # 2. Antigravité : Bleu Cyan Électrique (0, 150, 255) avec sécurité d'armement
+        # 2. Antigravité : Bleu Cyan Électrique (0, 150, 255)
         anti_text = ""
         if self.game_state.can_draw_the_gravity_line and self.game_state.time_without_gravity:
             rem = max(0.0, 3.0 - (time.time() - self.game_state.time_without_gravity))
@@ -251,18 +253,19 @@ class PygameStuff:
             "life": 1.0
         })
 
-    def trigger_blackhole_vfx(self, x, y, radius):
+    def trigger_blackhole_vfx(self, x, y, radius, color=(185, 75, 255)):
+        """Animation de disparition utilisant la couleur de la planète supprimée."""
         self.shockwaves.append({
             "x": x, "y": y,
             "r": radius + 35,
             "max_r": 4,
-            "color": (185, 75, 255),
+            "color": color,
             "alpha": 250,
             "implode": True
         })
-        for _ in range(26):
+        for _ in range(28):
             ang = random.uniform(0, math.tau)
-            dist = random.uniform(radius * 0.5, radius * 1.4)
+            dist = random.uniform(radius * 0.5, radius * 1.45)
             px = x + math.cos(ang) * dist
             py = y + math.sin(ang) * dist
             self.particles.append({
@@ -270,7 +273,7 @@ class PygameStuff:
                 "vx": (x - px) * 0.08,
                 "vy": (y - py) * 0.08,
                 "r": random.uniform(3.0, 6.0),
-                "color": (185, 75, 255),
+                "color": color,
                 "life": 1.0,
                 "decay": 0.04
             })
@@ -344,16 +347,78 @@ class PygameStuff:
         self.window.blit(title, title.get_rect(center=(600, 315)))
         self.window.blit(sub, sub.get_rect(center=(600, 375)))
 
-    def highscores_visibles(self):
-        self._draw_panel(320, 90, 560, 520, border_color=(255, 215, 90), bg_alpha=235)
-        title = self.font_score_menu.render("MEILLEURS SCORES", True, (255, 215, 90))
-        self.window.blit(title, title.get_rect(center=(600, 155)))
+    def _draw_podium_and_list(self, center_x, podium_bottom_y, step_scale=1.0):
+        """Dessine un podium visuel pour le Top 3 (2e à gauche, 1er au centre, 3e à droite) + liste 4e et 5e."""
+        scores = list(self.game_state.highscores[:5])
+        while len(scores) < 5:
+            scores.append(0)
 
-        colors = [(255, 215, 0), (210, 215, 225), (225, 145, 85), (255, 255, 255), (200, 200, 220)]
-        for i, highscore in enumerate(self.game_state.highscores[:5]):
-            c = colors[i] if i < len(colors) else (255, 255, 255)
-            row_surf = self.font_score.render(f"#{i + 1}    {highscore} pts", True, c)
-            self.window.blit(row_surf, row_surf.get_rect(center=(600, 245 + i * 65)))
+        step_w = 128
+        gap = 14
+        # Configuration : (index_score, rang, x_centre, hauteur, couleur_principale, couleur_fond)
+        podium_steps = [
+            (1, 2, center_x - step_w - gap, int(92 * step_scale),  (195, 210, 230), (45, 58, 88, 215)),   # 2e (Argent)
+            (0, 1, center_x,                int(128 * step_scale), (255, 215, 55),  (75, 60, 20, 225)),   # 1er (Or)
+            (2, 3, center_x + step_w + gap, int(68 * step_scale),  (230, 145, 85),  (70, 42, 28, 215)),   # 3e (Bronze)
+        ]
+
+        for idx, rank, cx, h, main_col, bg_col in podium_steps:
+            step_rect = pygame.Rect(cx - step_w // 2, podium_bottom_y - h, step_w, h)
+
+            # Colonne du podium
+            step_surf = pygame.Surface((step_w, h), pygame.SRCALPHA)
+            pygame.draw.rect(step_surf, bg_col, (0, 0, step_w, h), border_top_left_radius=12, border_top_right_radius=12)
+            pygame.draw.rect(
+                step_surf, main_col, (0, 0, step_w, h),
+                width=3 if rank == 1 else 2,
+                border_top_left_radius=12, border_top_right_radius=12
+            )
+            self.window.blit(step_surf, step_rect.topleft)
+
+            # Médaille du rang (1, 2, 3) sur la marche
+            medal_y = step_rect.top + 26
+            pygame.draw.circle(self.window, (20, 26, 48), (cx, medal_y), 17)
+            pygame.draw.circle(self.window, main_col, (cx, medal_y), 17, 2)
+            rank_surf = self.font_podium_rank.render(str(rank), True, main_col)
+            self.window.blit(rank_surf, rank_surf.get_rect(center=(cx, medal_y)))
+
+            # Score affiché au-dessus de la marche
+            score_txt = f"{scores[idx]} pts"
+            score_surf = self.font_podium_score.render(score_txt, True, main_col if rank == 1 else (240, 245, 255))
+            self.window.blit(score_surf, score_surf.get_rect(center=(cx, step_rect.top - 18)))
+
+        # Socle lumineux sous le podium
+        total_w = step_w * 3 + gap * 2 + 20
+        pygame.draw.line(
+            self.window, (120, 165, 240),
+            (center_x - total_w // 2, podium_bottom_y),
+            (center_x + total_w // 2, podium_bottom_y), 3
+        )
+
+        # Liste classique en dessous pour les 4e et 5e places
+        list_start_y = podium_bottom_y + 20
+        row_w = 380
+        row_h = 38
+        for idx in range(3, 5):
+            y_pos = list_start_y + (idx - 3) * (row_h + 10)
+            row_rect = pygame.Rect(center_x - row_w // 2, y_pos, row_w, row_h)
+
+            row_surf = pygame.Surface((row_w, row_h), pygame.SRCALPHA)
+            pygame.draw.rect(row_surf, (24, 32, 64, 195), (0, 0, row_w, row_h), border_radius=10)
+            pygame.draw.rect(row_surf, (75, 105, 170), (0, 0, row_w, row_h), width=1, border_radius=10)
+            self.window.blit(row_surf, row_rect.topleft)
+
+            rank_lbl = self.font_sub.render(f"#{idx + 1}", True, (165, 190, 235))
+            val_lbl = self.font_sub.render(f"{scores[idx]} pts", True, (240, 245, 255))
+            self.window.blit(rank_lbl, rank_lbl.get_rect(midleft=(row_rect.left + 22, row_rect.centery)))
+            self.window.blit(val_lbl, val_lbl.get_rect(midright=(row_rect.right - 22, row_rect.centery)))
+
+    def highscores_visibles(self):
+        self._draw_panel(290, 80, 620, 520, border_color=(255, 215, 90), bg_alpha=240)
+        title = self.font_score_menu.render("MEILLEURS SCORES", True, (255, 215, 90))
+        self.window.blit(title, title.get_rect(center=(600, 135)))
+
+        self._draw_podium_and_list(center_x=600, podium_bottom_y=415, step_scale=1.0)
 
     def game_over_screen(self):
         self.red_screen.stop()
@@ -366,17 +431,12 @@ class PygameStuff:
         overlay.fill((8, 10, 24, 215))
         self.window.blit(overlay, (0, 0))
 
-        self._draw_panel(310, 70, 580, 570, border_color=(255, 80, 60), bg_alpha=235)
+        self._draw_panel(290, 55, 620, 585, border_color=(255, 80, 60), bg_alpha=240)
 
         msg = self.font_end.render("GAME OVER", True, (255, 70, 50))
-        self.window.blit(msg, msg.get_rect(center=(600, 140)))
+        self.window.blit(msg, msg.get_rect(center=(600, 110)))
 
         score_surf = self.font_score.render(f"Score final : {self.game_state.score}", True, (255, 255, 255))
-        self.window.blit(score_surf, score_surf.get_rect(center=(600, 215)))
+        self.window.blit(score_surf, score_surf.get_rect(center=(600, 172)))
 
-        top_title = self.font_sub.render("TOP 5 MEILLEURS SCORES", True, (255, 215, 90))
-        self.window.blit(top_title, top_title.get_rect(center=(600, 275)))
-
-        for i, highscore in enumerate(self.game_state.highscores[:5]):
-            hs_surf = self.font_sub.render(f"{i + 1}.   {highscore} pts", True, (220, 230, 255))
-            self.window.blit(hs_surf, hs_surf.get_rect(center=(600, 320 + i * 42)))
+        self._draw_podium_and_list(center_x=600, podium_bottom_y=410, step_scale=0.9)

@@ -114,11 +114,22 @@ class Physic:
                 hovered_ball = ball
                 break
 
+        planet_color = (185, 75, 255)
         if hovered_ball is not None:
             bx, by = hovered_ball.get_screen_pos()
+            # Récupère la couleur stockée de la planète ciblée
+            cfg = boules.Boules.BALL_CONFIG.get(hovered_ball.type)
+            if cfg is not None:
+                planet_color = cfg[4]
+
+            inner_color = (
+                min(255, planet_color[0] + 65),
+                min(255, planet_color[1] + 65),
+                min(255, planet_color[2] + 65)
+            )
             pulse_r = hovered_ball.radius + 6 + int(3 * math.sin(time.time() * 10.0))
-            pygame.draw.circle(self.pygame_handler.window, (210, 110, 255), (bx, by), pulse_r, 3)
-            pygame.draw.circle(self.pygame_handler.window, (255, 200, 255), (bx, by), hovered_ball.radius + 2, 1)
+            pygame.draw.circle(self.pygame_handler.window, planet_color, (bx, by), pulse_r, 3)
+            pygame.draw.circle(self.pygame_handler.window, inner_color, (bx, by), hovered_ball.radius + 2, 1)
 
         if events is None:
             return
@@ -132,7 +143,8 @@ class Physic:
                 if event.button == 1 and hovered_ball is not None:
                     bx, by = hovered_ball.get_screen_pos()
                     self.pygame_handler.delete_boules_sound.play()
-                    self.pygame_handler.trigger_blackhole_vfx(bx, by, hovered_ball.radius)
+                    # Utilise la couleur de la planète pour l'animation de disparition
+                    self.pygame_handler.trigger_blackhole_vfx(bx, by, hovered_ball.radius, planet_color)
 
                     self.game_state.time_elapsed.pop(hovered_ball.center_masque, None)
                     if hovered_ball.ball_shape in self.space.shapes:

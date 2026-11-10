@@ -35,21 +35,20 @@ def _get_landing_y(drop_x, start_y):
     return max(start_y + 10, landing_y)
 
 def _draw_discreet_aim_line(window, x, start_y, end_y, color):
-    """Dessine un filet de visée ultra-léger et semi-transparent."""
+    """Dessine une ligne de visée semi-transparente avec alpha = 100/255."""
     height = end_y - start_y
     if height <= 12:
         return
 
     line_surf = pygame.Surface((8, height), pygame.SRCALPHA)
-    # Petits tirets fins avec transparence progressive (très discret : alpha max 36/255)
     step = 14
     for y in range(0, height - 6, step):
         progress = y / height
         alpha = int(100 * (1.0 - 0.35 * progress))
-        pygame.draw.line(line_surf, (*color, alpha), (4, y), (4, min(height, y + 7)), 1)
+        pygame.draw.line(line_surf, (*color, alpha), (4, y), (4, min(height, y + 7)), 2)
 
-    # Minuscule point d'impact translucide au bout de la ligne
-    pygame.draw.circle(line_surf, (*color, 50), (4, height - 3), 2)
+    # Point d'impact au bout de la ligne
+    pygame.draw.circle(line_surf, (*color, 120), (4, height - 3), 3)
     window.blit(line_surf, (x - 4, start_y))
 
 def create_planete(window, space, position_x, ball_type):
@@ -74,7 +73,7 @@ def create_preview_ball(window, space, mouse_pos, ball_type, Next_Bouboule):
         t = time.time()
         bob_y = 50 + int(math.sin(t * 5.0) * 3)
 
-        # Ligne de visée légère et transparente sous la boule
+        # Ligne de visée sous la boule (alpha 100/255)
         start_line_y = bob_y + radius + 10
         end_line_y = _get_landing_y(draw_x, start_line_y)
         _draw_discreet_aim_line(window, draw_x, start_line_y, end_line_y, glow_col)
